@@ -1,0 +1,15 @@
+# OS junk
+.DS_Store
+
+# Raw source media — kept on your disk, NOT published to the site
+*.MOV
+*.mov
+*.HEIC
+*.heic
+285f4807-b148-4ba1-9661-4b7d9c1e922d.JPG
+Bologna_4.jpg
+Milan Duomo Metro_1.jpg
+Progetto senza titolo (10).png
+
+# Local build artifacts
+_*.html
