@@ -81,6 +81,12 @@
     themed.forEach(function (s) { themeObs.observe(s); });
   }
 
+  /* ---------- Scroll progress bar ---------- */
+  var progress = document.createElement("div");
+  progress.className = "progress";
+  progress.setAttribute("aria-hidden", "true");
+  document.body.appendChild(progress);
+
   /* ---------- Nav: hide on scroll down, show on up ---------- */
   var nav = navEl;
   var lastY = window.scrollY;
@@ -95,10 +101,111 @@
       } else {
         nav.classList.remove("is-hidden");
       }
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      progress.style.transform = "scaleX(" + (max > 0 ? Math.min(y / max, 1) : 0) + ")";
       lastY = y;
       ticking = false;
     });
   }, { passive: true });
+
+  /* ---------- Active section in nav (underline follows scroll) ---------- */
+  if ("IntersectionObserver" in window) {
+    var navMap = [];
+    document.querySelectorAll(".nav__links a[href^='#']").forEach(function (a) {
+      var target = document.querySelector(a.getAttribute("href"));
+      if (target) navMap.push([target, a]);
+    });
+    if (navMap.length) {
+      var activeObs = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            var link = null;
+            navMap.forEach(function (p) { if (p[0] === entry.target) link = p[1]; });
+            if (!link) return;
+            if (entry.isIntersecting) {
+              navMap.forEach(function (p) { p[1].classList.remove("is-active"); });
+              link.classList.add("is-active");
+            }
+          });
+        },
+        { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+      );
+      navMap.forEach(function (p) { activeObs.observe(p[0]); });
+    }
+  }
+
+  /* ---------- Custom cursor + work-list image previews ---------- */
+  (function () {
+    var fine = window.matchMedia("(pointer: fine)").matches;
+    if (!fine || reduceMotion) return;
+
+    document.body.classList.add("has-cursor");
+    var dot = document.createElement("div");
+    dot.className = "cursor-dot";
+    var ring = document.createElement("div");
+    ring.className = "cursor-ring";
+    ring.innerHTML = "<span></span>";
+    document.body.appendChild(dot);
+    document.body.appendChild(ring);
+
+    // floating preview for the case-study index
+    var pv = null, pvOn = false;
+    var rows = document.querySelectorAll(".cs-item a[data-preview]");
+    if (rows.length) {
+      pv = document.createElement("img");
+      pv.className = "cs-preview";
+      pv.alt = "";
+      pv.setAttribute("aria-hidden", "true");
+      document.body.appendChild(pv);
+      rows.forEach(function (a, i) {
+        a.addEventListener("mouseenter", function () {
+          pv.src = a.getAttribute("data-preview");
+          pv.style.setProperty("--pr", (i % 2 ? 4 : -4) + "deg");
+          pvOn = true;
+          pv.classList.add("is-on");
+        });
+        a.addEventListener("mouseleave", function () {
+          pvOn = false;
+          pv.classList.remove("is-on");
+        });
+      });
+    }
+
+    var mx = window.innerWidth / 2, my = window.innerHeight / 2;
+    var rx = mx, ry = my, px = mx, py = my;
+
+    document.addEventListener("mousemove", function (e) {
+      mx = e.clientX; my = e.clientY;
+      if (!e.target || !e.target.closest) return;
+      // palette-aware: blue cursor on light sections, white on dark/blue
+      var sec = e.target.closest("[data-navtheme]");
+      var ink = !!(sec && sec.getAttribute("data-navtheme") === "dark");
+      dot.classList.toggle("is-ink", ink);
+      ring.classList.toggle("is-ink", ink);
+      // grow over interactive elements
+      var hot = !!e.target.closest("a, button");
+      ring.classList.toggle("is-hot", hot);
+      dot.classList.toggle("is-hot", hot);
+    }, { passive: true });
+
+    document.documentElement.addEventListener("mouseleave", function () {
+      dot.style.opacity = "0"; ring.style.opacity = "0";
+    });
+    document.documentElement.addEventListener("mouseenter", function () {
+      dot.style.opacity = "1"; ring.style.opacity = "1";
+    });
+
+    (function loop() {
+      rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
+      dot.style.transform = "translate(" + mx + "px," + my + "px)";
+      ring.style.transform = "translate(" + rx + "px," + ry + "px)";
+      if (pv) {
+        px += (mx - px) * 0.12; py += (my - py) * 0.12;
+        if (pvOn) pv.style.transform = "translate(" + (px + 28) + "px," + (py - 110) + "px) rotate(var(--pr))";
+      }
+      requestAnimationFrame(loop);
+    })();
+  })();
 
   /* ---------- Mobile menu ---------- */
   var toggle = document.querySelector(".nav__toggle");
