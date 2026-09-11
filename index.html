@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="en">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#003399" />
@@ -11,6 +12,7 @@
 <meta property="og:type" content="website" />
 
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+<link rel="preload" href="assets/fonts/bebas-neue-400-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="fonts.css" />
 <link rel="stylesheet" href="styles.css" />
 
@@ -30,7 +32,7 @@
     <a href="#contact" data-nav>Contact</a>
   </nav>
 
-  <button class="nav__toggle" aria-label="Toggle menu" aria-expanded="false">
+  <button class="nav__toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="menu">
     <span></span><span></span>
   </button>
 </header>
@@ -69,30 +71,9 @@
         <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 4v16M6 14l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
       </a>
     </div>
-
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee__track">
-        <span>Brand Strategy</span><span class="marquee__star">✦</span>
-        <span>Social Media</span><span class="marquee__star">✦</span>
-        <span>Influencer Marketing</span><span class="marquee__star">✦</span>
-        <span>Paid Media</span><span class="marquee__star">✦</span>
-        <span>Events &amp; Collaborations</span><span class="marquee__star">✦</span>
-        <span>Brand Management</span><span class="marquee__star">✦</span>
-        <span>OOH</span><span class="marquee__star">✦</span>
-        <span>Content Production</span><span class="marquee__star">✦</span>
-        <span>Brand Strategy</span><span class="marquee__star">✦</span>
-        <span>Social Media</span><span class="marquee__star">✦</span>
-        <span>Influencer Marketing</span><span class="marquee__star">✦</span>
-        <span>Paid Media</span><span class="marquee__star">✦</span>
-        <span>Events &amp; Collaborations</span><span class="marquee__star">✦</span>
-        <span>Brand Management</span><span class="marquee__star">✦</span>
-        <span>OOH</span><span class="marquee__star">✦</span>
-        <span>Content Production</span><span class="marquee__star">✦</span>
-      </div>
-    </div>
   </section>
 
-  <!-- ============================ ABOUT ============================ -->
+  <!-- ============================ BIO ============================ -->
   <section class="about" id="about" data-navtheme="dark">
     <div class="section-head">
       <span class="eyebrow" data-reveal>( About )</span>
@@ -107,119 +88,56 @@
         <p data-reveal>Italian, Barcelona-based. I lead global campaigns, content productions and brand activations in beauty &amp; FMCG across the EU &amp; US — from photoshoots and creator collaborations to paid media — translating creative ideas into measurable results.</p>
       </div>
     </div>
-
-    <ul class="tags" aria-label="Disciplines">
-      <li data-reveal>Brand Strategy</li>
-      <li data-reveal>Social Media</li>
-      <li data-reveal>Influencer Marketing</li>
-      <li data-reveal>Paid Media</li>
-      <li data-reveal>Events &amp; Collaborations</li>
-      <li data-reveal>Brand Management</li>
-      <li data-reveal>Content Production</li>
-      <li data-reveal>OOH</li>
-    </ul>
   </section>
 
-  <!-- ============================ STATS ============================ -->
-  <section class="stats" aria-label="Impact in numbers" data-navtheme="dark">
-    <div class="stats__grid">
-      <div class="stat" data-reveal>
-        <span class="stat__num" data-count="+250%">+250%</span>
-        <span class="stat__label">Brand visibility, launch event</span>
-      </div>
-      <div class="stat" data-reveal>
-        <span class="stat__num" data-count="$400K+">$400K+</span>
-        <span class="stat__label">Yearly budgets managed</span>
-      </div>
-      <div class="stat" data-reveal>
-        <span class="stat__num" data-count="+144%">+144%</span>
-        <span class="stat__label">Sales growth, OOH campaign</span>
-      </div>
-      <div class="stat" data-reveal>
-        <span class="stat__num" data-count="+50%">+50%</span>
-        <span class="stat__label">ROAS &amp; conversion uplift</span>
-      </div>
-    </div>
-  </section>
+  <!-- ============================ WORK — filled from data/ in the next phases ============================ -->
+  <div id="work">
+    <section class="sec sec--paper" id="campaigns" aria-labelledby="campaigns-title" data-navtheme="dark">
+      <header class="sec-head">
+        <div class="sec-head__bar" data-reveal>
+          <span>(01)</span>
+          <span class="file file--folder">work / campaigns</span>
+        </div>
+        <h2 class="sec-head__title" id="campaigns-title" data-reveal>Campaigns</h2>
+      </header>
+      <div class="sec__body"><p class="todo">Qui arrivano le card delle 7 campagne — fase 3</p></div>
+    </section>
 
-  <!-- ============================ WORK (case study index) ============================ -->
-  <section class="work" id="work" data-navtheme="light">
-    <div class="section-head work__head">
-      <span class="eyebrow" data-reveal>( Selected Work )</span>
-      <span class="work__count" data-reveal>Six case studies — 01 / 06</span>
-    </div>
+    <section class="sec sec--stage" id="events" aria-labelledby="events-title" data-navtheme="light">
+      <header class="sec-head">
+        <div class="sec-head__bar" data-reveal>
+          <span>(02)</span>
+          <span class="file file--folder">work / events</span>
+        </div>
+        <h2 class="sec-head__title" id="events-title" data-reveal>Events</h2>
+      </header>
+      <div class="sec__body"><p class="todo">Qui arrivano i 5 eventi a schermo intero — fase 4</p></div>
+    </section>
 
-    <ul class="cs-index">
-      <li class="cs-item" data-reveal>
-        <a href="hey-gigi.html" data-preview="assets/trail/t1.jpg">
-          <span class="cs-item__num">01</span>
-          <span class="cs-item__main">
-            <span class="cs-item__title">Hey Gigi</span>
-            <span class="cs-item__cat">Brand Management</span>
-          </span>
-          <span class="cs-item__result">0 → 1 brand</span>
-          <span class="cs-item__go" aria-hidden="true">↗</span>
-        </a>
-      </li>
-      <li class="cs-item" data-reveal>
-        <a href="partnership-event.html" data-preview="assets/trail/t3.jpg">
-          <span class="cs-item__num">02</span>
-          <span class="cs-item__main">
-            <span class="cs-item__title">Beauty × Jewelry</span>
-            <span class="cs-item__cat">Brand Partnership Event</span>
-          </span>
-          <span class="cs-item__result">+250% visibility</span>
-          <span class="cs-item__go" aria-hidden="true">↗</span>
-        </a>
-      </li>
-      <li class="cs-item" data-reveal>
-        <a href="influencer-marketing.html" data-preview="assets/trail/t2.jpg">
-          <span class="cs-item__num">03</span>
-          <span class="cs-item__main">
-            <span class="cs-item__title">Influencer Program</span>
-            <span class="cs-item__cat">Influencer Marketing · EU &amp; US</span>
-          </span>
-          <span class="cs-item__result">$400K+ · +50% ROAS</span>
-          <span class="cs-item__go" aria-hidden="true">↗</span>
-        </a>
-      </li>
-      <li class="cs-item" data-reveal>
-        <a href="ooh-italy.html" data-preview="assets/ooh-milan-metro.jpg">
-          <span class="cs-item__num">04</span>
-          <span class="cs-item__main">
-            <span class="cs-item__title">Le Mini Macaron — OOH</span>
-            <span class="cs-item__cat">Out-of-Home · Italy</span>
-          </span>
-          <span class="cs-item__result">+144% sales</span>
-          <span class="cs-item__go" aria-hidden="true">↗</span>
-        </a>
-      </li>
-      <li class="cs-item" data-reveal>
-        <a href="paid-media.html" data-preview="assets/trail/t4.jpg">
-          <span class="cs-item__num">05</span>
-          <span class="cs-item__main">
-            <span class="cs-item__title">Cross-Market Paid</span>
-            <span class="cs-item__cat">Paid Media Strategy</span>
-          </span>
-          <span class="cs-item__result">+50% ROAS</span>
-          <span class="cs-item__go" aria-hidden="true">↗</span>
-        </a>
-      </li>
-      <li class="cs-item" data-reveal>
-        <a href="social-media.html" data-preview="assets/trail/t6.jpg">
-          <span class="cs-item__num">06</span>
-          <span class="cs-item__main">
-            <span class="cs-item__title">Global Social</span>
-            <span class="cs-item__cat">Social Media Strategy</span>
-          </span>
-          <span class="cs-item__result">+15% MoM reach</span>
-          <span class="cs-item__go" aria-hidden="true">↗</span>
-        </a>
-      </li>
-    </ul>
-  </section>
+    <section class="sec sec--paper" id="collabs" aria-labelledby="collabs-title" data-navtheme="dark">
+      <header class="sec-head">
+        <div class="sec-head__bar" data-reveal>
+          <span>(03)</span>
+          <span class="file file--folder">work / brand-collabs</span>
+        </div>
+        <h2 class="sec-head__title" id="collabs-title" data-reveal>Brand Collabs</h2>
+      </header>
+      <div class="sec__body"><p class="todo">Qui arrivano le 4 collab — fase 5</p></div>
+    </section>
 
-  <!-- ============================ CV BAND ============================ -->
+    <section class="sec sec--paper" id="fun" aria-labelledby="fun-title" data-navtheme="dark">
+      <header class="sec-head">
+        <div class="sec-head__bar" data-reveal>
+          <span>(04)</span>
+          <span class="file file--folder">work / fun-stuff</span>
+        </div>
+        <h2 class="sec-head__title" id="fun-title" data-reveal>Fun Stuff</h2>
+      </header>
+      <div class="sec__body"><p class="todo">Qui arrivano le 3 mini-card (battesimo, ceramica, Hey Gigi) — fase 6</p></div>
+    </section>
+  </div>
+
+  <!-- ============================ CV BAND (becomes the CV section in Phase 7) ============================ -->
   <section class="cv-band" data-navtheme="dark">
     <div class="cv-band__inner">
       <div>

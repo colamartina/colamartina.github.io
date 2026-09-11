@@ -33,3 +33,6 @@ refs/
 
 # Local build artifacts
 _*.html
+
+# Local tooling (preview server config)
+.claude/

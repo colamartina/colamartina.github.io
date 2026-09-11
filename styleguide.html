@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Design system — Martina Cola (working page)</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="fonts.css" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  /* layout of this working page only — the components themselves live in styles.css */
+  body { background: var(--paper); color: var(--ink); }
+  .sg { max-width: 1200px; margin: 0 auto; padding: 4rem var(--pad) 6rem; }
+  .sg h1 { font-family: var(--font-display); font-weight: 400; font-size: var(--fs-display); line-height: .86; text-transform: uppercase; margin: 1rem 0 .6rem; }
+  .sg h2 { margin: 4rem 0 1.4rem; padding-bottom: .8rem; border-bottom: 1px solid var(--line); }
+  .sg-row { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+  .sg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
+  .sw { border: 1px solid var(--line); border-radius: var(--r-sm); overflow: hidden; font-size: .8rem; }
+  .sw i { display: block; height: 72px; }
+  .sw p { padding: .6rem .7rem; line-height: 1.35; }
+  .sw code { font-family: var(--font-mono); font-size: .72rem; color: var(--ink-3); }
+  .sg-type > * + * { margin-top: 1.4rem; }
+  .sg-type .label { display: block; margin-bottom: .3rem; font-family: var(--font-mono); font-size: .7rem; color: var(--ink-3); }
+  .sg-stage { background: var(--blue); color: var(--white); border-radius: var(--r-md); padding: 1.6rem; }
+  .sg-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 2rem 1.5rem; }
+  .sg-board { position: relative; min-height: 220px; padding: 2rem; border: 1px dashed var(--line-strong); border-radius: var(--r-md); display: flex; flex-wrap: wrap; gap: 1.1rem 1.4rem; align-content: center; justify-content: center; }
+  .space { display: flex; align-items: flex-end; gap: 1.2rem; flex-wrap: wrap; }
+  .space i { display: block; background: var(--st-lilac); border-radius: 2px; }
+  .radii { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+  .radii i { display: block; width: 90px; height: 64px; border: 1px solid var(--line-strong); background: var(--paper-2); }
+</style>
+
+<main class="sg">
+  <p class="eyebrow">( Working page — not linked from the site )</p>
+  <h1>Design system</h1>
+  <p class="meta"><span>Portfolio 2026</span><span>Phase 1</span><span>styles.css</span></p>
+
+  <!-- COLOUR -->
+  <h2 class="eyebrow">Colour</h2>
+  <div class="sg-grid">
+    <div class="sw"><i style="background:var(--blue)"></i><p>Cobalt — stage<br><code>--blue #003399</code></p></div>
+    <div class="sw"><i style="background:var(--paper)"></i><p>Paper — sheets<br><code>--paper #ffffff</code></p></div>
+    <div class="sw"><i style="background:var(--paper-2)"></i><p>Paper 2 — quiet UI<br><code>--paper-2 #f4f3ef</code></p></div>
+    <div class="sw"><i style="background:var(--ink)"></i><p>Ink — titles<br><code>--ink #141417</code></p></div>
+    <div class="sw"><i style="background:var(--ink-2)"></i><p>Ink 2 — body<br><code>--ink-2 #3b3b43</code></p></div>
+    <div class="sw"><i style="background:var(--ink-3)"></i><p>Ink 3 — metadata<br><code>--ink-3 #6e6e78</code></p></div>
+  </div>
+  <p class="eyebrow" style="margin:1.6rem 0 1rem">Sticker palette (CV skills only)</p>
+  <div class="sg-grid">
+    <div class="sw"><i style="background:var(--st-cobalt)"></i><p><code>--st-cobalt</code></p></div>
+    <div class="sw"><i style="background:var(--st-pink)"></i><p><code>--st-pink</code></p></div>
+    <div class="sw"><i style="background:var(--st-lemon)"></i><p><code>--st-lemon</code></p></div>
+    <div class="sw"><i style="background:var(--st-lilac)"></i><p><code>--st-lilac</code></p></div>
+    <div class="sw"><i style="background:var(--st-tomato)"></i><p><code>--st-tomato</code></p></div>
+  </div>
+
+  <!-- TYPE -->
+  <h2 class="eyebrow">Typography</h2>
+  <div class="sg-type">
+    <div><span class="label">Display — Bebas Neue · --fs-display</span><p style="font-family:var(--font-display);font-size:var(--fs-display);line-height:.86;text-transform:uppercase">Campaigns</p></div>
+    <div><span class="label">H2 — Bebas Neue · --fs-h2</span><p style="font-family:var(--font-display);font-size:var(--fs-h2);line-height:.9;text-transform:uppercase">Cat Eye Collection</p></div>
+    <div><span class="label">H3 — Bebas Neue · --fs-h3</span><p style="font-family:var(--font-display);font-size:var(--fs-h3);line-height:.95;text-transform:uppercase">All Dolled Up!</p></div>
+    <div><span class="label">Lead — Inter 500 + serif italic accent · --fs-lead</span><p class="about__lead">I turn concepts into <span class="hl">engaging brand experiences</span> — where creativity and data work hand in hand.</p></div>
+    <div><span class="label">Body — Inter 400 · --fs-body</span><p style="font-size:var(--fs-body);color:var(--ink-2);max-width:60ch">Italian, Barcelona-based. I lead global campaigns, content productions and brand activations in beauty &amp; FMCG across the EU &amp; US.</p></div>
+    <div><span class="label">Serif accent — .serif</span><p class="serif" style="font-size:clamp(1.4rem,2.4vw,2rem)">Glow Beyond Sunset!</p></div>
+    <div><span class="label">Metadata — .meta</span><p class="meta"><span>Le Mini Macaron</span><span>2025</span><span>Campaign</span></p></div>
+    <div><span class="label">Eyebrow — .eyebrow</span><p class="eyebrow">( Selected work )</p></div>
+  </div>
+
+  <!-- SPACE & SHAPE -->
+  <h2 class="eyebrow">Spacing &amp; radii</h2>
+  <div class="space">
+    <i style="width:var(--s-1);height:var(--s-1)"></i><i style="width:var(--s-2);height:var(--s-2)"></i><i style="width:var(--s-3);height:var(--s-3)"></i><i style="width:var(--s-4);height:var(--s-4)"></i><i style="width:var(--s-5);height:var(--s-5)"></i><i style="width:var(--s-6);height:var(--s-6)"></i><i style="width:var(--s-7);height:var(--s-7)"></i><i style="width:var(--s-8);height:var(--s-8)"></i>
+  </div>
+  <div class="radii" style="margin-top:1.4rem">
+    <i style="border-radius:var(--r-xs)"></i><i style="border-radius:var(--r-sm)"></i><i style="border-radius:var(--r-md)"></i><i style="border-radius:var(--r-lg) var(--r-lg) 0 0"></i><i style="border-radius:var(--r-pill)"></i>
+  </div>
+
+  <!-- BUTTONS, PILLS, FILES -->
+  <h2 class="eyebrow">Buttons · pills · file labels</h2>
+  <div class="sg-row">
+    <a class="btn btn--solid" href="#">View case study <span class="btn__ic" aria-hidden="true">↗</span></a>
+    <a class="btn btn--ghost" href="#">Download my CV <span class="btn__ic" aria-hidden="true">↓</span></a>
+    <span class="pill">Paid ads</span><span class="pill">UGC</span><span class="pill pill--solid">Influencer</span><span class="pill pill--blue">OOH</span>
+  </div>
+  <div class="sg-row" style="margin-top:1.2rem">
+    <span class="file file--folder">work / campaigns / cat-eye-2025</span>
+    <span class="file">01-cat-eye-carousel.webp</span>
+    <span class="file">teaser / cosmopolitan-recipe.mp4</span>
+  </div>
+  <div class="sg-stage" style="margin-top:1.4rem">
+    <div class="sg-row">
+      <a class="btn btn--light" href="#">Let's work together <span class="btn__ic" aria-hidden="true">↗</span></a>
+      <a class="btn btn--ghost" href="#">LinkedIn <span class="btn__ic" aria-hidden="true">↗</span></a>
+      <span class="file file--folder">work / events</span>
+    </div>
+  </div>
+
+  <!-- WINDOW -->
+  <h2 class="eyebrow">Window frame (case-study media)</h2>
+  <div class="window" style="max-width:520px">
+    <div class="window__bar"><span class="window__dots"><i></i><i></i><i></i></span><span class="file">01-cat-eye-carousel.webp</span></div>
+    <div class="window__body"><img src="content/campaigns/cat-eye-2025/assets/01-cat-eye-carousel-640.webp" srcset="content/campaigns/cat-eye-2025/assets/01-cat-eye-carousel-640.webp 640w, content/campaigns/cat-eye-2025/assets/01-cat-eye-carousel-1080.webp 1080w" sizes="520px" width="1080" height="1350" alt="Cat Eye Collection carousel visual" loading="lazy" decoding="async"></div>
+  </div>
+
+  <!-- CARDS -->
+  <h2 class="eyebrow">Cards</h2>
+  <div class="sg-cards">
+    <a class="card" href="#">
+      <div class="card__media" style="aspect-ratio:4/5"><img src="content/campaigns/cat-eye-2025/assets/01-cat-eye-carousel-640.webp" width="640" height="800" alt="" loading="lazy" decoding="async"></div>
+      <h3 class="card__title">Cat Eye Collection</h3>
+      <p class="meta card__meta"><span>Le Mini Macaron</span><span>2025</span></p>
+      <p class="card__desc"><span class="todo">descrizione di una riga</span></p>
+    </a>
+    <a class="card" href="#">
+      <div class="card__media" style="aspect-ratio:4/5"><img src="content/campaigns/fall-2026/assets/kv-main-640.webp" width="640" height="427" alt="" loading="lazy" decoding="async"></div>
+      <h3 class="card__title">Garden Daydream</h3>
+      <p class="meta card__meta"><span>Le Mini Macaron</span><span>2026</span></p>
+      <p class="card__desc"><span class="todo">descrizione di una riga</span></p>
+    </a>
+    <a class="card" href="#">
+      <div class="card__media" style="aspect-ratio:4/5"><img src="content/campaigns/rebranding-2026/final-assets/girls-cherry-pop-blue-640.webp" width="640" height="960" alt="" loading="lazy" decoding="async"></div>
+      <h3 class="card__title">Rebranding</h3>
+      <p class="meta card__meta"><span>Le Mini Macaron</span><span>2026</span></p>
+      <p class="card__desc"><span class="todo">descrizione di una riga</span></p>
+    </a>
+  </div>
+
+  <!-- STICKERS -->
+  <h2 class="eyebrow">Skill stickers (draggable in Phase 7)</h2>
+  <div class="sg-board">
+    <span class="sticker sticker--cobalt sticker--lg" style="--rot:-4deg">Brand Management</span>
+    <span class="sticker sticker--pink" style="--rot:3deg">Short-form content strategy</span>
+    <span class="sticker sticker--lemon sticker--lg" style="--rot:-2deg">Go-to-market strategy</span>
+    <span class="sticker sticker--lilac" style="--rot:5deg">AI workflow design</span>
+    <span class="sticker sticker--tomato sticker--sm" style="--rot:-6deg">Influencer &amp; PR</span>
+    <span class="sticker sticker--lemon sticker--sm" style="--rot:4deg">Figma</span>
+    <span class="sticker sticker--pink sticker--sm" style="--rot:-3deg">Meta</span>
+  </div>
+
+  <!-- TODO -->
+  <h2 class="eyebrow">Development notes</h2>
+  <p><span class="todo">visibile solo in locale, nascosto sul sito pubblicato</span></p>
+</main>
+
+<script>
+  // mirror script.js: [TODO] notes are visible only on the working copy
+  if (location.protocol === "file:" || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) {
+    document.documentElement.classList.add("is-dev");
+  }
+</script>

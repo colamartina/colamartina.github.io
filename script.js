@@ -6,6 +6,12 @@
 
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  // Working copy (localhost / file://) vs published site: [TODO] notes and empty
+  // media slots are shown only while editing.
+  var isLocal = location.protocol === "file:" ||
+    /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+  if (isLocal) document.documentElement.classList.add("is-dev");
+
   /* ---------- Scroll reveal ---------- */
   var revealEls = document.querySelectorAll("[data-reveal]");
   if ("IntersectionObserver" in window && !reduceMotion) {
@@ -26,42 +32,6 @@
     revealEls.forEach(function (el) { revealObs.observe(el); });
   } else {
     revealEls.forEach(function (el) { el.classList.add("is-in"); });
-  }
-
-  /* ---------- Count-up stats ---------- */
-  var counts = document.querySelectorAll("[data-count]");
-  if ("IntersectionObserver" in window && !reduceMotion) {
-    var countObs = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            animateCount(entry.target);
-            countObs.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.6 }
-    );
-    counts.forEach(function (el) { countObs.observe(el); });
-  }
-
-  function animateCount(el) {
-    var raw = el.getAttribute("data-count"); // e.g. "+250%", "$400K+"
-    var match = raw.match(/^(\D*)(\d+)(.*)$/);
-    if (!match) return;
-    var prefix = match[1], target = parseInt(match[2], 10), suffix = match[3];
-    var dur = 1300, start = null;
-    function step(ts) {
-      if (start === null) start = ts;
-      var p = Math.min((ts - start) / dur, 1);
-      // easeOutExpo
-      var eased = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
-      var val = Math.round(eased * target);
-      el.textContent = prefix + val + suffix;
-      if (p < 1) requestAnimationFrame(step);
-    }
-    el.textContent = prefix + "0" + suffix;
-    requestAnimationFrame(step);
   }
 
   /* ---------- Nav: adaptive color per section ---------- */
@@ -134,7 +104,7 @@
     }
   }
 
-  /* ---------- Custom cursor + work-list image previews ---------- */
+  /* ---------- Custom cursor ---------- */
   (function () {
     var fine = window.matchMedia("(pointer: fine)").matches;
     if (!fine || reduceMotion) return;
@@ -148,31 +118,8 @@
     document.body.appendChild(dot);
     document.body.appendChild(ring);
 
-    // floating preview for the case-study index
-    var pv = null, pvOn = false;
-    var rows = document.querySelectorAll(".cs-item a[data-preview]");
-    if (rows.length) {
-      pv = document.createElement("img");
-      pv.className = "cs-preview";
-      pv.alt = "";
-      pv.setAttribute("aria-hidden", "true");
-      document.body.appendChild(pv);
-      rows.forEach(function (a, i) {
-        a.addEventListener("mouseenter", function () {
-          pv.src = a.getAttribute("data-preview");
-          pv.style.setProperty("--pr", (i % 2 ? 4 : -4) + "deg");
-          pvOn = true;
-          pv.classList.add("is-on");
-        });
-        a.addEventListener("mouseleave", function () {
-          pvOn = false;
-          pv.classList.remove("is-on");
-        });
-      });
-    }
-
     var mx = window.innerWidth / 2, my = window.innerHeight / 2;
-    var rx = mx, ry = my, px = mx, py = my;
+    var rx = mx, ry = my;
 
     document.addEventListener("mousemove", function (e) {
       mx = e.clientX; my = e.clientY;
@@ -199,10 +146,6 @@
       rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
       dot.style.transform = "translate(" + mx + "px," + my + "px)";
       ring.style.transform = "translate(" + rx + "px," + ry + "px)";
-      if (pv) {
-        px += (mx - px) * 0.12; py += (my - py) * 0.12;
-        if (pvOn) pv.style.transform = "translate(" + (px + 28) + "px," + (py - 110) + "px) rotate(var(--pr))";
-      }
       requestAnimationFrame(loop);
     })();
   })();
@@ -213,16 +156,24 @@
   function setMenu(open) {
     menu.classList.toggle("is-open", open);
     menu.setAttribute("aria-hidden", String(!open));
+    menu.inert = !open; // closed menu: links are not focusable
     toggle.setAttribute("aria-expanded", String(open));
     document.body.style.overflow = open ? "hidden" : "";
     if (open) navEl.setAttribute("data-theme", "light");
   }
-  if (toggle) {
+  if (toggle && menu) {
+    menu.inert = true;
     toggle.addEventListener("click", function () {
       setMenu(!menu.classList.contains("is-open"));
     });
     menu.querySelectorAll("a").forEach(function (a) {
       a.addEventListener("click", function () { setMenu(false); });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && menu.classList.contains("is-open")) {
+        setMenu(false);
+        toggle.focus();
+      }
     });
   }
 
@@ -278,8 +229,6 @@
   (function () {
     // Placeholders are a working tool: shown while editing locally, hidden from
     // visitors on the published site so empty slots never look unfinished.
-    var isLocal = location.protocol === "file:" ||
-      /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
     var slots = document.querySelectorAll(".slot");
 
     slots.forEach(function (slot) {
