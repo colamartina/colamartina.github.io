@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#ffffff" />
+<title>Case study — Martina Cola</title>
+<meta name="description" content="Case study — Martina Cola, Global Brand & Creative Marketing Manager. Beauty & FMCG, Barcelona." />
+<meta name="author" content="Martina Cola" />
+
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+<link rel="preload" href="assets/fonts/bebas-neue-400-latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="fonts.css" />
+<link rel="stylesheet" href="styles.css" />
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav" id="top" data-theme="dark">
+  <a class="nav__brand" href="index.html" aria-label="Martina Cola — home">
+    <span class="nav__brand-name">Martina Cola</span>
+    <span class="nav__brand-reg">®</span>
+    <span class="nav__brand-sub">Portfolio</span>
+  </a>
+
+  <nav class="nav__links" aria-label="Primary">
+    <a href="index.html#about" data-nav>About</a>
+    <a href="index.html#work" data-nav aria-current="page">Work</a>
+    <a href="curriculum.html" data-nav>CV</a>
+    <a href="#contact" data-nav>Contact</a>
+  </nav>
+
+  <button class="nav__toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="menu">
+    <span></span><span></span>
+  </button>
+</header>
+
+<div class="menu" id="menu" aria-hidden="true">
+  <a href="index.html#about" data-nav-mobile>About</a>
+  <a href="index.html#work" data-nav-mobile>Work</a>
+  <a href="curriculum.html" data-nav-mobile>CV</a>
+  <a href="#contact" data-nav-mobile>Contact</a>
+  <a href="mailto:colamartina@gmail.com" class="menu__mail">colamartina@gmail.com</a>
+</div>
+
+<main id="main" class="case-page" data-navtheme="dark">
+  <article class="case" id="case-root">
+    <noscript>
+      <p class="case__line">This case study needs JavaScript to load. <a href="index.html#work">Back to all work →</a></p>
+    </noscript>
+  </article>
+
+  <!-- ============================ CONTACT (same as the home page) ============================ -->
+  <section class="contact" id="contact" data-navtheme="light">
+    <span class="contact__word" aria-hidden="true">Cola</span>
+    <div class="contact__inner">
+      <span class="eyebrow" data-reveal>( Contact )</span>
+      <h2 class="contact__title" data-reveal>Let's work<br />together.</h2>
+      <a class="contact__mail" href="mailto:colamartina@gmail.com" data-reveal>colamartina@gmail.com</a>
+
+      <div class="contact__row">
+        <a class="contact__link" href="https://www.linkedin.com/in/martina-cola-/" target="_blank" rel="noopener" data-reveal>
+          LinkedIn <span aria-hidden="true">↗</span>
+        </a>
+        <a class="contact__link" href="curriculum.html" data-reveal>CV <span aria-hidden="true">→</span></a>
+        <span class="contact__loc" data-reveal>Barcelona, Spain</span>
+      </div>
+    </div>
+
+    <footer class="foot">
+      <span>© 2026 Martina Cola</span>
+      <a href="#top" class="foot__top">Back to top ↑</a>
+      <span>Case study</span>
+    </footer>
+  </section>
+</main>
+
+<!-- ============================ VIEWER (images & videos) ============================ -->
+<dialog class="viewer" id="viewer" aria-label="Media viewer">
+  <div class="viewer__bar">
+    <span class="window__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="viewer__title file"></span>
+    <span class="viewer__path"></span>
+    <span class="viewer__count"></span>
+    <button class="viewer__btn" type="button" data-close aria-label="Close viewer">✕</button>
+  </div>
+  <div class="viewer__stage"></div>
+  <div class="viewer__nav">
+    <button class="viewer__btn" type="button" data-prev aria-label="Previous">←</button>
+    <button class="viewer__btn" type="button" data-next aria-label="Next">→</button>
+  </div>
+</dialog>
+
+<script src="data/campaigns.js"></script>
+<script src="js/media.js"></script>
+<script src="js/case.js"></script>
+<script src="script.js"></script>

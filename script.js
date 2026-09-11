@@ -6,10 +6,11 @@
 
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // Working copy (localhost / file://) vs published site: [TODO] notes and empty
-  // media slots are shown only while editing.
-  var isLocal = location.protocol === "file:" ||
-    /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+  // Working copy (localhost / file://) vs published site: [TODO] notes are shown
+  // only while editing. Add ?live to the address to preview the published look.
+  var isLocal = (location.protocol === "file:" ||
+    /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) &&
+    !/[?&]live(&|=|$)/.test(location.search);
   if (isLocal) document.documentElement.classList.add("is-dev");
 
   // Hero photo pool from data/hero.js (retina files on high-density screens);
@@ -301,38 +302,6 @@
     }
     document.addEventListener("visibilitychange", restart);
     restart();
-  })();
-
-  /* ---------- Project gallery slots ----------
-     Each slot ships as `is-empty` (dashed placeholder). As soon as the real
-     file exists at data-path, it loads and the placeholder is removed —
-     so adding media is just dropping a correctly-named file in the folder. */
-  (function () {
-    // Placeholders are a working tool: shown while editing locally, hidden from
-    // visitors on the published site so empty slots never look unfinished.
-    var slots = document.querySelectorAll(".slot");
-
-    slots.forEach(function (slot) {
-      var media = slot.querySelector("img, video");
-      if (!media) return;
-      var fill = function () { slot.classList.remove("is-empty"); };
-      if (media.tagName === "IMG") {
-        if (media.complete && media.naturalWidth > 0) fill();
-        else media.addEventListener("load", fill);
-      } else {
-        media.addEventListener("loadeddata", fill);
-      }
-    });
-
-    if (isLocal) return;
-
-    // Live: drop still-empty slots, and the whole gallery if nothing was added.
-    setTimeout(function () {
-      document.querySelectorAll(".cs-gallery").forEach(function (gal) {
-        gal.querySelectorAll(".slot.is-empty").forEach(function (s) { s.remove(); });
-        if (!gal.querySelector(".slot")) gal.remove();
-      });
-    }, 400);
   })();
 
   /* ---------- Smooth anchor scroll with nav offset ---------- */
