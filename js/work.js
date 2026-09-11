@@ -41,6 +41,40 @@
     if (count) count.textContent = list.length + " projects";
   })();
 
+  /* ---------- Brand Collabs: wide rows, the two brands locked up, images in pairs ---------- */
+  (function () {
+    var host = document.querySelector("#collabs .sec__body");
+    var list = P.collabs || [];
+    if (!host || !list.length) return;
+
+    var rows = el("ol.collabs", { role: "list" });
+    list.forEach(function (c, i) {
+      var sizes = "(max-width: 640px) 46vw, (max-width: 1100px) 24vw, 20vw";
+      var pair = el("div.collab__pair", {}, c.pair.map(function (p, n) {
+        return M.img(p, sizes, { alt: c.brand + " × " + c.partner + (n ? "" : " — " + c.type) });
+      }));
+      var text = el("div.collab__text", {}, [
+        el("p.collab__idx", { text: pad(i + 1) }),
+        el("h3.collab__lockup", {}, [
+          el("span.collab__brand", { text: c.brand }),
+          el("span.collab__x", { text: "×" }),
+          el("span.collab__partner", { text: c.partner })
+        ]),
+        c.kicker ? el("p.collab__kicker", { text: c.kicker }) : null,
+        el("p.meta", {}, [c.year ? el("span", { text: c.year }) : null, el("span", { text: c.type })]),
+        el("p.collab__line", {}, [c.line || M.todo("descrizione di una riga")]),
+        el("span.collab__go", {}, ["View collab ", el("span", { "aria-hidden": "true", text: "↗" })])
+      ]);
+      rows.appendChild(el("li.collab", {}, [
+        el("a.collab__link", { href: "case.html?p=" + encodeURIComponent(c.slug) }, [pair, text])
+      ]));
+    });
+    host.replaceChildren(rows);
+
+    var count = document.querySelector("#collabs .sec-head__count");
+    if (count) count.textContent = list.length + " collabs";
+  })();
+
   /* ---------- Events: a slide per event — vertical video, text beside it ---------- */
   (function () {
     var host = document.querySelector("#events .sec__body");

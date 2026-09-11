@@ -836,6 +836,83 @@ img, video { max-width: 100%; }
 .c-card__line:empty { display: none; }
 
 /* =========================================================
+   BRAND COLLABS — wide rows instead of a grid: the two brands locked up
+   and the images shown in pairs, so a collaboration reads as a pairing.
+   ========================================================= */
+.collabs { list-style: none; }
+.collab + .collab { border-top: 1px solid var(--line); }
+.collab__link {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 5rem);
+  padding: clamp(2.5rem, 6vw, 5rem) 0;
+  color: inherit;
+}
+.collab:nth-child(even) .collab__pair { order: 2; }
+
+.collab__pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start; /* each image keeps its 4:5 box instead of stretching to the row */
+  gap: clamp(0.6rem, 1.4vw, 1.2rem);
+}
+.collab__pair img {
+  width: 100%;
+  height: auto; /* beats the width/height attributes, so the 4:5 box below applies */
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--r-sm);
+  background: var(--paper-2);
+  transition: transform var(--dur-slow) var(--ease);
+}
+.collab__pair img:last-child { margin-top: clamp(1.5rem, 4vw, 3.5rem); }
+.collab__link:hover .collab__pair img { transform: scale(1.025); }
+
+.collab__idx { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-3); }
+.collab__lockup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.3em;
+  margin-top: var(--s-3);
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+.collab__brand { font-size: clamp(1rem, 1.5vw, 1.4rem); letter-spacing: 0.14em; color: var(--ink-3); }
+.collab__x {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.8rem, 3.6vw, 3rem);
+  text-transform: none;
+  color: var(--blue);
+}
+.collab__partner { font-size: clamp(2.6rem, 6vw, 5rem); letter-spacing: 0.01em; }
+.collab__kicker {
+  margin-top: 0.3rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
+  color: var(--ink-2);
+}
+.collab .meta { margin-top: var(--s-3); }
+.collab__line { margin-top: var(--s-3); max-width: 46ch; font-size: var(--fs-small); color: var(--ink-2); }
+.collab__line:empty { display: none; }
+.collab__go {
+  display: inline-flex;
+  gap: 0.5em;
+  margin-top: var(--s-4);
+  padding-bottom: 2px;
+  border-bottom: 1px solid currentColor;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+}
+.collab__go span { transition: transform var(--dur) var(--ease); }
+.collab__link:hover .collab__go span { transform: translate(3px, -3px); }
+
+/* =========================================================
    EVENTS — a slide per event: vertical video, text beside it.
    The page snaps gently to each slide while scrolling.
    ========================================================= */
@@ -1634,6 +1711,10 @@ body::after {
   .case__head { grid-template-columns: 1fr; align-items: start; }
   .case__overview { grid-template-columns: 1fr; }
   .quotes { position: static; }
+
+  /* collabs: images on top, lockup and text below */
+  .collab__link { grid-template-columns: 1fr; gap: var(--s-5); }
+  .collab:nth-child(even) .collab__pair { order: 0; }
 
   /* events: video on top, text below — still one slide at a time */
   .events__wrap { grid-template-columns: 1fr; }
