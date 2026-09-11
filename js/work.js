@@ -40,4 +40,66 @@
     var count = document.querySelector("#campaigns .sec-head__count");
     if (count) count.textContent = list.length + " projects";
   })();
+
+  /* ---------- Events: a slide per event — vertical video, text beside it ---------- */
+  (function () {
+    var host = document.querySelector("#events .sec__body");
+    var list = P.events || [];
+    if (!host || !list.length) return;
+    var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    var slides = el("ol.events", { role: "list" });
+    var rail = el("nav.events__rail", { "aria-label": "Events" });
+
+    list.forEach(function (ev, i) {
+      var v = el("video", {
+        poster: ev.video.poster, loop: "", playsinline: "", preload: "none",
+        width: "720", height: "1280", "data-src": ev.video.src,
+        "aria-label": ev.title + (ev.kicker ? " — " + ev.kicker : "")
+      });
+      v.muted = true;                                   // property, not just the attribute: needed for autoplay
+      if (reduceMotion) v.setAttribute("controls", ""); // no autoplay: the visitor presses play
+
+      var place = [ev.place, ev.date].filter(Boolean).join(" · ");
+      var text = el("div.event__text", {}, [
+        el("p.event__idx", { text: pad(i + 1) + " / " + pad(list.length) }),
+        el("h3.event__title", {}, [ev.title, ev.kicker ? el("span.event__kicker", { text: ev.kicker }) : null]),
+        el("p.meta.event__meta", {}, [el("span", { text: ev.brand }), place ? el("span", { text: place }) : null]),
+        el("p.event__body", {}, [ev.text || M.todo("cosa hai fatto, 2–3 righe")]),
+        M.isLocal && ev.todo ? el("div.event__todo", {}, ev.todo.map(function (t) { return el("span.todo", { text: t }); })) : null
+      ]);
+
+      slides.appendChild(el("li.event", { id: "event-" + ev.slug }, [
+        el("figure.event__media", {}, [v, el("figcaption.file", { text: ev.video.name + " · " + M.duration(ev.video.duration) })]),
+        text
+      ]));
+      rail.appendChild(el("a", { href: "#event-" + ev.slug, "aria-label": "Event " + (i + 1) + ": " + ev.title + " " + ev.kicker }, [el("span")]));
+    });
+
+    host.replaceChildren(el("div.events__wrap", {}, [slides, rail]));
+    var count = document.querySelector("#events .sec-head__count");
+    if (count) count.textContent = list.length + " events";
+
+    // load and play only the slide on screen; pause the others
+    var items = slides.querySelectorAll(".event");
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          var v = e.target.querySelector("video");
+          var dot = rail.children[[].indexOf.call(items, e.target)];
+          if (e.isIntersecting) {
+            if (!v.src && v.dataset.src) v.src = v.dataset.src;
+            if (!reduceMotion) v.play().catch(function () {});
+            if (dot) dot.classList.add("is-active");
+          } else {
+            if (!v.paused) v.pause();
+            if (dot) dot.classList.remove("is-active");
+          }
+        });
+      }, { threshold: 0.55 });
+      items.forEach(function (s) { io.observe(s); });
+    } else {
+      items.forEach(function (s) { var v = s.querySelector("video"); v.src = v.dataset.src; });
+    }
+  })();
 })();

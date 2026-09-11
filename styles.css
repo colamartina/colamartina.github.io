@@ -81,6 +81,8 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  /* gentle snapping: only the event slides define snap points */
+  scroll-snap-type: y proximity;
 }
 
 body {
@@ -824,14 +826,98 @@ img, video { max-width: 100%; }
   font-family: var(--font-serif);
   font-style: italic;
   font-size: 0.55em;
+  line-height: 1.15;         /* keeps a wrapped kicker clear of the line below */
   text-transform: none;
   letter-spacing: 0;
   color: var(--blue);
-  white-space: nowrap;
 }
 .c-card__meta, .c-card__line { grid-column: 2; }
 .c-card__line { max-width: 46ch; font-size: var(--fs-small); color: var(--ink-2); }
 .c-card__line:empty { display: none; }
+
+/* =========================================================
+   EVENTS — a slide per event: vertical video, text beside it.
+   The page snaps gently to each slide while scrolling.
+   ========================================================= */
+.events__wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(1rem, 3vw, 2.5rem);
+}
+.events { list-style: none; }
+.event {
+  display: grid;
+  grid-template-columns: auto minmax(0, 46ch);
+  align-items: center;
+  justify-content: center; /* the pair sits centred, like a slide */
+  gap: clamp(2rem, 6vw, 6rem);
+  min-height: 100svh;
+  padding: clamp(3rem, 8vh, 6rem) 0;
+  scroll-snap-align: center;
+}
+.event__media { position: relative; }
+.event__media video {
+  display: block;
+  height: min(68svh, 600px);
+  width: auto;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  border-radius: var(--r-md);
+  background: var(--blue-800);
+  box-shadow: var(--shadow-float);
+}
+.event__media .file { margin-top: var(--s-3); color: rgba(255, 255, 255, 0.55); }
+
+.event__text { max-width: 46ch; }
+.event__idx { font-family: var(--font-mono); font-size: 0.74rem; color: rgba(255, 255, 255, 0.6); }
+.event__title {
+  margin-top: var(--s-3);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+.event__kicker {
+  display: block;            /* its own line: a long kicker never collides with the meta row */
+  margin-top: 0.15em;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.52em;
+  line-height: 1.1;
+  letter-spacing: 0;
+  text-transform: none;
+  color: rgba(255, 255, 255, 0.9);
+}
+.event__meta { margin-top: var(--s-3); color: rgba(255, 255, 255, 0.65); }
+.event__body {
+  margin-top: var(--s-4);
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.92);
+}
+.event__todo { display: flex; flex-direction: column; align-items: flex-start; gap: 0.4rem; margin-top: var(--s-4); }
+
+.events__rail {
+  position: sticky;
+  top: 50svh;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding-top: 0.5rem;
+}
+.events__rail a {
+  display: block;
+  width: 11px;
+  height: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  transition: background var(--dur-fast), transform var(--dur-fast), border-color var(--dur-fast);
+}
+.events__rail a:hover { border-color: #fff; }
+.events__rail a.is-active { background: #fff; border-color: #fff; transform: scale(1.2); }
 
 /* =========================================================
    CASE STUDY PAGE — white, editorial: a curated digital folder
@@ -1548,6 +1634,18 @@ body::after {
   .case__head { grid-template-columns: 1fr; align-items: start; }
   .case__overview { grid-template-columns: 1fr; }
   .quotes { position: static; }
+
+  /* events: video on top, text below — still one slide at a time */
+  .events__wrap { grid-template-columns: 1fr; }
+  .events__rail { display: none; }
+  .event {
+    grid-template-columns: 1fr;
+    justify-items: start;
+    gap: var(--s-5);
+    min-height: auto;
+    padding: clamp(2.5rem, 7vh, 4rem) 0;
+  }
+  .event__media video { height: min(58svh, 460px); }
 }
 
 @media (max-width: 640px) {
