@@ -145,8 +145,8 @@
       var ink = !!(sec && sec.getAttribute("data-navtheme") === "dark");
       dot.classList.toggle("is-ink", ink);
       ring.classList.toggle("is-ink", ink);
-      // grow over interactive elements
-      var hot = !!e.target.closest("a, button");
+      // grow over interactive elements (the skill stickers you can drag included)
+      var hot = !!e.target.closest("a, button, .skill");
       ring.classList.toggle("is-hot", hot);
       dot.classList.toggle("is-hot", hot);
     }, { passive: true });

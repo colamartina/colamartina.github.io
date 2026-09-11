@@ -1409,19 +1409,103 @@ img, video { max-width: 100%; }
 .viewer__btn:hover { background: var(--ink); color: var(--white); }
 
 /* =========================================================
-   CV BAND (replaced by the CV section in Phase 7)
+   CV — a resume sheet on the page; the skills are draggable stickers
    ========================================================= */
-.cv-band { background: var(--paper); color: var(--ink); padding: clamp(3rem, 7vh, 5.5rem) 0; }
-.cv-band__inner {
-  max-width: var(--maxw); margin: 0 auto; padding: clamp(2.5rem, 5vw, 4rem) var(--pad) 0;
-  display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; flex-wrap: wrap;
-  border-top: 1px solid var(--line);
+.cv {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: clamp(1.4rem, 3.5vw, 3rem);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--paper);
+  box-shadow: var(--shadow-soft);
 }
-.cv-band .eyebrow { opacity: 0.5; }
-.cv-band__title { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; font-size: clamp(2.8rem, 7vw, 6rem); line-height: 0.9; margin: 0.5rem 0 0.6rem; }
-.cv-band__text { color: var(--ink-2); max-width: 40ch; }
-.cv-band .btn-cv { background: var(--blue); color: #fff; }
-.cv-band .btn-cv:hover { background: var(--blue-600); }
+.cv__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1.2rem 2rem;
+  align-items: start;
+  padding-bottom: var(--s-5);
+  border-bottom: 2px solid var(--ink);
+}
+.cv__name {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 6vw, 4.6rem);
+  line-height: 0.86;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.cv__role { margin-top: 0.45rem; font-size: clamp(1rem, 1.5vw, 1.25rem); font-weight: 600; }
+.cv__sub { margin-top: 0.2rem; font-size: 0.92rem; color: var(--ink-3); }
+.cv__contacts {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+  color: var(--ink-2);
+  text-align: right;
+}
+.cv__contacts a:hover { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+
+.cv__block {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: 1rem 2rem;
+  padding: clamp(1.4rem, 3vw, 2.2rem) 0;
+  border-bottom: 1px solid var(--line);
+}
+.cv__h {
+  padding-top: 0.25em;
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.cv__profile { max-width: 66ch; line-height: 1.5; color: var(--ink-2); }
+.cv__profile p + p { margin-top: 0.7rem; }
+
+.cv__entry + .cv__entry { margin-top: var(--s-6); padding-top: var(--s-6); border-top: 1px solid var(--line); }
+.cv__entry-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.6rem 2rem; }
+.cv__org { font-family: var(--font-display); font-size: clamp(1.3rem, 2vw, 1.7rem); line-height: 1; text-transform: uppercase; }
+.cv__title { margin-top: 0.25rem; font-weight: 600; }
+.cv__note { margin-top: 0.15rem; font-size: 0.88rem; color: var(--ink-3); }
+.cv__when { text-align: right; font-size: 0.85rem; color: var(--ink-3); }
+.cv__dates { color: var(--blue); font-weight: 600; letter-spacing: 0.04em; white-space: nowrap; }
+.cv__bullets { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-top: var(--s-4); }
+.cv__bullets li { position: relative; padding-left: 1.4rem; font-size: 0.97rem; line-height: 1.5; color: var(--ink-2); }
+.cv__bullets li::before { content: "—"; position: absolute; left: 0; color: var(--blue); }
+
+.cv__langs { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.5rem 1.5rem; }
+.cv__langs li { display: flex; justify-content: space-between; gap: 1rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--line); }
+.cv__langs span { font-family: var(--font-display); font-size: 1.25rem; text-transform: uppercase; }
+.cv__langs em { font-style: normal; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+
+/* the board needs the full width of the sheet, so this block stacks */
+.cv__block--skills { grid-template-columns: 1fr; gap: 0.4rem; border-bottom: 0; }
+.cv__hint { margin-bottom: var(--s-4); font-family: var(--font-serif); font-style: italic; color: var(--ink-3); }
+.cv__actions { padding-top: var(--s-5); }
+.cv__todo { display: flex; flex-direction: column; align-items: flex-start; gap: 0.4rem; margin-top: var(--s-5); }
+
+/* the sticker board: measured in normal flow, then scattered and draggable */
+.skills { position: relative; }
+.skills .skill {
+  position: absolute;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.has-cursor .skills .skill { cursor: none; }
+.skills .skill.is-dragging {
+  cursor: grabbing;
+  z-index: 5;
+  will-change: left, top; /* only the one in your hand: no need to promote all 28 */
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1), 0 22px 30px -18px rgba(0, 0, 0, 0.5);
+}
+.skills.is-flow { display: flex; flex-wrap: wrap; gap: 0.7rem 0.6rem; }
+.skills.is-flow .skill { position: static; transform: none; }
 
 /* =========================================================
    CONTACT
@@ -1513,146 +1597,6 @@ img, video { max-width: 100%; }
   flex-wrap: wrap;
 }
 .foot__top:hover { opacity: 1; text-decoration: underline; }
-
-/* =========================================================
-   LEGACY — old CV page (curriculum.html). Removed in Phase 7.
-   ========================================================= */
-.tags {
-  list-style: none;
-  max-width: var(--maxw);
-  margin: clamp(2.5rem, 6vw, 4.5rem) auto 0;
-  padding: 0 var(--pad);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-}
-.tags li {
-  border: 1px solid var(--line-strong);
-  border-radius: 100px;
-  padding: 0.5em 1.15em;
-  font-size: 0.82rem;
-  letter-spacing: 0.02em;
-  transition: background 0.35s var(--ease), color 0.35s var(--ease), border-color 0.35s;
-}
-.tags li:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
-
-/* CV page */
-.cv-hero {
-  background: var(--blue);
-  color: var(--white);
-  min-height: 74vh;
-  max-width: var(--maxw);
-  margin: 0 auto;
-  padding: clamp(7rem, 16vh, 11rem) var(--pad) clamp(3rem, 8vh, 5rem);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.cv-hero .eyebrow { opacity: 0.7; }
-.cv-hero__title {
-  font-family: var(--font-display);
-  font-weight: 400;
-  text-transform: uppercase;
-  line-height: 0.82;
-  letter-spacing: 0.01em;
-  font-size: clamp(3.2rem, 12vw, 11rem);
-  margin: 0.6rem 0 1.5rem;
-}
-.cv-hero__title .line { display: block; overflow: hidden; }
-.cv-hero__title .line > span {
-  display: block;
-  transform: translateY(115%);
-  animation: heroRise 1.15s var(--ease) both;
-}
-.cv-hero__title .line:nth-child(1) > span { animation-delay: 0.12s; }
-.cv-hero__title .line:nth-child(2) > span { animation-delay: 0.3s; }
-.cv-hero__title .line--stroke > span {
-  color: transparent;
-  -webkit-text-stroke: clamp(1px, 0.16vw, 2px) var(--white);
-}
-.cv-hero__lead {
-  max-width: 40ch;
-  font-size: clamp(1.05rem, 1.7vw, 1.5rem);
-  line-height: 1.35;
-  margin-bottom: 2.2rem;
-}
-.cv-hero__lead em { font-style: italic; border-bottom: 1px solid rgba(255, 255, 255, 0.5); }
-
-.btn-cv {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.7em;
-  align-self: flex-start;
-  background: var(--white);
-  color: var(--blue);
-  font-weight: 600;
-  font-size: 0.95rem;
-  letter-spacing: 0.02em;
-  padding: 1em 1.7em;
-  border-radius: 100px;
-  transition: transform 0.4s var(--ease), background 0.4s;
-}
-.btn-cv__ic { transition: transform 0.4s var(--ease); }
-.btn-cv:hover { transform: translateY(-3px); }
-.btn-cv:hover .btn-cv__ic { transform: translateY(3px); }
-.btn-cv--ghost { background: transparent; color: var(--white); border: 1px solid rgba(255, 255, 255, 0.55); }
-.btn-cv--ghost:hover { background: rgba(255, 255, 255, 0.08); }
-
-.cv-body {
-  background: var(--paper);
-  color: var(--ink);
-  border-radius: var(--r-lg) var(--r-lg) 0 0;
-  padding: clamp(2.5rem, 6vh, 4.5rem) 0;
-}
-.cv-block {
-  max-width: var(--maxw);
-  margin: 0 auto;
-  padding: clamp(2rem, 4vw, 3.4rem) var(--pad);
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: clamp(1.5rem, 4vw, 4rem);
-  border-bottom: 1px solid var(--line);
-}
-.cv-block--last { border-bottom: 0; }
-.cv-block__label { position: sticky; top: 6.5rem; align-self: start; height: max-content; }
-.cv-block__label .eyebrow { opacity: 0.5; }
-.cv-block__content { display: flex; flex-direction: column; gap: 1.1rem; }
-.cv-lead { font-size: clamp(1.2rem, 2vw, 1.7rem); line-height: 1.28; font-weight: 500; letter-spacing: -0.01em; }
-.cv-block__content > p { color: var(--ink-2); max-width: 62ch; font-size: var(--fs-body); }
-.cv-block__content strong { color: var(--blue); font-weight: 600; }
-
-.cv-role { padding: 0.2rem 0; }
-.cv-role + .cv-role { border-top: 1px solid var(--line); padding-top: 1.6rem; margin-top: 0.8rem; }
-.cv-role__top { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
-.cv-role__title { font-size: clamp(1.15rem, 1.8vw, 1.5rem); font-weight: 600; letter-spacing: -0.01em; }
-.cv-role__date { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); white-space: nowrap; }
-.cv-role__org { font-size: 0.95rem; color: var(--ink-3); margin: 0.35rem 0 0.9rem; }
-.cv-role__list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
-.cv-role__list li { position: relative; padding-left: 1.4rem; font-size: 0.98rem; line-height: 1.5; color: var(--ink-2); }
-.cv-role__list li::before { content: "—"; position: absolute; left: 0; color: var(--blue); }
-.cv-role__list strong { color: var(--blue); font-weight: 600; }
-.cv-tags { padding: 0; margin: 0; }
-.cv-skillgroup h5 {
-  font-size: 0.7rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-  font-weight: 600;
-  margin: 1.3rem 0 0.7rem;
-}
-.cv-skillgroup:first-child h5 { margin-top: 0; }
-
-.cv-langs { list-style: none; display: flex; flex-direction: column; }
-.cv-langs li { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 0.8rem 0; border-bottom: 1px solid var(--line); }
-.cv-langs li:first-child { border-top: 1px solid var(--line); }
-.cv-langs span { font-family: var(--font-display); font-size: clamp(1.4rem, 2.4vw, 2rem); text-transform: uppercase; letter-spacing: 0.02em; }
-.cv-langs em { font-style: normal; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
-
-.cv-cta { background: var(--blue); color: var(--white); padding: clamp(4rem, 10vh, 7rem) var(--pad) 0; }
-.cv-cta__inner { max-width: var(--maxw); margin: 0 auto; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
-.cv-cta__title { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; font-size: clamp(3rem, 10vw, 8rem); line-height: 0.85; }
-.cv-cta__mail { font-family: var(--font-display); font-size: clamp(1.5rem, 4vw, 3rem); }
-.cv-cta .contact__row { margin-top: 0.4rem; }
 
 /* =========================================================
    UX LAYER — progress, grain, cursor, focus
@@ -1753,8 +1697,6 @@ body::after {
 
   .about__grid { grid-template-columns: 1fr; gap: 2rem; }
 
-  .cv-block { grid-template-columns: 1fr; gap: 1rem; }
-  .cv-block__label { position: static; }
 
 }
 
@@ -1769,6 +1711,12 @@ body::after {
   .case__head { grid-template-columns: 1fr; align-items: start; }
   .case__overview { grid-template-columns: 1fr; }
   .quotes { position: static; }
+
+  /* CV sheet: one column */
+  .cv__head { grid-template-columns: 1fr; }
+  .cv__contacts { text-align: left; }
+  .cv__block { grid-template-columns: 1fr; gap: 0.7rem; }
+  .cv__when { text-align: left; }
 
   /* collabs: images on top, lockup and text below */
   .collab__link { grid-template-columns: 1fr; gap: var(--s-5); }
@@ -1788,6 +1736,10 @@ body::after {
 }
 
 @media (max-width: 640px) {
+  /* narrow screens: long skills wrap instead of sticking out of the board */
+  .skills .skill { max-width: 100%; white-space: normal; }
+  .sticker--lg { font-size: 1.05rem; }
+
   .c-grid { grid-template-columns: 1fr; }
   .c-card:nth-child(even) { margin-top: 0; }
   .files { grid-template-columns: repeat(2, minmax(0, 1fr)); }

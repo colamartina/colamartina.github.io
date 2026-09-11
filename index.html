@@ -60,7 +60,7 @@
   <nav class="nav__links" aria-label="Primary">
     <a href="#about" data-nav>About</a>
     <a href="#work" data-nav>Work</a>
-    <a href="curriculum.html" data-nav>CV</a>
+    <a href="#cv" data-nav>CV</a>
     <a href="#contact" data-nav>Contact</a>
   </nav>
 
@@ -72,7 +72,7 @@
 <div class="menu" id="menu" aria-hidden="true">
   <a href="#about" data-nav-mobile>About</a>
   <a href="#work" data-nav-mobile>Work</a>
-  <a href="curriculum.html" data-nav-mobile>CV</a>
+  <a href="#cv" data-nav-mobile>CV</a>
   <a href="#contact" data-nav-mobile>Contact</a>
   <a href="mailto:colamartina@gmail.com" class="menu__mail">colamartina@gmail.com</a>
 </div>
@@ -173,16 +173,16 @@
     </section>
   </div>
 
-  <!-- ============================ CV BAND (becomes the CV section in Phase 7) ============================ -->
-  <section class="cv-band" data-navtheme="dark">
-    <div class="cv-band__inner">
-      <div>
-        <span class="eyebrow" data-reveal>( Curriculum )</span>
-        <h2 class="cv-band__title" data-reveal>The full story.</h2>
-        <p class="cv-band__text" data-reveal>Experience, skills, education &amp; languages — with a downloadable PDF.</p>
+  <!-- ============================ CV ============================ -->
+  <section class="sec sec--paper" id="cv" aria-labelledby="cv-title" data-navtheme="dark">
+    <header class="sec-head">
+      <div class="sec-head__bar" data-reveal>
+        <span>(05)</span>
+        <span class="file">martina-cola-cv.pdf</span>
       </div>
-      <a class="btn-cv" href="curriculum.html" data-reveal>Open my CV <span class="btn-cv__ic" aria-hidden="true">→</span></a>
-    </div>
+      <h2 class="sec-head__title" id="cv-title" data-reveal>Curriculum</h2>
+    </header>
+    <div class="sec__body"><!-- rendered from data/cv.js by js/cv.js --></div>
   </section>
 
   <!-- ============================ CONTACT ============================ -->
@@ -197,7 +197,7 @@
         <a class="contact__link" href="https://www.linkedin.com/in/martina-cola-/" target="_blank" rel="noopener" data-reveal>
           LinkedIn <span aria-hidden="true">↗</span>
         </a>
-        <a class="contact__link" href="curriculum.html" data-reveal>CV <span aria-hidden="true">→</span></a>
+        <a class="contact__link" href="#cv" data-reveal>CV <span aria-hidden="true">→</span></a>
         <span class="contact__loc" data-reveal>Barcelona, Spain</span>
       </div>
     </div>
@@ -214,7 +214,9 @@
 <script src="data/events.js"></script>
 <script src="data/collabs.js"></script>
 <script src="data/hobbies.js"></script>
+<script src="data/cv.js"></script>
 <script src="js/media.js"></script>
 <script src="js/work.js"></script>
+<script src="js/cv.js"></script>
 <script src="js/intro.js"></script>
 <script src="script.js"></script>
