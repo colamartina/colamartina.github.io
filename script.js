@@ -12,6 +12,21 @@
     /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
   if (isLocal) document.documentElement.classList.add("is-dev");
 
+  // Hero photo pool from data/hero.js (retina files on high-density screens);
+  // falls back to the original trail images if the data file is missing.
+  function heroPool() {
+    var hi = (window.devicePixelRatio || 1) > 1.5;
+    var list = (window.PORTFOLIO && window.PORTFOLIO.hero) || [];
+    var pool = list.map(function (p) {
+      return typeof p === "string" ? p : (hi && p.srcHi) || p.src;
+    });
+    return pool.length ? pool : [
+      "assets/trail/t1.jpg", "assets/trail/t2.jpg", "assets/trail/t3.jpg",
+      "assets/trail/t4.jpg", "assets/trail/t5.jpg", "assets/trail/t6.jpg",
+      "assets/trail/t7.jpg"
+    ];
+  }
+
   /* ---------- Scroll reveal ---------- */
   var revealEls = document.querySelectorAll("[data-reveal]");
   if ("IntersectionObserver" in window && !reduceMotion) {
@@ -184,11 +199,7 @@
     var fine = window.matchMedia("(pointer: fine)").matches;
     if (!heroEl || !trail || !fine || reduceMotion) return;
 
-    var IMGS = [
-      "assets/trail/t1.jpg", "assets/trail/t2.jpg", "assets/trail/t3.jpg",
-      "assets/trail/t4.jpg", "assets/trail/t5.jpg", "assets/trail/t6.jpg",
-      "assets/trail/t7.jpg"
-    ];
+    var IMGS = heroPool();
     // preload during idle time so the initial page load stays light
     var preload = function () { IMGS.forEach(function (s) { var im = new Image(); im.src = s; }); };
     if ("requestIdleCallback" in window) requestIdleCallback(preload);
@@ -220,6 +231,76 @@
       setTimeout(function () { if (img.parentNode) img.remove(); }, 1050);
       while (trail.children.length > 8) trail.firstElementChild.remove();
     }
+  })();
+
+  /* ---------- Hero photo stack (touch screens, reduced motion) ----------
+     The trail needs a mouse; phones and tablets get a small stack of the same
+     photos in the empty space of the hero. It changes on its own and on tap —
+     with reduced motion it only changes on tap, without animation. */
+  (function () {
+    var heroEl = document.querySelector(".hero");
+    var meta = heroEl && heroEl.querySelector(".hero__meta");
+    var title = heroEl && heroEl.querySelector(".hero__title");
+    var fine = window.matchMedia("(pointer: fine)").matches;
+    if (!heroEl || !meta || !title || (fine && !reduceMotion)) return;
+
+    var pool = heroPool();
+    var stack = document.createElement("div");
+    stack.className = "hero__stack";
+    stack.setAttribute("aria-hidden", "true");
+    heroEl.appendChild(stack);
+    var i = 1, timer = null, visible = true;
+
+    // size and centre the stack in the free space between the meta line and the name
+    function place() {
+      var top = meta.offsetTop + meta.offsetHeight;
+      var free = title.offsetTop - top;
+      var w = Math.min((free - 48) / 1.25, heroEl.clientWidth * 0.42, 240);
+      stack.hidden = w < 96;
+      stack.style.width = w + "px";
+      stack.style.height = w * 1.25 + "px";
+      stack.style.top = top + (free - w * 1.25) / 2 + "px";
+    }
+
+    // a pile of two photos: the next one always waits, slightly rotated, behind the top one
+    function addToBack() {
+      var img = document.createElement("img");
+      img.src = pool[i % pool.length]; i++;
+      img.alt = "";
+      img.decoding = "async";
+      img.style.setProperty("--rot", (Math.random() * 14 - 7).toFixed(1) + "deg");
+      stack.insertBefore(img, stack.firstChild);
+    }
+    function topCard() {
+      var c = stack.lastElementChild;
+      while (c && c.classList.contains("is-leaving")) c = c.previousElementSibling;
+      return c;
+    }
+    function next() {
+      addToBack();
+      var top = topCard();
+      top.classList.add("is-leaving");
+      setTimeout(function () { top.remove(); }, reduceMotion ? 0 : 650);
+    }
+
+    function restart() {
+      clearInterval(timer);
+      if (!reduceMotion && visible && !document.hidden) timer = setInterval(next, 2400);
+    }
+
+    place();
+    addToBack();
+    addToBack();
+    window.addEventListener("resize", place, { passive: true });
+    stack.addEventListener("click", function () { next(); restart(); });
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        visible = entries[0].isIntersecting;
+        restart();
+      }).observe(heroEl);
+    }
+    document.addEventListener("visibilitychange", restart);
+    restart();
   })();
 
   /* ---------- Project gallery slots ----------

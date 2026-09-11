@@ -16,6 +16,38 @@
 <link rel="stylesheet" href="fonts.css" />
 <link rel="stylesheet" href="styles.css" />
 
+<script src="data/hero.js"></script>
+<script>
+  /* Intro gate — runs before the first paint. The intro plays once per session
+     and never with reduced motion; if its script cannot run, the page is released
+     after 4s so nothing stays covered. */
+  (function () {
+    var root = document.documentElement;
+    try {
+      if (sessionStorage.getItem("mc-intro-seen") ||
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      sessionStorage.setItem("mc-intro-seen", "1");
+    } catch (e) { return; }
+    root.classList.add("intro-on", "hero-hold");
+    ((window.PORTFOLIO && window.PORTFOLIO.intro) || []).forEach(function (src) {
+      var link = document.createElement("link");
+      link.rel = "preload"; link.as = "image"; link.href = src;
+      document.head.appendChild(link);
+    });
+    setTimeout(function () { root.classList.remove("intro-on", "hero-hold"); }, 4000);
+  })();
+</script>
+
+<!-- ============================ INTRO (first visit of the session) ============================ -->
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro__name">
+    <span class="intro__word"><span class="intro__l" style="--i:0">M</span><span class="intro__l" style="--i:1">a</span><span class="intro__l" style="--i:2">r</span><span class="intro__l" style="--i:3">t</span><span class="intro__l" style="--i:4">i</span><span class="intro__l" style="--i:5">n</span><span class="intro__l" style="--i:6">a</span></span>
+    <span class="intro__window"></span>
+    <span class="intro__word intro__word--stroke"><span class="intro__l" style="--i:7">C</span><span class="intro__l" style="--i:8">o</span><span class="intro__l" style="--i:9">l</span><span class="intro__l" style="--i:10">a</span></span>
+  </div>
+  <p class="intro__hint">Click or scroll to skip</p>
+</div>
+
 <!-- ============================ NAV ============================ -->
 <a class="skip" href="#main">Skip to content</a>
 <header class="nav" id="top" data-theme="light">
@@ -174,4 +206,5 @@
   </section>
 </main>
 
+<script src="js/intro.js"></script>
 <script src="script.js"></script>

@@ -565,6 +565,103 @@ img, video { max-width: 100%; }
 .trail__img.is-live { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(var(--rot, 0deg)); }
 .trail__img.is-out  { opacity: 0; transform: translate(-50%, -50%) scale(1.06) rotate(var(--rot, 0deg)); }
 
+/* ---------- hero photo stack (touch screens / reduced motion) ---------- */
+.hero > .hero__stack {
+  position: absolute;
+  right: var(--pad);
+  z-index: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.hero__stack img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--r-sm);
+  box-shadow: var(--shadow-float);
+  transform: rotate(var(--rot, 0deg));
+  transition: transform 0.6s var(--ease), opacity 0.6s var(--ease);
+}
+.hero__stack img.is-leaving {
+  opacity: 0;
+  transform: translate(-38%, -10%) rotate(-16deg) scale(0.96);
+}
+
+/* =========================================================
+   INTRO — first visit of the session (gate script in <head>, js/intro.js)
+   ========================================================= */
+.intro { display: none; }
+.intro-on .intro {
+  position: fixed;
+  inset: 0;
+  z-index: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--blue);
+  color: var(--white);
+  transition: transform 0.75s var(--ease);
+}
+.intro.is-out { transform: translateY(-100%); }
+.intro.is-fast { transition-duration: 0.45s; }
+
+.intro__name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--font-display);
+  /* width- and height-aware, so name + photo window always fit the screen */
+  font-size: clamp(3rem, min(19vw, 27vh), 17rem);
+  line-height: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.005em;
+}
+.intro__word { display: block; overflow: hidden; padding: 0.04em 0.02em 0; }
+.intro__word--stroke {
+  color: transparent;
+  -webkit-text-stroke: clamp(1px, 0.16vw, 2.2px) var(--white);
+}
+.intro__l {
+  display: inline-block;
+  transform: translateY(110%);
+  animation: introRise 0.6s var(--ease) forwards;
+  animation-delay: calc(var(--i) * 35ms);
+}
+@keyframes introRise { to { transform: translateY(0); } }
+
+/* the gap between the two words opens into a small photo window */
+.intro__window {
+  display: block;
+  width: min(52vw, 560px);
+  height: 0;
+  overflow: hidden;
+  border-radius: var(--r-sm);
+  background: var(--blue-800);
+  transition: height 0.5s var(--ease), margin 0.5s var(--ease);
+}
+.intro.is-open .intro__window {
+  height: clamp(8rem, 28vh, 16rem);
+  margin: clamp(0.6rem, 2vh, 1.2rem) 0;
+}
+.intro__window img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+.intro__hint {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(1.2rem, 4vh, 2.2rem);
+  transform: translateX(-50%);
+  font-size: var(--fs-meta);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0.6;
+}
+
+/* the hero title waits for the curtain, then rises as usual */
+.hero-hold .hero__title .line > span { animation: none; }
+
 /* =========================================================
    BIO
    ========================================================= */
