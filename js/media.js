@@ -20,7 +20,9 @@
   function img(it, sizes, opts) {
     opts = opts || {};
     var el = document.createElement("img");
-    if (it.type === "image") {
+    if (it.type === "image" && it.file) {
+      el.src = it.file;                    // single file (no responsive versions)
+    } else if (it.type === "image") {
       el.src = it.src + "-" + it.widths[0] + ".webp";
       el.srcset = srcset(it);
       el.sizes = sizes || "100vw";
