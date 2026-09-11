@@ -11,5 +11,25 @@ Bologna_4.jpg
 Milan Duomo Metro_1.jpg
 Progetto senza titolo (10).png
 
+# Original Google Drive archive (1.7 GB) — read-only backup, never committed.
+# Web-optimized copies live in content/
+NEWPORTFOLIO/
+
+# This repo is public (GitHub Pages). Internal or sensitive material stays local
+# until Martina approves it for publication.
+content/campaigns/rebranding-2026/brand-book/
+content/campaigns/black-friday-2025/concept/
+content/campaigns/spring-2026/brief/
+content/campaigns/summer-2026/brief/
+content/collabs/tezenis-2026/deck-cover-*
+content/collabs/tezenis-2026/info-collab-*
+content/hobbies/battesimo-penny/
+# Working notes (internal texts, people's names from original file names)
+content/**/copy.md
+content/SOURCES.md
+content/manifest.json
+# Design references (not site content)
+refs/
+
 # Local build artifacts
 _*.html
