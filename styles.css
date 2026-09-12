@@ -479,6 +479,17 @@ img, video { max-width: 100%; }
   margin: 0.04em 0 0.06em -0.02em;
 }
 .hero__title .line { display: block; overflow: hidden; }
+/* wide screens: the two words open out to the edges, like Martina's reference */
+@media (min-width: 901px) {
+  .hero__title {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.15em;
+    font-size: min(17.5vw, 16rem);
+  }
+  .hero__title .line { flex: 0 0 auto; }
+}
 .hero__title .line > span { display: block; }
 .hero__title .line--stroke > span {
   color: transparent;
@@ -500,7 +511,7 @@ img, video { max-width: 100%; }
 /* the claim: three lines, each pushed in differently, block centred under the name */
 .hero__claim {
   width: fit-content;
-  margin: clamp(1rem, 3vh, 2.2rem) auto 0;
+  margin: clamp(1.4rem, 5vh, 3.4rem) clamp(0.5rem, 3vw, 4rem) 0 auto;
   font-size: clamp(1.05rem, 2.5vw, 2.05rem);
   font-weight: 700;
   line-height: 1.04;
@@ -1651,6 +1662,37 @@ body::after {
 
 /* custom cursor */
 .has-cursor, .has-cursor a, .has-cursor button { cursor: none; }
+
+/* the drawn flower (home page): sits on the pointer, tilts as you move */
+.cursor-flower {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 52px;
+  height: 52px;
+  margin: -26px 0 0 -26px;
+  z-index: 9999;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.cursor-flower__in {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.35s var(--ease);
+}
+.cursor-flower__in.is-hot { transform: scale(1.35); }
+.cursor-flower img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.25s linear;
+}
+/* a whisper of shadow, so the flower stays readable on top of photos */
+.cursor-flower__w { filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.35)); }
+.cursor-flower__b { opacity: 0; filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.95)); }
+.cursor-flower.is-ink .cursor-flower__b { opacity: 1; }
+.cursor-flower.is-ink .cursor-flower__w { opacity: 0; }
 .cursor-dot,
 .cursor-ring {
   position: fixed;
@@ -1774,7 +1816,7 @@ body::after {
 
 @media (max-width: 520px) {
   .hero__title { font-size: 23vw; }
-  .hero__claim { font-size: 1.02rem; letter-spacing: 0.1em; }
+  .hero__claim { font-size: 1.02rem; letter-spacing: 0.1em; margin-right: auto; margin-left: auto; }
   .hero__meta { flex-wrap: wrap; }
   .hero__foot { gap: 1.4rem; }
   .foot { justify-content: flex-start; gap: 0.4rem 1.5rem; }

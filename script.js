@@ -120,22 +120,44 @@
     }
   }
 
-  /* ---------- Custom cursor ---------- */
+  /* ---------- Custom cursor ----------
+     Two flavours: the little drawn flower on the home page (data-cursor="flower")
+     and the minimal dot + ring everywhere else. Both follow the palette: blue on
+     the paper sections, white on the blue ones. */
   (function () {
     var fine = window.matchMedia("(pointer: fine)").matches;
     if (!fine || reduceMotion) return;
 
+    var flower = document.documentElement.getAttribute("data-cursor") === "flower";
     document.body.classList.add("has-cursor");
-    var dot = document.createElement("div");
-    dot.className = "cursor-dot";
-    var ring = document.createElement("div");
-    ring.className = "cursor-ring";
-    ring.innerHTML = "<span></span>";
-    document.body.appendChild(dot);
-    document.body.appendChild(ring);
+
+    var parts = [];        // everything that follows the pointer
+    var dot, ring, wrap, inner;
+
+    if (flower) {
+      wrap = document.createElement("div");
+      wrap.className = "cursor-flower";
+      wrap.innerHTML =
+        '<div class="cursor-flower__in">' +
+        '<img src="assets/cursor-flower-white.webp" alt="" width="256" height="256" class="cursor-flower__w">' +
+        '<img src="assets/cursor-flower-blue.webp" alt="" width="256" height="256" class="cursor-flower__b">' +
+        "</div>";
+      inner = wrap.firstChild;
+      document.body.appendChild(wrap);
+      parts = [wrap];
+    } else {
+      dot = document.createElement("div");
+      dot.className = "cursor-dot";
+      ring = document.createElement("div");
+      ring.className = "cursor-ring";
+      ring.innerHTML = "<span></span>";
+      document.body.appendChild(dot);
+      document.body.appendChild(ring);
+      parts = [dot, ring];
+    }
 
     var mx = window.innerWidth / 2, my = window.innerHeight / 2;
-    var rx = mx, ry = my;
+    var rx = mx, ry = my, lastX = mx, tilt = 0;
 
     document.addEventListener("mousemove", function (e) {
       mx = e.clientX; my = e.clientY;
@@ -143,25 +165,36 @@
       // palette-aware: blue cursor on light sections, white on dark/blue
       var sec = e.target.closest("[data-navtheme]");
       var ink = !!(sec && sec.getAttribute("data-navtheme") === "dark");
-      dot.classList.toggle("is-ink", ink);
-      ring.classList.toggle("is-ink", ink);
       // grow over interactive elements (the skill stickers you can drag included)
       var hot = !!e.target.closest("a, button, .skill");
-      ring.classList.toggle("is-hot", hot);
-      dot.classList.toggle("is-hot", hot);
+      parts.forEach(function (p) { p.classList.toggle("is-ink", ink); });
+      if (flower) {
+        inner.classList.toggle("is-hot", hot);
+      } else {
+        ring.classList.toggle("is-hot", hot);
+        dot.classList.toggle("is-hot", hot);
+      }
     }, { passive: true });
 
     document.documentElement.addEventListener("mouseleave", function () {
-      dot.style.opacity = "0"; ring.style.opacity = "0";
+      parts.forEach(function (p) { p.style.opacity = "0"; });
     });
     document.documentElement.addEventListener("mouseenter", function () {
-      dot.style.opacity = "1"; ring.style.opacity = "1";
+      parts.forEach(function (p) { p.style.opacity = "1"; });
     });
 
     (function loop() {
-      rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
-      dot.style.transform = "translate(" + mx + "px," + my + "px)";
-      ring.style.transform = "translate(" + rx + "px," + ry + "px)";
+      if (flower) {
+        // a little tilt in the direction you are moving, then back to rest
+        tilt += ((mx - lastX) * 0.6 - tilt) * 0.12;
+        tilt = Math.max(-16, Math.min(16, tilt));
+        lastX = mx;
+        wrap.style.transform = "translate3d(" + mx + "px," + my + "px,0) rotate(" + tilt.toFixed(2) + "deg)";
+      } else {
+        rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
+        dot.style.transform = "translate(" + mx + "px," + my + "px)";
+        ring.style.transform = "translate(" + rx + "px," + ry + "px)";
+      }
       requestAnimationFrame(loop);
     })();
   })();
