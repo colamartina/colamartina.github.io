@@ -294,9 +294,11 @@
     var i = 1, timer = null, visible = true;
 
     // size and centre the stack in the free space between the claim and the footer
+    // (measured, not offsetTop: the claim sits inside a positioned wrapper)
     function place() {
-      var top = claim.offsetTop + claim.offsetHeight;
-      var free = foot.offsetTop - top;
+      var h = heroEl.getBoundingClientRect();
+      var top = claim.getBoundingClientRect().bottom - h.top;
+      var free = foot.getBoundingClientRect().top - h.top - top;
       var w = Math.min((free - 40) / 1.25, heroEl.clientWidth * 0.62, 260);
       stack.hidden = w < 96;
       stack.style.width = w + "px";

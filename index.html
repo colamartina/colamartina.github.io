@@ -81,21 +81,25 @@
   <!-- ============================ HERO ============================ -->
   <section class="hero" id="hero" data-navtheme="light">
     <div class="trail" aria-hidden="true"></div>
-    <div class="hero__meta">
-      <span>Portfolio Vol. 2026</span>
-      <span class="hero__meta-dot">/</span>
-      <span>Barcelona, ES</span>
-    </div>
-
     <h1 class="hero__title">
       <span class="line"><span>Martina</span></span>
       <span class="line line--stroke"><span>Cola</span></span>
     </h1>
-    <p class="hero__claim" data-reveal>
-      <span>Italian</span>
-      <span>marketer</span>
-      <span>based in Barcelona</span>
-    </p>
+    <!-- the greeting, then the same line as a small collage: words with pictures
+         set between them. Swap a picture by changing the src. -->
+    <div class="hero__intro" data-reveal>
+      <p class="hero__hi">Hi, <em>my name is</em> Martina</p>
+      <p class="hero__claim">
+        <!-- each group stays together; the line only breaks between groups -->
+        <span class="hero__grp"><span>Italian</span>
+          <img class="hero__pic" src="assets/wordpics/wp-01.webp" alt="" width="260" height="462" loading="eager" /></span>
+        <span class="hero__grp"><span>marketer</span>
+          <img class="hero__pic" src="assets/wordpics/wp-02.webp" alt="" width="260" height="390" loading="eager" /></span>
+        <span class="hero__grp"><span>based in Barcelona</span>
+          <img class="hero__pic hero__pic--flower" src="assets/cursor-flower-white.webp" alt="" width="256" height="256" />
+          <img class="hero__pic" src="assets/wordpics/wp-03.webp" alt="" width="260" height="391" loading="eager" /></span>
+      </p>
+    </div>
 
     <div class="hero__foot">
       <p class="hero__hint" aria-hidden="true">Move your mouse <span>&#10033;</span></p>

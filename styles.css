@@ -508,21 +508,60 @@ img, video { max-width: 100%; }
   to   { transform: translateY(0); }
 }
 
-/* the claim: three lines, each pushed in differently, block centred under the name */
-.hero__claim {
+/* the greeting, then the claim as a little collage: words with pictures between
+   them, in the right half under COLA */
+.hero__intro {
   width: fit-content;
-  margin: clamp(1.4rem, 5vh, 3.4rem) clamp(0.5rem, 3vw, 4rem) 0 auto;
-  font-size: clamp(1.05rem, 2.5vw, 2.05rem);
+  max-width: min(560px, 100%);       /* narrow enough that the claim wraps like a collage */
+  margin: clamp(1.2rem, 4.5vh, 3rem) clamp(0.5rem, 3vw, 4rem) 0 auto;
+}
+.hero__hi {
+  font-size: clamp(1.45rem, 3.3vw, 2.85rem);
   font-weight: 700;
-  line-height: 1.04;
-  letter-spacing: 0.13em;
+  line-height: 1;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+}
+.hero__hi em {                        /* the one word in script, like the reference */
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.hero__claim {
+  margin-top: 0.45em;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;           /* ragged, centred lines */
+  gap: 0.28em 0.34em;
+  font-size: clamp(0.95rem, 2vw, 1.8rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.95);
 }
-.hero__claim span { display: block; }
-.hero__claim span:nth-child(1) { margin-left: 5.6em; }
-.hero__claim span:nth-child(2) { margin-left: 0; }
-.hero__claim span:nth-child(3) { margin-left: 2.1em; }
+.hero__grp {                          /* words and their picture travel together */
+  display: inline-flex;
+  align-items: center;
+  gap: 0.34em;
+  white-space: nowrap;
+}
+.hero__pic {                          /* sized in em, so it grows with the words */
+  flex: 0 0 auto;
+  width: 2.5em;
+  height: 1.5em;
+  object-fit: cover;
+  border-radius: 3px;
+}
+.hero__pic--flower {
+  width: 1.45em;
+  height: 1.45em;
+  object-fit: contain;
+  border-radius: 0;
+}
 
 .hero__foot {
   margin-top: auto;
@@ -580,7 +619,7 @@ img, video { max-width: 100%; }
 .hero > *:not(.trail) { position: relative; z-index: 1; }
 .trail__img {
   position: absolute;
-  width: clamp(148px, 15vw, 240px);
+  width: clamp(118px, 11vw, 176px);
   height: auto;
   margin: 0;
   border-radius: 8px;
@@ -1668,9 +1707,9 @@ body::after {
   position: fixed;
   left: 0;
   top: 0;
-  width: 52px;
-  height: 52px;
-  margin: -26px 0 0 -26px;
+  width: 68px;
+  height: 68px;
+  margin: -34px 0 0 -34px;
   z-index: 9999;
   pointer-events: none;
   transition: opacity 0.3s;
