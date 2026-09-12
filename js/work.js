@@ -12,32 +12,50 @@
 
   function pad(n) { return (n < 10 ? "0" : "") + n; }
 
-  /* ---------- Campaigns ---------- */
+  /* ---------- Campaigns: four cards of the same size, then "check out more" ---------- */
   (function () {
     var host = document.querySelector("#campaigns .sec__body");
     var list = P.campaigns || [];
     if (!host || !list.length) return;
+    var SHOWN = 4;
 
     var grid = el("ul.c-grid", { role: "list" });
+    var extra = [];
     list.forEach(function (c, i) {
-      // 85vw on phones is a density budget, not the real box (89vw): it keeps
-      // retina phones on the 640 file instead of pulling the 1280 one
-      var sizes = "(max-width: 640px) 85vw, (max-width: 1100px) 50vw, 45vw";
-      var media = el("div.c-card__media", {}, [M.img(c.cover, sizes, { alt: c.title + " — " + c.brand })]);
-      var title = el("h3.c-card__title", {}, [c.title, c.kicker ? el("span.c-card__kicker", { text: c.kicker }) : null]);
-      var meta = el("p.meta.c-card__meta", {}, [
-        el("span", { text: c.brand }),
-        c.year ? el("span", { text: c.year }) : null,
-        el("span", { text: c.type })
+      var sizes = "(max-width: 640px) 46vw, (max-width: 1000px) 44vw, 23vw";
+      var img = M.img(c.cover, sizes, { alt: c.title + ", " + c.brand });
+      if (c.cover.zoom) img.style.setProperty("--zoom", c.cover.zoom);
+      var cap = el("div.c-card__cap", {}, [
+        el("span.c-card__t", { text: c.title }),
+        el("span.c-card__y", { text: c.year || "" }),
+        c.kicker ? el("span.c-card__k", { text: c.kicker }) : null,
+        c.type && c.type.toLowerCase() !== c.title.toLowerCase() ? el("span.c-card__m", { text: c.type }) : null
       ]);
-      var line = el("p.c-card__line", {}, [c.line || M.todo("descrizione di una riga")]);
-      var link = el("a.c-card__link", { href: "case.html?p=" + encodeURIComponent(c.slug) }, [
-        media,
-        el("div.c-card__info", {}, [el("span.c-card__idx", { text: pad(i + 1) }), title, meta, line])
+      var card = el("li.c-card", { "data-reveal": "" }, [
+        el("a.c-card__link", { href: "case.html?p=" + encodeURIComponent(c.slug) }, [
+          el("div.c-card__media", {}, [img, el("span.c-card__go", { "aria-hidden": "true", text: "↗" })]),
+          cap
+        ])
       ]);
-      grid.appendChild(el("li.c-card", { "data-reveal": "" }, [link]));
+      if (i >= SHOWN) { card.hidden = true; extra.push(card); }
+      grid.appendChild(card);
     });
-    host.replaceChildren(grid);
+
+    var children = [grid];
+    if (extra.length) {
+      var btn = el("button.btn.btn--ghost.c-more", { type: "button", "aria-expanded": "false" },
+        ["Check out more ", el("span", { "aria-hidden": "true", text: "(" + extra.length + ")" })]);
+      btn.addEventListener("click", function () {
+        var open = btn.getAttribute("aria-expanded") === "true";
+        extra.forEach(function (card) { card.hidden = open; });
+        btn.setAttribute("aria-expanded", String(!open));
+        btn.replaceChildren(document.createTextNode(open ? "Check out more " : "Show less "),
+          el("span", { "aria-hidden": "true", text: open ? "(" + extra.length + ")" : "↑" }));
+        if (!open) extra[0].querySelector("a").focus({ preventScroll: true });
+      });
+      children.push(el("div.c-more__wrap", {}, [btn]));
+    }
+    host.replaceChildren.apply(host, children);
 
     var count = document.querySelector("#campaigns .sec-head__count");
     if (count) count.textContent = list.length + " projects";

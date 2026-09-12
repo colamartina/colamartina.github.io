@@ -517,6 +517,232 @@ window.PORTFOLIO.campaigns = [
     ]
   },
   {
+    "slug": "summer-2026",
+    "title": "Tropical Heat",
+    "kicker": "Summer Collection",
+    "brand": "Le Mini Macaron",
+    "year": "2026",
+    "type": "Collection launch",
+    "line": null,
+    "role": null,
+    "context": null,
+    "whatIDid": null,
+    "results": null,
+    "quotes": [
+      {
+        "text": "Tropical Heat — Turn up the heat!",
+        "source": "Collection banner"
+      },
+      {
+        "text": "Salta il salone: quest'estate la manicure è fai-da-te!",
+        "source": "Meta ad (IT)"
+      }
+    ],
+    "cover": {
+      "type": "image",
+      "src": "content/campaigns/summer-2026/assets/dragon-fruit-tropi-teal-lamp-face",
+      "widths": [
+        640,
+        1280,
+        1920
+      ],
+      "ratio": 0.6667,
+      "name": "dragon-fruit-tropi-teal-lamp-face.webp"
+    },
+    "sections": [
+      {
+        "id": "key-visuals",
+        "label": "Key visuals",
+        "mode": "gallery",
+        "path": "summer-2026 / assets",
+        "note": null,
+        "items": [
+          {
+            "type": "image",
+            "src": "content/campaigns/summer-2026/assets/dragon-fruit-tropi-teal-lamp-face",
+            "widths": [
+              640,
+              1280,
+              1920
+            ],
+            "ratio": 0.6667,
+            "name": "dragon-fruit-tropi-teal-lamp-face.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/summer-2026/assets/dragon-fruit-tropi-teal-hand-bottles",
+            "widths": [
+              640,
+              1280,
+              1920
+            ],
+            "ratio": 0.6667,
+            "name": "dragon-fruit-tropi-teal-hand-bottles.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/summer-2026/assets/bottles-fruit-hands",
+            "widths": [
+              640,
+              1280,
+              1920
+            ],
+            "ratio": 0.6663,
+            "name": "bottles-fruit-hands.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/summer-2026/assets/dragon-fruit-hand-face",
+            "widths": [
+              640,
+              1280,
+              1920
+            ],
+            "ratio": 0.6667,
+            "name": "dragon-fruit-hand-face.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/summer-2026/assets/dragon-fruit-painting-curing",
+            "widths": [
+              640,
+              1280,
+              1920
+            ],
+            "ratio": 0.6667,
+            "name": "dragon-fruit-painting-curing.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/summer-2026/assets/dragon-fruit-tropi-teal-pedi",
+            "widths": [
+              640,
+              1280,
+              1920
+            ],
+            "ratio": 0.6667,
+            "name": "dragon-fruit-tropi-teal-pedi.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/summer-2026/assets/maxi-kit-lifestyle",
+            "widths": [
+              640,
+              1280,
+              1920
+            ],
+            "ratio": 0.6667,
+            "name": "maxi-kit-lifestyle.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/summer-2026/assets/maxi-kit-items-hand",
+            "widths": [
+              640,
+              1280,
+              1920
+            ],
+            "ratio": 0.6667,
+            "name": "maxi-kit-items-hand.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/summer-2026/assets/shades-swatch",
+            "widths": [
+              640,
+              1280,
+              1920
+            ],
+            "ratio": 0.5626,
+            "name": "shades-swatch.webp"
+          }
+        ]
+      },
+      {
+        "id": "ecom",
+        "label": "E-commerce",
+        "mode": "files",
+        "path": "summer-2026 / ecom",
+        "note": null,
+        "items": [
+          {
+            "type": "image",
+            "src": "content/campaigns/summer-2026/ecom/collection-banner-en",
+            "widths": [
+              640,
+              1280,
+              1920
+            ],
+            "ratio": 4.0,
+            "name": "collection-banner-en.webp"
+          }
+        ]
+      },
+      {
+        "id": "paid-ads",
+        "label": "Paid ads",
+        "mode": "files",
+        "path": "summer-2026 / paid-ads",
+        "note": "Meta · IT",
+        "items": [
+          {
+            "type": "image",
+            "src": "content/campaigns/summer-2026/paid-ads/ad-01",
+            "widths": [
+              640,
+              738
+            ],
+            "ratio": 0.7137,
+            "name": "ad-01.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/summer-2026/paid-ads/ad-02",
+            "widths": [
+              640,
+              732
+            ],
+            "ratio": 0.605,
+            "name": "ad-02.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/summer-2026/paid-ads/ad-03",
+            "widths": [
+              640,
+              724
+            ],
+            "ratio": 0.7298,
+            "name": "ad-03.webp"
+          }
+        ]
+      },
+      {
+        "id": "social",
+        "label": "Social",
+        "mode": "files",
+        "path": "summer-2026 / social",
+        "note": null,
+        "items": [
+          {
+            "type": "image",
+            "src": "content/campaigns/summer-2026/social/social-grid",
+            "widths": [
+              640,
+              1280,
+              1920
+            ],
+            "ratio": 1.5059,
+            "name": "social-grid.webp"
+          }
+        ]
+      }
+    ],
+    "todo": [
+      "Deck del brief (moodboard dello shooting) escluso finché non dai l'ok a pubblicarlo."
+    ]
+  },
+  {
     "slug": "fall-2026",
     "title": "Garden Daydream",
     "kicker": "Fall Collection",
@@ -540,7 +766,7 @@ window.PORTFOLIO.campaigns = [
     ],
     "cover": {
       "type": "image",
-      "src": "content/campaigns/fall-2026/assets/kv-top-view",
+      "src": "content/campaigns/fall-2026/assets/kv-main",
       "widths": [
         640,
         1280,
@@ -810,232 +1036,6 @@ window.PORTFOLIO.campaigns = [
     "todo": []
   },
   {
-    "slug": "summer-2026",
-    "title": "Tropical Heat",
-    "kicker": "Summer Collection",
-    "brand": "Le Mini Macaron",
-    "year": "2026",
-    "type": "Collection launch",
-    "line": null,
-    "role": null,
-    "context": null,
-    "whatIDid": null,
-    "results": null,
-    "quotes": [
-      {
-        "text": "Tropical Heat — Turn up the heat!",
-        "source": "Collection banner"
-      },
-      {
-        "text": "Salta il salone: quest'estate la manicure è fai-da-te!",
-        "source": "Meta ad (IT)"
-      }
-    ],
-    "cover": {
-      "type": "image",
-      "src": "content/campaigns/summer-2026/assets/dragon-fruit-tropi-teal-lamp-face",
-      "widths": [
-        640,
-        1280,
-        1920
-      ],
-      "ratio": 0.6667,
-      "name": "dragon-fruit-tropi-teal-lamp-face.webp"
-    },
-    "sections": [
-      {
-        "id": "key-visuals",
-        "label": "Key visuals",
-        "mode": "gallery",
-        "path": "summer-2026 / assets",
-        "note": null,
-        "items": [
-          {
-            "type": "image",
-            "src": "content/campaigns/summer-2026/assets/dragon-fruit-tropi-teal-lamp-face",
-            "widths": [
-              640,
-              1280,
-              1920
-            ],
-            "ratio": 0.6667,
-            "name": "dragon-fruit-tropi-teal-lamp-face.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/summer-2026/assets/dragon-fruit-tropi-teal-hand-bottles",
-            "widths": [
-              640,
-              1280,
-              1920
-            ],
-            "ratio": 0.6667,
-            "name": "dragon-fruit-tropi-teal-hand-bottles.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/summer-2026/assets/bottles-fruit-hands",
-            "widths": [
-              640,
-              1280,
-              1920
-            ],
-            "ratio": 0.6663,
-            "name": "bottles-fruit-hands.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/summer-2026/assets/dragon-fruit-hand-face",
-            "widths": [
-              640,
-              1280,
-              1920
-            ],
-            "ratio": 0.6667,
-            "name": "dragon-fruit-hand-face.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/summer-2026/assets/dragon-fruit-painting-curing",
-            "widths": [
-              640,
-              1280,
-              1920
-            ],
-            "ratio": 0.6667,
-            "name": "dragon-fruit-painting-curing.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/summer-2026/assets/dragon-fruit-tropi-teal-pedi",
-            "widths": [
-              640,
-              1280,
-              1920
-            ],
-            "ratio": 0.6667,
-            "name": "dragon-fruit-tropi-teal-pedi.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/summer-2026/assets/maxi-kit-lifestyle",
-            "widths": [
-              640,
-              1280,
-              1920
-            ],
-            "ratio": 0.6667,
-            "name": "maxi-kit-lifestyle.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/summer-2026/assets/maxi-kit-items-hand",
-            "widths": [
-              640,
-              1280,
-              1920
-            ],
-            "ratio": 0.6667,
-            "name": "maxi-kit-items-hand.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/summer-2026/assets/shades-swatch",
-            "widths": [
-              640,
-              1280,
-              1920
-            ],
-            "ratio": 0.5626,
-            "name": "shades-swatch.webp"
-          }
-        ]
-      },
-      {
-        "id": "ecom",
-        "label": "E-commerce",
-        "mode": "files",
-        "path": "summer-2026 / ecom",
-        "note": null,
-        "items": [
-          {
-            "type": "image",
-            "src": "content/campaigns/summer-2026/ecom/collection-banner-en",
-            "widths": [
-              640,
-              1280,
-              1920
-            ],
-            "ratio": 4.0,
-            "name": "collection-banner-en.webp"
-          }
-        ]
-      },
-      {
-        "id": "paid-ads",
-        "label": "Paid ads",
-        "mode": "files",
-        "path": "summer-2026 / paid-ads",
-        "note": "Meta · IT",
-        "items": [
-          {
-            "type": "image",
-            "src": "content/campaigns/summer-2026/paid-ads/ad-01",
-            "widths": [
-              640,
-              738
-            ],
-            "ratio": 0.7137,
-            "name": "ad-01.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/summer-2026/paid-ads/ad-02",
-            "widths": [
-              640,
-              732
-            ],
-            "ratio": 0.605,
-            "name": "ad-02.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/summer-2026/paid-ads/ad-03",
-            "widths": [
-              640,
-              724
-            ],
-            "ratio": 0.7298,
-            "name": "ad-03.webp"
-          }
-        ]
-      },
-      {
-        "id": "social",
-        "label": "Social",
-        "mode": "files",
-        "path": "summer-2026 / social",
-        "note": null,
-        "items": [
-          {
-            "type": "image",
-            "src": "content/campaigns/summer-2026/social/social-grid",
-            "widths": [
-              640,
-              1280,
-              1920
-            ],
-            "ratio": 1.5059,
-            "name": "social-grid.webp"
-          }
-        ]
-      }
-    ],
-    "todo": [
-      "Deck del brief (moodboard dello shooting) escluso finché non dai l'ok a pubblicarlo."
-    ]
-  },
-  {
     "slug": "spring-2026",
     "title": "Macaron-core",
     "kicker": "Spring Collection",
@@ -1059,6 +1059,7 @@ window.PORTFOLIO.campaigns = [
     ],
     "cover": {
       "type": "image",
+      "zoom": 1.18,
       "src": "content/campaigns/spring-2026/assets/shoot-0785",
       "widths": [
         640,

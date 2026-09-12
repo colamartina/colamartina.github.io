@@ -281,10 +281,9 @@
      with reduced motion it only changes on tap, without animation. */
   (function () {
     var heroEl = document.querySelector(".hero");
-    var claim = heroEl && heroEl.querySelector(".hero__claim");
-    var foot = heroEl && heroEl.querySelector(".hero__foot");
+    var intro = heroEl && heroEl.querySelector(".hero__intro");
     var fine = window.matchMedia("(pointer: fine)").matches;
-    if (!heroEl || !claim || !foot || (fine && !reduceMotion)) return;
+    if (!heroEl || !intro || (fine && !reduceMotion)) return;
 
     var pool = heroPool();
     var stack = document.createElement("div");
@@ -293,13 +292,13 @@
     heroEl.appendChild(stack);
     var i = 1, timer = null, visible = true;
 
-    // size and centre the stack in the free space between the claim and the footer
-    // (measured, not offsetTop: the claim sits inside a positioned wrapper)
+    // the greeting sits at the bottom, so the free room is above it: centre the
+    // stack between the nav and the top of the greeting
     function place() {
       var h = heroEl.getBoundingClientRect();
-      var top = claim.getBoundingClientRect().bottom - h.top;
-      var free = foot.getBoundingClientRect().top - h.top - top;
-      var w = Math.min((free - 40) / 1.25, heroEl.clientWidth * 0.62, 260);
+      var top = parseFloat(getComputedStyle(heroEl).paddingTop) || 0;
+      var free = intro.getBoundingClientRect().top - h.top - top;
+      var w = Math.min((free - 40) / 1.25, heroEl.clientWidth * 0.62, 300);
       stack.hidden = w < 96;
       stack.style.width = w + "px";
       stack.style.height = w * 1.25 + "px";
