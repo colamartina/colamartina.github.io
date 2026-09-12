@@ -12,7 +12,7 @@ window.PORTFOLIO.cv = {
   location: "Barcelona, Spain",
   email: "colamartina@gmail.com",
   linkedin: { label: "LinkedIn", url: "https://www.linkedin.com/in/martina-cola-/" },
-  site: null, // [TODO] which address? colamartina.github.io
+  site: null, // [TODO] waiting for Martina's own domain
   pdf: "assets/Martina-Cola-CV.pdf",
 
   profile: [
@@ -110,7 +110,7 @@ window.PORTFOLIO.cv = {
   ],
 
   todo: [
-    "Indirizzo del sito da mostrare nei contatti: colamartina.github.io?",
+    "Indirizzo del sito nei contatti: aspetto il tuo dominio, poi lo metto qui.",
     "Telefono e foto: per ora lasciati fuori, come mi hai detto.",
     "Il PDF scaricabile è quello vecchio: non contiene ancora le 3 nuove skill."
   ]

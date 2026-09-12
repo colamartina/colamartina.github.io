@@ -44,7 +44,7 @@ window.PORTFOLIO.hobbies = [
     line: "Helping a friend launch her brand-hobby.",
     note: null,
     colour: "lemon",
-    cover: { type: "image", file: "assets/trail/t1.jpg", ratio: 1, name: "t1.jpg" },
+    cover: { type: "image", src: "assets/trail/t1", widths: [400, 700], ratio: 1, name: "t1.jpg" },
     text: "Building a handmade clothing brand from scratch — with the founder, across both strategy and creative: business plan, positioning and go-to-market, brand identity, and organic & paid social from zero.",
     todo: [
       "Il testo qui sopra è la versione accorciata di quello che c'era nel vecchio sito: va bene?",

@@ -20,7 +20,9 @@
 
     var grid = el("ul.c-grid", { role: "list" });
     list.forEach(function (c, i) {
-      var sizes = "(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 45vw";
+      // 85vw on phones is a density budget, not the real box (89vw): it keeps
+      // retina phones on the 640 file instead of pulling the 1280 one
+      var sizes = "(max-width: 640px) 85vw, (max-width: 1100px) 50vw, 45vw";
       var media = el("div.c-card__media", {}, [M.img(c.cover, sizes, { alt: c.title + " — " + c.brand })]);
       var title = el("h3.c-card__title", {}, [c.title, c.kicker ? el("span.c-card__kicker", { text: c.kicker }) : null]);
       var meta = el("p.meta.c-card__meta", {}, [
@@ -115,9 +117,11 @@
     var rail = el("nav.events__rail", { "aria-label": "Events" });
 
     list.forEach(function (ev, i) {
+      // poster and video both wait for the slide to come near: a <video> fetches
+      // its poster straight away, wherever it sits on the page
       var v = el("video", {
-        poster: ev.video.poster, loop: "", playsinline: "", preload: "none",
-        width: "720", height: "1280", "data-src": ev.video.src,
+        loop: "", playsinline: "", preload: "none",
+        width: "720", height: "1280", "data-src": ev.video.src, "data-poster": ev.video.poster,
         "aria-label": ev.title + (ev.kicker ? " — " + ev.kicker : "")
       });
       v.muted = true;                                   // property, not just the attribute: needed for autoplay
@@ -145,13 +149,21 @@
 
     // load and play only the slide on screen; pause the others
     var items = slides.querySelectorAll(".event");
+    function load(v) {
+      if (!v.poster && v.dataset.poster) v.poster = v.dataset.poster;
+      if (!v.src && v.dataset.src) v.src = v.dataset.src;
+    }
     if ("IntersectionObserver" in window) {
+      // a screen ahead of time: the slide is ready before you get to it
+      var prep = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) { load(e.target.querySelector("video")); prep.unobserve(e.target); } });
+      }, { rootMargin: "100% 0px" });
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
           var v = e.target.querySelector("video");
           var dot = rail.children[[].indexOf.call(items, e.target)];
           if (e.isIntersecting) {
-            if (!v.src && v.dataset.src) v.src = v.dataset.src;
+            load(v);
             if (!reduceMotion) v.play().catch(function () {});
             if (dot) dot.classList.add("is-active");
           } else {
@@ -160,9 +172,9 @@
           }
         });
       }, { threshold: 0.55 });
-      items.forEach(function (s) { io.observe(s); });
+      items.forEach(function (s) { prep.observe(s); io.observe(s); });
     } else {
-      items.forEach(function (s) { var v = s.querySelector("video"); v.src = v.dataset.src; });
+      items.forEach(function (s) { load(s.querySelector("video")); });
     }
   })();
 })();

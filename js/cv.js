@@ -18,7 +18,7 @@
   var contacts = el("ul.cv__contacts", { role: "list" }, [
     el("li", {}, [el("a", { href: "mailto:" + cv.email, text: cv.email })]),
     cv.linkedin ? el("li", {}, [el("a", { href: cv.linkedin.url, target: "_blank", rel: "noopener" }, [cv.linkedin.label, el("span", { "aria-hidden": "true", text: " ↗" })])]) : null,
-    cv.site ? el("li", {}, [el("a", { href: "https://" + cv.site, text: cv.site })]) : el("li", {}, [M.todo("indirizzo del sito")]),
+    cv.site ? el("li", {}, [el("a", { href: "https://" + cv.site, text: cv.site })]) : el("li", {}, [M.todo("indirizzo del sito (dominio in arrivo)")]),
     el("li", { text: cv.location })
   ]);
   contacts.querySelectorAll("li").forEach(function (li) { if (!li.childNodes.length) li.remove(); });
