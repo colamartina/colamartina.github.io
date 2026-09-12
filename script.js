@@ -143,6 +143,7 @@
         '<img src="assets/cursor-flower-blue.webp" alt="" width="256" height="256" class="cursor-flower__b">' +
         "</div>";
       inner = wrap.firstChild;
+      wrap.style.opacity = "0";   // stays hidden until the first move tells us the colour
       document.body.appendChild(wrap);
       parts = [wrap];
     } else {
@@ -161,6 +162,7 @@
 
     document.addEventListener("mousemove", function (e) {
       mx = e.clientX; my = e.clientY;
+      if (flower && wrap.style.opacity === "0") wrap.style.opacity = "1";
       if (!e.target || !e.target.closest) return;
       // palette-aware: blue cursor on light sections, white on dark/blue
       var sec = e.target.closest("[data-navtheme]");
