@@ -523,7 +523,7 @@ window.PORTFOLIO.collabs = [
     "partner": "DAISE",
     "kicker": "Free DAISE Gift",
     "brand": "Le Mini Macaron",
-    "year": "2025",
+    "year": "2026",
     "type": "Giveaway & gift",
     "line": null,
     "role": null,
@@ -641,9 +641,7 @@ window.PORTFOLIO.collabs = [
         ]
       }
     ],
-    "todo": [
-      "Anno: la cartella dice 2025, ma il video è stato creato il 09/01/2026. Quale metto?"
-    ]
+    "todo": null
   },
   {
     "slug": "tezenis-2026",
@@ -780,8 +778,7 @@ window.PORTFOLIO.collabs = [
     ],
     "todo": [
       "Slide del deck (meccaniche e piano di comunicazione) escluse finché non dai l'ok a pubblicarle.",
-      "Date in conflitto: 19–21 marzo sui visual, 19–22 marzo nella slide.",
-      "Kit: 1.800 sui visual, 1.700 nella slide. Quale è giusto?"
+      "Confermato da Martina: in tutti gli store Tezenis in Spagna, 9–22 marzo, senza numero preciso di kit."
     ]
   }
 ];

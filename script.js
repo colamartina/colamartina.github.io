@@ -200,6 +200,7 @@
     var fine = window.matchMedia("(pointer: fine)").matches;
     if (!heroEl || !trail || !fine || reduceMotion) return;
 
+    heroEl.classList.add("is-trail");   // lets the "move your mouse" hint appear
     var IMGS = heroPool();
     // preload during idle time so the initial page load stays light
     var preload = function () { IMGS.forEach(function (s) { var im = new Image(); im.src = s; }); };
@@ -213,9 +214,14 @@
       var dx = e.clientX - lx, dy = e.clientY - ly;
       if (dx * dx + dy * dy < MIN * MIN) return;
       lx = e.clientX; ly = e.clientY;
+      heroEl.classList.add("hint-gone");  // they got it: fade the hint out
       spawn(e.clientX, e.clientY);
     });
     heroEl.addEventListener("pointerleave", function () { lx = null; ly = null; });
+
+    window.addEventListener("scroll", function () {
+      if (window.scrollY > 120) heroEl.classList.add("hint-gone");
+    }, { passive: true });
 
     function spawn(cx, cy) {
       var r = trail.getBoundingClientRect();
@@ -240,10 +246,10 @@
      with reduced motion it only changes on tap, without animation. */
   (function () {
     var heroEl = document.querySelector(".hero");
-    var meta = heroEl && heroEl.querySelector(".hero__meta");
-    var title = heroEl && heroEl.querySelector(".hero__title");
+    var claim = heroEl && heroEl.querySelector(".hero__claim");
+    var foot = heroEl && heroEl.querySelector(".hero__foot");
     var fine = window.matchMedia("(pointer: fine)").matches;
-    if (!heroEl || !meta || !title || (fine && !reduceMotion)) return;
+    if (!heroEl || !claim || !foot || (fine && !reduceMotion)) return;
 
     var pool = heroPool();
     var stack = document.createElement("div");
@@ -252,11 +258,11 @@
     heroEl.appendChild(stack);
     var i = 1, timer = null, visible = true;
 
-    // size and centre the stack in the free space between the meta line and the name
+    // size and centre the stack in the free space between the claim and the footer
     function place() {
-      var top = meta.offsetTop + meta.offsetHeight;
-      var free = title.offsetTop - top;
-      var w = Math.min((free - 48) / 1.25, heroEl.clientWidth * 0.42, 240);
+      var top = claim.offsetTop + claim.offsetHeight;
+      var free = foot.offsetTop - top;
+      var w = Math.min((free - 40) / 1.25, heroEl.clientWidth * 0.62, 260);
       stack.hidden = w < 96;
       stack.style.width = w + "px";
       stack.style.height = w * 1.25 + "px";

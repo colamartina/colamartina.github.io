@@ -1352,7 +1352,7 @@ window.PORTFOLIO.campaigns = [
     ],
     "todo": [
       "Deck di concept escluso finché non dai l'ok a pubblicarlo.",
-      "Città e luoghi delle affissioni?"
+      "Confermato da Martina: campagna EU & US."
     ]
   },
   {
@@ -1533,7 +1533,7 @@ window.PORTFOLIO.campaigns = [
       },
       {
         "id": "website",
-        "label": "Website content",
+        "label": "E-commerce content",
         "mode": "files",
         "path": "cat-eye-2025 / website-content",
         "note": null,
@@ -1679,7 +1679,6 @@ window.PORTFOLIO.campaigns = [
       }
     ],
     "todo": [
-      "I 3 screenshot 'website content' sono newsletter o pagine del sito?"
     ]
   },
   {
