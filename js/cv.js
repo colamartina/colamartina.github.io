@@ -1,6 +1,6 @@
 /* =========================================================
    CV — the Curriculum section of the home page: a printed resume lying on the
-   blue stage, set small and tight, the portrait held on it by a red binder clip,
+   blue desk, set small and tight, the portrait held on it by a yellow binder clip,
    the skills as coloured stickers, and "Download full CV" underneath.
    A snapshot only — the PDF has the rest.
    ========================================================= */

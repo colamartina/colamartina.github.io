@@ -1508,8 +1508,8 @@ img, video { max-width: 100%; }
 
 /* =========================================================
    CV — a printed resume on the blue desk (the site's one blue ground), set small
-   and tight: the portrait held on it by a red binder clip, the skills as coloured
-   stickers, the full PDF one burgundy button below
+   and tight: the portrait held on it by an acid-yellow binder clip, the skills as
+   coloured stickers, the full PDF one burgundy button below
    ========================================================= */
 .sec--cv {
   overflow-x: clip;               /* the tilted sheet never widens the page */
@@ -1624,7 +1624,7 @@ img, video { max-width: 100%; }
 .cv-entry__note { font-size: 0.72rem; line-height: 1.4; color: var(--ink-3); }
 .cv-entry__points { list-style: none; margin-top: 0.35rem; }
 .cv-entry__points li { position: relative; padding-left: 0.9rem; font-size: 0.78rem; line-height: 1.5; color: var(--ink-2); }
-.cv-entry__points li::before { content: "–"; position: absolute; left: 0; color: var(--ink-3); }
+.cv-entry__points li::before { content: "–"; position: absolute; left: 0; color: var(--orange); }   /* orange, like every list dash */
 .cv-entry__points b { font-weight: 700; color: var(--ink); }   /* the figures: bold, nothing louder */
 .cv-entry--edu .cv-entry__role { font-size: 0.82rem; }
 
@@ -1699,14 +1699,14 @@ img, video { max-width: 100%; }
   text-align: center;
   color: var(--electric-ink);
 }
-/* Martina's red binder clip (assets/binder-clip.webp): the jaws bite the top of the
-   print, the body and the wire rise above it */
+/* Martina's binder clip (assets/binder-clip.webp, relit in acid yellow from redpin.jpg):
+   the jaws bite the top of the print, the body and the wire rise above it */
 .cv-clip {
   position: absolute;
   z-index: 1;
   top: 0;
   left: 58%;
-  width: 34%;
+  width: 42%;
   height: auto;
   translate: -50% -72%;
   rotate: -4deg;
