@@ -745,6 +745,496 @@ window.PORTFOLIO.campaigns = [
     ]
   },
   {
+    "slug": "ooh-italy",
+    "title": "Out-of-Home",
+    "kicker": "Italy",
+    "brand": "Le Mini Macaron",
+    "year": null,
+    "type": "Out-of-home",
+    "line": "High-impact outdoor advertising across six Italian cities, leveraging industry connections to maximize reach and efficiency.",
+    "role": "OOH & Media Lead",
+    "context": null,
+    "whatIDid": [
+      "Secured outdoor placements across six Italian cities at no cost — €60K total media value.",
+      "Coordinated 450+ placements in Milan, Bologna, Genova, Napoli, Padova, Brescia & Pavia — metro, street, and digital screens.",
+      "Delivered strong top-of-funnel visibility: +70% website traffic in key cities and +144% sales growth.",
+      "Reinforced the value of multi-channel marketing through creative offline initiatives."
+    ],
+    "results": [
+      {
+        "value": "€60K",
+        "label": "media value — secured at no cost"
+      },
+      {
+        "value": "450+",
+        "label": "placements across 7 cities"
+      },
+      {
+        "value": "+70%",
+        "label": "website traffic in key cities"
+      },
+      {
+        "value": "+144%",
+        "label": "sales growth"
+      }
+    ],
+    "quotes": [
+      {
+        "text": "Real placements, documented on the ground — proof that smart partnerships can punch far above budget.",
+        "source": "Portfolio 2026"
+      },
+      {
+        "text": "Manicure fai da te in 15 min",
+        "source": "Digital screens, Milan metro"
+      }
+    ],
+    "cover": {
+      "type": "image",
+      "src": "content/campaigns/ooh-italy/photos/bologna-4",
+      "widths": [
+        640,
+        1280,
+        1920
+      ],
+      "ratio": 0.75,
+      "name": "bologna-4.webp"
+    },
+    "sections": [
+      {
+        "id": "placements",
+        "label": "Placements",
+        "mode": "gallery",
+        "path": "ooh-italy / photos",
+        "note": null,
+        "items": [
+          {
+            "type": "image",
+            "src": "content/campaigns/ooh-italy/photos/milan-duomo-metro-1",
+            "widths": [
+              640,
+              768
+            ],
+            "ratio": 0.75,
+            "name": "milan-duomo-metro-1.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/ooh-italy/photos/bologna-4",
+            "widths": [
+              640,
+              1280,
+              1920
+            ],
+            "ratio": 0.75,
+            "name": "bologna-4.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/ooh-italy/photos/milan-cordusio",
+            "widths": [
+              640,
+              1280,
+              1512
+            ],
+            "ratio": 0.75,
+            "name": "milan-cordusio.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/ooh-italy/photos/napoli-3",
+            "widths": [
+              640,
+              1152
+            ],
+            "ratio": 0.5625,
+            "name": "napoli-3.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/ooh-italy/photos/bologna-2025",
+            "widths": [
+              640,
+              1280,
+              1920
+            ],
+            "ratio": 0.75,
+            "name": "bologna-2025.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/ooh-italy/photos/street-screen-aug-2023",
+            "widths": [
+              640,
+              1280,
+              1920
+            ],
+            "ratio": 0.75,
+            "name": "street-screen-aug-2023.webp"
+          }
+        ]
+      },
+      {
+        "id": "on-site",
+        "label": "On site",
+        "mode": "gallery",
+        "path": "ooh-italy / video",
+        "note": null,
+        "items": [
+          {
+            "type": "video",
+            "src": "content/campaigns/ooh-italy/video/milan-duomo-metro-2.mp4",
+            "poster": "content/campaigns/ooh-italy/video/milan-duomo-metro-2-poster.webp",
+            "ratio": 0.5556,
+            "duration": 12.33,
+            "audio": true,
+            "name": "milan-duomo-metro-2.mp4"
+          },
+          {
+            "type": "video",
+            "src": "content/campaigns/ooh-italy/video/milan-duomo-metro-3.mp4",
+            "poster": "content/campaigns/ooh-italy/video/milan-duomo-metro-3-poster.webp",
+            "ratio": 0.5556,
+            "duration": 11.03,
+            "audio": true,
+            "name": "milan-duomo-metro-3.mp4"
+          },
+          {
+            "type": "video",
+            "src": "content/campaigns/ooh-italy/video/bologna-1.mp4",
+            "poster": "content/campaigns/ooh-italy/video/bologna-1-poster.webp",
+            "ratio": 0.5625,
+            "duration": 8.77,
+            "audio": true,
+            "name": "bologna-1.mp4"
+          },
+          {
+            "type": "video",
+            "src": "content/campaigns/ooh-italy/video/bologna-2.mp4",
+            "poster": "content/campaigns/ooh-italy/video/bologna-2-poster.webp",
+            "ratio": 0.5625,
+            "duration": 15.73,
+            "audio": true,
+            "name": "bologna-2.mp4"
+          },
+          {
+            "type": "video",
+            "src": "content/campaigns/ooh-italy/video/bologna-5.mp4",
+            "poster": "content/campaigns/ooh-italy/video/bologna-5-poster.webp",
+            "ratio": 0.5625,
+            "duration": 14.03,
+            "audio": true,
+            "name": "bologna-5.mp4"
+          },
+          {
+            "type": "video",
+            "src": "content/campaigns/ooh-italy/video/street-screens-dec-2023.mp4",
+            "poster": "content/campaigns/ooh-italy/video/street-screens-dec-2023-poster.webp",
+            "ratio": 0.5625,
+            "duration": 10.34,
+            "audio": true,
+            "name": "street-screens-dec-2023.mp4"
+          }
+        ]
+      },
+      {
+        "id": "spain-us",
+        "label": "Spain & US — 2022",
+        "mode": "files",
+        "path": "ooh-italy / spain-us-2022",
+        "note": null,
+        "items": [
+          {
+            "type": "image",
+            "src": "content/campaigns/ooh-italy/spain-us-2022/ooh-spain-us-2022-pages/page-01",
+            "widths": [
+              800,
+              1600
+            ],
+            "ratio": 1.7778,
+            "name": "ooh-spain-us-2022.pdf — p. 1"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/ooh-italy/spain-us-2022/ooh-spain-us-2022-pages/page-02",
+            "widths": [
+              800,
+              1600
+            ],
+            "ratio": 1.7778,
+            "name": "ooh-spain-us-2022.pdf — p. 2"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/ooh-italy/spain-us-2022/ooh-spain-us-2022-pages/page-03",
+            "widths": [
+              800,
+              1600
+            ],
+            "ratio": 1.7778,
+            "name": "ooh-spain-us-2022.pdf — p. 3"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/ooh-italy/spain-us-2022/ooh-spain-us-2022-pages/page-04",
+            "widths": [
+              800,
+              1600
+            ],
+            "ratio": 1.7778,
+            "name": "ooh-spain-us-2022.pdf — p. 4"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/ooh-italy/spain-us-2022/ooh-spain-us-2022-pages/page-05",
+            "widths": [
+              800,
+              1600
+            ],
+            "ratio": 1.7778,
+            "name": "ooh-spain-us-2022.pdf — p. 5"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/ooh-italy/spain-us-2022/ooh-spain-us-2022-pages/page-06",
+            "widths": [
+              800,
+              1600
+            ],
+            "ratio": 1.7778,
+            "name": "ooh-spain-us-2022.pdf — p. 6"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/ooh-italy/spain-us-2022/ooh-spain-us-2022-pages/page-07",
+            "widths": [
+              800,
+              1600
+            ],
+            "ratio": 1.7778,
+            "name": "ooh-spain-us-2022.pdf — p. 7"
+          }
+        ]
+      }
+    ],
+    "todo": [
+      "Anno della campagna italiana?",
+      "Il testo dice 'six Italian cities' ma ne elenca 7: quale è giusto?",
+      "Qual è stato il tuo ruolo nella parte Spagna/USA 2022?",
+      "Città di street-screen-aug-2023 e street-screens-dec-2023?"
+    ]
+  },
+  {
+    "slug": "spring-2026",
+    "title": "Macaron-core",
+    "kicker": "Spring Collection",
+    "brand": "Le Mini Macaron",
+    "year": "2026",
+    "type": "Collection launch",
+    "line": null,
+    "role": null,
+    "context": null,
+    "whatIDid": null,
+    "results": null,
+    "quotes": [
+      {
+        "text": "Sweet shades, bold effects.",
+        "source": "Homepage banner"
+      },
+      {
+        "text": "Scopri la collezione primavera 2026! La tua prossima manicure semipermanente fai-da-te, a prova di principiante!",
+        "source": "Meta ad (IT)"
+      }
+    ],
+    "cover": {
+      "type": "image",
+      "zoom": 1.06,
+      "src": "content/campaigns/spring-2026/assets/shoot-0785",
+      "widths": [
+        640,
+        1080
+      ],
+      "ratio": 0.75,
+      "name": "shoot-0785.webp"
+    },
+    "sections": [
+      {
+        "id": "key-visuals",
+        "label": "Key visuals",
+        "mode": "gallery",
+        "path": "spring-2026 / assets",
+        "note": null,
+        "items": [
+          {
+            "type": "image",
+            "src": "content/campaigns/spring-2026/assets/shoot-0785",
+            "widths": [
+              640,
+              1080
+            ],
+            "ratio": 0.75,
+            "name": "shoot-0785.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/spring-2026/assets/shoot-0626",
+            "widths": [
+              640,
+              1080
+            ],
+            "ratio": 0.75,
+            "name": "shoot-0626.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/spring-2026/assets/shoot-0649",
+            "widths": [
+              640,
+              1080
+            ],
+            "ratio": 0.75,
+            "name": "shoot-0649.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/spring-2026/assets/shoot-0662",
+            "widths": [
+              640,
+              1080
+            ],
+            "ratio": 0.75,
+            "name": "shoot-0662.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/spring-2026/assets/shoot-0749",
+            "widths": [
+              640,
+              1080
+            ],
+            "ratio": 0.75,
+            "name": "shoot-0749.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/spring-2026/assets/hp-banner-2",
+            "widths": [
+              640,
+              1280,
+              1920
+            ],
+            "ratio": 0.8326,
+            "name": "hp-banner-2.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/spring-2026/assets/newsletter-visual",
+            "widths": [
+              640,
+              1280,
+              1920
+            ],
+            "ratio": 0.6667,
+            "name": "newsletter-visual.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/spring-2026/assets/mint-royale-brush-texture",
+            "widths": [
+              640,
+              1280,
+              1581
+            ],
+            "ratio": 0.772,
+            "name": "mint-royale-brush-texture.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/spring-2026/assets/pastel-riot-brush-texture",
+            "widths": [
+              640,
+              1280,
+              1581
+            ],
+            "ratio": 0.772,
+            "name": "pastel-riot-brush-texture.webp"
+          }
+        ]
+      },
+      {
+        "id": "ecom",
+        "label": "E-commerce",
+        "mode": "files",
+        "path": "spring-2026 / assets",
+        "note": null,
+        "items": [
+          {
+            "type": "image",
+            "src": "content/campaigns/spring-2026/assets/01-hp-banner-desktop-en",
+            "widths": [
+              640,
+              1280,
+              1920
+            ],
+            "ratio": 2.6667,
+            "name": "01-hp-banner-desktop-en.webp"
+          },
+          {
+            "type": "image",
+            "src": "content/campaigns/spring-2026/assets/09-moodboard-mobile",
+            "widths": [
+              640,
+              1212
+            ],
+            "ratio": 1.1499,
+            "name": "09-moodboard-mobile.webp"
+          }
+        ]
+      },
+      {
+        "id": "paid-ads",
+        "label": "Paid ads",
+        "mode": "files",
+        "path": "spring-2026 / paid-ads",
+        "note": "Meta · IT",
+        "items": [
+          {
+            "type": "image",
+            "src": "content/campaigns/spring-2026/paid-ads/ad-01",
+            "widths": [
+              640,
+              742
+            ],
+            "ratio": 0.7602,
+            "name": "ad-01.webp"
+          }
+        ]
+      },
+      {
+        "id": "social",
+        "label": "Social",
+        "mode": "files",
+        "path": "spring-2026 / social",
+        "note": null,
+        "items": [
+          {
+            "type": "image",
+            "src": "content/campaigns/spring-2026/social/social-grid",
+            "widths": [
+              640,
+              1280,
+              1506
+            ],
+            "ratio": 0.7836,
+            "name": "social-grid.webp"
+          }
+        ]
+      }
+    ],
+    "todo": [
+      "Deck del brief escluso finché non dai l'ok a pubblicarlo."
+    ]
+  },
+  {
     "slug": "fall-2026",
     "title": "Garden Daydream",
     "kicker": "Fall Collection",
@@ -1037,217 +1527,6 @@ window.PORTFOLIO.campaigns = [
       }
     ],
     "todo": []
-  },
-  {
-    "slug": "spring-2026",
-    "title": "Macaron-core",
-    "kicker": "Spring Collection",
-    "brand": "Le Mini Macaron",
-    "year": "2026",
-    "type": "Collection launch",
-    "line": null,
-    "role": null,
-    "context": null,
-    "whatIDid": null,
-    "results": null,
-    "quotes": [
-      {
-        "text": "Sweet shades, bold effects.",
-        "source": "Homepage banner"
-      },
-      {
-        "text": "Scopri la collezione primavera 2026! La tua prossima manicure semipermanente fai-da-te, a prova di principiante!",
-        "source": "Meta ad (IT)"
-      }
-    ],
-    "cover": {
-      "type": "image",
-      "zoom": 1.06,
-      "src": "content/campaigns/spring-2026/assets/shoot-0785",
-      "widths": [
-        640,
-        1080
-      ],
-      "ratio": 0.75,
-      "name": "shoot-0785.webp"
-    },
-    "sections": [
-      {
-        "id": "key-visuals",
-        "label": "Key visuals",
-        "mode": "gallery",
-        "path": "spring-2026 / assets",
-        "note": null,
-        "items": [
-          {
-            "type": "image",
-            "src": "content/campaigns/spring-2026/assets/shoot-0785",
-            "widths": [
-              640,
-              1080
-            ],
-            "ratio": 0.75,
-            "name": "shoot-0785.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/spring-2026/assets/shoot-0626",
-            "widths": [
-              640,
-              1080
-            ],
-            "ratio": 0.75,
-            "name": "shoot-0626.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/spring-2026/assets/shoot-0649",
-            "widths": [
-              640,
-              1080
-            ],
-            "ratio": 0.75,
-            "name": "shoot-0649.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/spring-2026/assets/shoot-0662",
-            "widths": [
-              640,
-              1080
-            ],
-            "ratio": 0.75,
-            "name": "shoot-0662.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/spring-2026/assets/shoot-0749",
-            "widths": [
-              640,
-              1080
-            ],
-            "ratio": 0.75,
-            "name": "shoot-0749.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/spring-2026/assets/hp-banner-2",
-            "widths": [
-              640,
-              1280,
-              1920
-            ],
-            "ratio": 0.8326,
-            "name": "hp-banner-2.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/spring-2026/assets/newsletter-visual",
-            "widths": [
-              640,
-              1280,
-              1920
-            ],
-            "ratio": 0.6667,
-            "name": "newsletter-visual.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/spring-2026/assets/mint-royale-brush-texture",
-            "widths": [
-              640,
-              1280,
-              1581
-            ],
-            "ratio": 0.772,
-            "name": "mint-royale-brush-texture.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/spring-2026/assets/pastel-riot-brush-texture",
-            "widths": [
-              640,
-              1280,
-              1581
-            ],
-            "ratio": 0.772,
-            "name": "pastel-riot-brush-texture.webp"
-          }
-        ]
-      },
-      {
-        "id": "ecom",
-        "label": "E-commerce",
-        "mode": "files",
-        "path": "spring-2026 / assets",
-        "note": null,
-        "items": [
-          {
-            "type": "image",
-            "src": "content/campaigns/spring-2026/assets/01-hp-banner-desktop-en",
-            "widths": [
-              640,
-              1280,
-              1920
-            ],
-            "ratio": 2.6667,
-            "name": "01-hp-banner-desktop-en.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/spring-2026/assets/09-moodboard-mobile",
-            "widths": [
-              640,
-              1212
-            ],
-            "ratio": 1.1499,
-            "name": "09-moodboard-mobile.webp"
-          }
-        ]
-      },
-      {
-        "id": "paid-ads",
-        "label": "Paid ads",
-        "mode": "files",
-        "path": "spring-2026 / paid-ads",
-        "note": "Meta · IT",
-        "items": [
-          {
-            "type": "image",
-            "src": "content/campaigns/spring-2026/paid-ads/ad-01",
-            "widths": [
-              640,
-              742
-            ],
-            "ratio": 0.7602,
-            "name": "ad-01.webp"
-          }
-        ]
-      },
-      {
-        "id": "social",
-        "label": "Social",
-        "mode": "files",
-        "path": "spring-2026 / social",
-        "note": null,
-        "items": [
-          {
-            "type": "image",
-            "src": "content/campaigns/spring-2026/social/social-grid",
-            "widths": [
-              640,
-              1280,
-              1506
-            ],
-            "ratio": 0.7836,
-            "name": "social-grid.webp"
-          }
-        ]
-      }
-    ],
-    "todo": [
-      "Deck del brief escluso finché non dai l'ok a pubblicarlo."
-    ]
   },
   {
     "slug": "black-friday-2025",
@@ -1683,285 +1962,6 @@ window.PORTFOLIO.campaigns = [
       }
     ],
     "todo": [
-    ]
-  },
-  {
-    "slug": "ooh-italy",
-    "title": "Out-of-Home",
-    "kicker": "Italy",
-    "brand": "Le Mini Macaron",
-    "year": null,
-    "type": "Out-of-home",
-    "line": "High-impact outdoor advertising across six Italian cities, leveraging industry connections to maximize reach and efficiency.",
-    "role": "OOH & Media Lead",
-    "context": null,
-    "whatIDid": [
-      "Secured outdoor placements across six Italian cities at no cost — €60K total media value.",
-      "Coordinated 450+ placements in Milan, Bologna, Genova, Napoli, Padova, Brescia & Pavia — metro, street, and digital screens.",
-      "Delivered strong top-of-funnel visibility: +70% website traffic in key cities and +144% sales growth.",
-      "Reinforced the value of multi-channel marketing through creative offline initiatives."
-    ],
-    "results": [
-      {
-        "value": "€60K",
-        "label": "media value — secured at no cost"
-      },
-      {
-        "value": "450+",
-        "label": "placements across 7 cities"
-      },
-      {
-        "value": "+70%",
-        "label": "website traffic in key cities"
-      },
-      {
-        "value": "+144%",
-        "label": "sales growth"
-      }
-    ],
-    "quotes": [
-      {
-        "text": "Real placements, documented on the ground — proof that smart partnerships can punch far above budget.",
-        "source": "Portfolio 2026"
-      },
-      {
-        "text": "Manicure fai da te in 15 min",
-        "source": "Digital screens, Milan metro"
-      }
-    ],
-    "cover": {
-      "type": "image",
-      "src": "content/campaigns/ooh-italy/photos/bologna-4",
-      "widths": [
-        640,
-        1280,
-        1920
-      ],
-      "ratio": 0.75,
-      "name": "bologna-4.webp"
-    },
-    "sections": [
-      {
-        "id": "placements",
-        "label": "Placements",
-        "mode": "gallery",
-        "path": "ooh-italy / photos",
-        "note": null,
-        "items": [
-          {
-            "type": "image",
-            "src": "content/campaigns/ooh-italy/photos/milan-duomo-metro-1",
-            "widths": [
-              640,
-              768
-            ],
-            "ratio": 0.75,
-            "name": "milan-duomo-metro-1.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/ooh-italy/photos/bologna-4",
-            "widths": [
-              640,
-              1280,
-              1920
-            ],
-            "ratio": 0.75,
-            "name": "bologna-4.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/ooh-italy/photos/milan-cordusio",
-            "widths": [
-              640,
-              1280,
-              1512
-            ],
-            "ratio": 0.75,
-            "name": "milan-cordusio.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/ooh-italy/photos/napoli-3",
-            "widths": [
-              640,
-              1152
-            ],
-            "ratio": 0.5625,
-            "name": "napoli-3.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/ooh-italy/photos/bologna-2025",
-            "widths": [
-              640,
-              1280,
-              1920
-            ],
-            "ratio": 0.75,
-            "name": "bologna-2025.webp"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/ooh-italy/photos/street-screen-aug-2023",
-            "widths": [
-              640,
-              1280,
-              1920
-            ],
-            "ratio": 0.75,
-            "name": "street-screen-aug-2023.webp"
-          }
-        ]
-      },
-      {
-        "id": "on-site",
-        "label": "On site",
-        "mode": "gallery",
-        "path": "ooh-italy / video",
-        "note": null,
-        "items": [
-          {
-            "type": "video",
-            "src": "content/campaigns/ooh-italy/video/milan-duomo-metro-2.mp4",
-            "poster": "content/campaigns/ooh-italy/video/milan-duomo-metro-2-poster.webp",
-            "ratio": 0.5556,
-            "duration": 12.33,
-            "audio": true,
-            "name": "milan-duomo-metro-2.mp4"
-          },
-          {
-            "type": "video",
-            "src": "content/campaigns/ooh-italy/video/milan-duomo-metro-3.mp4",
-            "poster": "content/campaigns/ooh-italy/video/milan-duomo-metro-3-poster.webp",
-            "ratio": 0.5556,
-            "duration": 11.03,
-            "audio": true,
-            "name": "milan-duomo-metro-3.mp4"
-          },
-          {
-            "type": "video",
-            "src": "content/campaigns/ooh-italy/video/bologna-1.mp4",
-            "poster": "content/campaigns/ooh-italy/video/bologna-1-poster.webp",
-            "ratio": 0.5625,
-            "duration": 8.77,
-            "audio": true,
-            "name": "bologna-1.mp4"
-          },
-          {
-            "type": "video",
-            "src": "content/campaigns/ooh-italy/video/bologna-2.mp4",
-            "poster": "content/campaigns/ooh-italy/video/bologna-2-poster.webp",
-            "ratio": 0.5625,
-            "duration": 15.73,
-            "audio": true,
-            "name": "bologna-2.mp4"
-          },
-          {
-            "type": "video",
-            "src": "content/campaigns/ooh-italy/video/bologna-5.mp4",
-            "poster": "content/campaigns/ooh-italy/video/bologna-5-poster.webp",
-            "ratio": 0.5625,
-            "duration": 14.03,
-            "audio": true,
-            "name": "bologna-5.mp4"
-          },
-          {
-            "type": "video",
-            "src": "content/campaigns/ooh-italy/video/street-screens-dec-2023.mp4",
-            "poster": "content/campaigns/ooh-italy/video/street-screens-dec-2023-poster.webp",
-            "ratio": 0.5625,
-            "duration": 10.34,
-            "audio": true,
-            "name": "street-screens-dec-2023.mp4"
-          }
-        ]
-      },
-      {
-        "id": "spain-us",
-        "label": "Spain & US — 2022",
-        "mode": "files",
-        "path": "ooh-italy / spain-us-2022",
-        "note": null,
-        "items": [
-          {
-            "type": "image",
-            "src": "content/campaigns/ooh-italy/spain-us-2022/ooh-spain-us-2022-pages/page-01",
-            "widths": [
-              800,
-              1600
-            ],
-            "ratio": 1.7778,
-            "name": "ooh-spain-us-2022.pdf — p. 1"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/ooh-italy/spain-us-2022/ooh-spain-us-2022-pages/page-02",
-            "widths": [
-              800,
-              1600
-            ],
-            "ratio": 1.7778,
-            "name": "ooh-spain-us-2022.pdf — p. 2"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/ooh-italy/spain-us-2022/ooh-spain-us-2022-pages/page-03",
-            "widths": [
-              800,
-              1600
-            ],
-            "ratio": 1.7778,
-            "name": "ooh-spain-us-2022.pdf — p. 3"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/ooh-italy/spain-us-2022/ooh-spain-us-2022-pages/page-04",
-            "widths": [
-              800,
-              1600
-            ],
-            "ratio": 1.7778,
-            "name": "ooh-spain-us-2022.pdf — p. 4"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/ooh-italy/spain-us-2022/ooh-spain-us-2022-pages/page-05",
-            "widths": [
-              800,
-              1600
-            ],
-            "ratio": 1.7778,
-            "name": "ooh-spain-us-2022.pdf — p. 5"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/ooh-italy/spain-us-2022/ooh-spain-us-2022-pages/page-06",
-            "widths": [
-              800,
-              1600
-            ],
-            "ratio": 1.7778,
-            "name": "ooh-spain-us-2022.pdf — p. 6"
-          },
-          {
-            "type": "image",
-            "src": "content/campaigns/ooh-italy/spain-us-2022/ooh-spain-us-2022-pages/page-07",
-            "widths": [
-              800,
-              1600
-            ],
-            "ratio": 1.7778,
-            "name": "ooh-spain-us-2022.pdf — p. 7"
-          }
-        ]
-      }
-    ],
-    "todo": [
-      "Anno della campagna italiana?",
-      "Il testo dice 'six Italian cities' ma ne elenca 7: quale è giusto?",
-      "Qual è stato il tuo ruolo nella parte Spagna/USA 2022?",
-      "Città di street-screen-aug-2023 e street-screens-dec-2023?"
     ]
   }
 ];
