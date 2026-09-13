@@ -1,7 +1,8 @@
 /* =========================================================
-   CV — the Curriculum section of the home page, laid out like a real
-   resume sheet. The skills are stickers you can drag around (mouse and
-   touch, with a little inertia); everything reads fine without moving them.
+   CV — the Curriculum section of the home page: a printed resume lying on the
+   blue stage, set small and tight, the portrait held on it by a red binder clip,
+   the skills as coloured stickers, and "Download full CV" underneath.
+   A snapshot only — the PDF has the rest.
    ========================================================= */
 (function () {
   "use strict";
@@ -12,180 +13,113 @@
   var cv = P.cv;
   if (!host || !cv || !M) return;
   var el = M.el;
-  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ---------- header ---------- */
-  var contacts = el("ul.cv__contacts", { role: "list" }, [
-    el("li", {}, [el("a", { href: "mailto:" + cv.email, text: cv.email })]),
-    cv.linkedin ? el("li", {}, [el("a", { href: cv.linkedin.url, target: "_blank", rel: "noopener" }, [cv.linkedin.label, el("span", { "aria-hidden": "true", text: " ↗" })])]) : null,
-    cv.site ? el("li", {}, [el("a", { href: "https://" + cv.site, text: cv.site })]) : el("li", {}, [M.todo("indirizzo del sito (dominio in arrivo)")]),
-    el("li", { text: cv.location })
-  ]);
-  contacts.querySelectorAll("li").forEach(function (li) { if (!li.childNodes.length) li.remove(); });
+  function list(tag, items, render) {
+    return el(tag, { role: "list" }, items.map(render));
+  }
 
-  var head = el("header.cv__head", {}, [
-    el("div", {}, [
-      el("h3.cv__name", { text: cv.name }),
-      el("p.cv__role", { text: cv.role }),
-      el("p.cv__sub", { text: cv.sub })
-    ]),
-    contacts
-  ]);
+  // "achieving **+50% ROAS**" → the figure in bold, the rest as plain text
+  function rich(text) {
+    return text.split("**").map(function (part, i) {
+      return i % 2 ? el("b", { text: part }) : part;
+    }).filter(function (part) { return part !== ""; });
+  }
 
-  /* ---------- blocks ---------- */
-  // label on the left, everything else in one column on the right — the wrapper
-  // matters: loose children would flow back into the label column, one row down
-  function block(title, children, extraClass) {
-    return el("section.cv__block" + (extraClass || ""), {}, [
-      el("h4.cv__h", { text: title }),
-      el("div.cv__col", {}, children)
+  /* ---------- portrait: a small print, held on the sheet by the binder clip ---------- */
+  var photo = null;
+  if (cv.photo) {
+    photo = el("div.cv-photo", {}, [
+      cv.clip ? el("img.cv-clip", { src: cv.clip.src, width: String(cv.clip.width), height: String(cv.clip.height), alt: "", decoding: "async" }) : null,
+      el("figure.cv-photo__print", {}, [
+        M.img(Object.assign({ type: "image" }, cv.photo), "(max-width: 640px) 104px, 168px", { alt: cv.name }),
+        cv.photo.caption ? el("figcaption.cv-photo__cap", { text: cv.photo.caption }) : null
+      ])
     ]);
   }
 
-  var profile = block("Profile", [el("div.cv__profile", {}, cv.profile.map(function (p) { return el("p", { text: p }); }))]);
+  /* ---------- the sheet ---------- */
+  var contacts = list("ul.cv-sheet__contacts", [
+    el("a", { href: "mailto:" + cv.email, text: cv.email }),
+    cv.linkedin ? el("a", { href: cv.linkedin.url, target: "_blank", rel: "noopener" }, [cv.linkedin.label, el("span", { "aria-hidden": "true", text: " ↗" })]) : null,
+    cv.site ? el("a", { href: "https://" + cv.site, text: cv.site }) : M.todo("sito (dominio in arrivo)"),
+    el("span", { text: cv.location })
+  ].filter(Boolean), function (c) { return el("li", {}, [c]); });
 
-  function entry(e) {
-    return el("article.cv__entry", {}, [
-      el("div.cv__entry-top", {}, [
-        el("div", {}, [
-          el("p.cv__org", { text: e.company || e.school }),
-          el("p.cv__title", { text: e.role || e.title }),
-          e.note ? el("p.cv__note", { text: e.note }) : null
-        ]),
-        el("div.cv__when", {}, [
-          e.city ? el("p", { text: e.city }) : null,
-          el("p.cv__dates", { text: e.dates })
-        ])
-      ]),
-      e.bullets ? el("ul.cv__bullets", {}, e.bullets.map(function (b) { return el("li", { text: b }); })) : null
+  var id = el("header.cv-sheet__id", {}, [
+    contacts,
+    el("div.cv-sheet__who", {}, [
+      el("h3.cv-sheet__name", { text: cv.name }),
+      el("p.cv-sheet__role", { text: cv.role }),
+      el("p.cv-sheet__sub", { text: cv.sub })
+    ])
+  ]);
+
+  function block(title, children) {
+    return el("section.cv-sheet__sec", {}, [el("h4.cv-sheet__h", { text: title })].concat(children));
+  }
+
+  // like a printed resume: dates and city on top, role and company below
+  function job(j) {
+    return el("article.cv-entry", {}, [
+      el("p.cv-entry__meta", {}, [el("span", { text: j.dates }), el("span", { text: j.city })]),
+      el("p.cv-entry__head", {}, [el("span.cv-entry__role", { text: j.role }), el("span.cv-entry__org", { text: j.company })]),
+      j.note ? el("p.cv-entry__note", { text: j.note }) : null,
+      list("ul.cv-entry__points", j.points, function (p) { return el("li", {}, rich(p)); })
     ]);
   }
 
-  var experience = block("Experience", cv.experience.map(entry));
-  var education = block("Education", cv.education.map(entry));
-  var languages = block("Languages", [
-    el("ul.cv__langs", { role: "list" }, cv.languages.map(function (l) {
-      return el("li", {}, [el("span", { text: l.name }), el("em", { text: l.level })]);
-    }))
-  ]);
+  function school(e) {
+    return el("article.cv-entry.cv-entry--edu", {}, [
+      el("p.cv-entry__meta", {}, [el("span", { text: e.dates }), el("span", { text: e.city })]),
+      el("p.cv-entry__role", { text: e.title }),
+      el("p.cv-entry__note", { text: e.school })
+    ]);
+  }
 
-  /* ---------- skills: the draggable stickers ---------- */
-  var board = el("div.skills", { id: "skills" });
-  var stickers = cv.skills.map(function (s, i) {
-    var cls = "span.sticker.skill.sticker--" + s.colour + (s.size === "lg" ? ".sticker--lg" : s.size === "sm" ? ".sticker--sm" : "");
-    return el(cls, { "data-i": String(i), text: s.label });
-  });
-  stickers.forEach(function (s) { board.appendChild(s); });
-
+  // the skills are stickers: a colour each and a small, steady tilt
+  var TILT = [-2.5, 1.5, -1, 2, -1.5, 2.5, -2, 1];
   var skills = block("Skills", [
-    el("p.cv__hint", {}, ["Drag them around ", el("span", { "aria-hidden": "true", text: "✱" })]),
-    board
-  ], ".cv__block--skills");
+    list("ul.cv-badges", cv.skills, function (s, i) {
+      return el("li.sticker.cv-badge.sticker--" + s.colour, { style: "--rot: " + TILT[i % TILT.length] + "deg", text: s.label });
+    }),
+    el("p.cv-sheet__label", { text: "Tools" }),
+    list("ul.cv-badges.cv-badges--tools", cv.tools, function (t) { return el("li.cv-tool", { text: t }); })
+  ]);
 
-  var actions = el("div.cv__actions", {}, [
-    el("a.btn.btn--solid", { href: cv.pdf, download: "" }, ["Download the PDF ", el("span.btn__ic", { "aria-hidden": "true", text: "↓" })])
+  var languages = block("Languages", [
+    list("ul.cv-langs", cv.languages, function (l) {
+      return el("li", {}, [l.name + " ", el("span", { text: l.level })]);
+    })
+  ]);
+
+  var foot = el("footer.cv-sheet__foot", {}, [
+    el("span", { text: "martina-cola-cv.pdf" }),
+    el("span", { text: "Snapshot — full version below" }),
+    el("span", { text: "1 / 1" })
+  ]);
+
+  // the sheet is a paper surface inside the blue section: the nav reads it as "dark"
+  var sheet = el("div.cv-sheet", { "data-reveal": "" }, [
+    el("article.cv-sheet__paper", { "data-navtheme": "dark", "aria-label": "CV snapshot" }, [
+      id,
+      block("Experience", cv.experience.map(job)),
+      el("div.cv-sheet__cols", {}, [
+        el("div.cv-sheet__col", {}, [block("Education", cv.education.map(school)), languages]),
+        el("div.cv-sheet__col", {}, [skills])
+      ]),
+      foot
+    ]),
+    photo
+  ]);
+
+  var cta = el("div.cv-cta__wrap", {}, [
+    el("a.btn.btn--light.cv-cta", { href: cv.pdf, download: "Martina-Cola-CV.pdf" },
+      ["Download full CV ", el("span.btn__ic", { "aria-hidden": "true", text: "↓" })])
   ]);
 
   var devNotes = M.isLocal && cv.todo && cv.todo.length
-    ? el("div.cv__todo", {}, cv.todo.map(function (t) { return el("span.todo", { text: t }); }))
+    ? el("div.cv-todo", {}, cv.todo.map(function (t) { return el("span.todo", { text: t }); }))
     : null;
 
-  host.replaceChildren(el("div.cv", {}, [head, profile, experience, education, languages, skills, actions, devNotes].filter(Boolean)));
-
-  /* ---------- sticker layout: measured from a normal flow, then scattered ---------- */
-  function rnd(i) { var x = Math.sin(i * 12.9898) * 43758.5453; return x - Math.floor(x); } // stable per index
-
-  var placed = false;
-  function layout() {
-    board.classList.add("is-flow");
-    stickers.forEach(function (s) { s.style.left = s.style.top = ""; s.style.removeProperty("--rot"); });
-    var b = board.getBoundingClientRect();
-    var spots = stickers.map(function (s) { return s.getBoundingClientRect(); });
-    var flowHeight = board.scrollHeight;
-    board.classList.remove("is-flow");
-
-    stickers.forEach(function (s, i) {
-      var r = spots[i];
-      var jx = (rnd(i) - 0.5) * 26;
-      var jy = (rnd(i + 100) - 0.5) * 18;
-      var maxX = Math.max(0, b.width - r.width);
-      s.style.left = Math.min(Math.max(r.left - b.left + jx, 0), maxX) + "px";
-      s.style.top = Math.max(r.top - b.top + jy, 0) + "px";
-      s.style.setProperty("--rot", ((rnd(i + 7) - 0.5) * 9).toFixed(1) + "deg");
-    });
-    board.style.height = flowHeight + 26 + "px";
-    placed = true;
-  }
-
-  layout();
-  // the sticker widths change once the real font is in: measure again
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout).catch(function () {});
-  window.addEventListener("load", layout, { once: true });
-  var lastW = board.clientWidth;
-  window.addEventListener("resize", function () {
-    if (Math.abs(board.clientWidth - lastW) < 40) return; // ignore mobile toolbar resizes
-    lastW = board.clientWidth;
-    layout();
-  }, { passive: true });
-
-  /* ---------- drag with a little inertia ---------- */
-  var zTop = 5; // the last sticker grabbed stays on top of the others
-  stickers.forEach(function (s) {
-    var dragging = false, pid = null, startX = 0, startY = 0, baseX = 0, baseY = 0;
-    var vx = 0, vy = 0, lastX = 0, lastY = 0, lastT = 0, raf = 0;
-
-    function bounds() {
-      return { maxX: board.clientWidth - s.offsetWidth, maxY: board.clientHeight - s.offsetHeight };
-    }
-    function put(x, y) {
-      var b = bounds();
-      s.style.left = Math.min(Math.max(x, -8), b.maxX + 8) + "px";
-      s.style.top = Math.min(Math.max(y, -8), b.maxY + 8) + "px";
-    }
-
-    function onMove(e) {
-      if (!dragging || e.pointerId !== pid) return;
-      var now = performance.now(), dt = Math.max(now - lastT, 8);
-      vx = ((e.clientX - lastX) / dt) * 16;
-      vy = ((e.clientY - lastY) / dt) * 16;
-      lastX = e.clientX; lastY = e.clientY; lastT = now;
-      put(baseX + (e.clientX - startX), baseY + (e.clientY - startY));
-      e.preventDefault();
-    }
-
-    function release(e) {
-      if (!dragging || (e && e.pointerId !== pid)) return;
-      dragging = false; pid = null;
-      window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("pointerup", release);
-      window.removeEventListener("pointercancel", release);
-      s.classList.remove("is-dragging");
-      if (reduceMotion) return;                       // no inertia with reduced motion
-      var glide = function () {
-        vx *= 0.92; vy *= 0.92;
-        if (Math.abs(vx) < 0.25 && Math.abs(vy) < 0.25) return;
-        put((parseFloat(s.style.left) || 0) + vx, (parseFloat(s.style.top) || 0) + vy);
-        raf = requestAnimationFrame(glide);
-      };
-      raf = requestAnimationFrame(glide);
-    }
-
-    s.addEventListener("pointerdown", function (e) {
-      if (!placed || dragging) return;
-      dragging = true; pid = e.pointerId;
-      s.classList.add("is-dragging");
-      s.style.zIndex = ++zTop; // comes to the front — without moving it in the DOM,
-                               // which would drop the pointer capture mid-drag
-      startX = e.clientX; startY = e.clientY;
-      baseX = parseFloat(s.style.left) || 0; baseY = parseFloat(s.style.top) || 0;
-      lastX = e.clientX; lastY = e.clientY; lastT = performance.now();
-      vx = vy = 0;
-      cancelAnimationFrame(raf);
-      // on window, so the sticker keeps following even when the pointer runs ahead of it
-      window.addEventListener("pointermove", onMove);
-      window.addEventListener("pointerup", release);
-      window.addEventListener("pointercancel", release);
-      e.preventDefault();
-    });
-  });
+  host.replaceChildren.apply(host, [sheet, cta, devNotes].filter(Boolean));
 })();

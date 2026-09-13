@@ -1,71 +1,58 @@
 /* =========================================================
-   CV — the content of the current CV page and of the PDF, nothing added.
-   Rendered as the Curriculum section of the home page (#cv).
-   The three new skills asked for in the brief are marked isNew: true.
+   CV — a snapshot of the PDF for the Curriculum section of the home page (#cv),
+   set small and tight like a printed resume. The full text stays in the PDF
+   (pdf, below), downloadable from the button under the sheet. Nothing here is
+   new: every line is a shortened version of the PDF.
+   In the points, **bold** marks the figures.
    ========================================================= */
 window.PORTFOLIO = window.PORTFOLIO || {};
 
 window.PORTFOLIO.cv = {
   name: "Martina Cola",
   role: "Global Brand & Creative Marketing Manager",
-  sub: "Multimarket EU & US experience · Paid media and content strategy",
+  sub: "Multimarket EU & US · Paid media & content strategy",
   location: "Barcelona, Spain",
   email: "colamartina@gmail.com",
   linkedin: { label: "LinkedIn", url: "https://www.linkedin.com/in/martina-cola-/" },
   site: null, // [TODO] waiting for Martina's own domain
   pdf: "assets/Martina-Cola-CV.pdf",
 
-  profile: [
-    "Creative marketing professional leading global campaigns, content productions and brand activations within the beauty & FMCG industry.",
-    "Passionate about branding, visual storytelling and digital culture — with strong experience translating creative ideas into high-impact campaigns across social media, retail, e-commerce and PR.",
-    "Experienced in managing photoshoots, creator collaborations and cross-functional projects across Europe and the US — coordinating internal teams, agencies and external production partners from concept to execution."
-  ],
+  /* on the sheet: the portrait (content/cv/portrait-<width>.webp, from IMG_8414, 4:5 crop)
+     held by Martina's red binder clip (redpin.jpg, cut out of its background) */
+  photo: { src: "content/cv/portrait", widths: [480, 960], ratio: 4 / 5, caption: "hi, it’s me!" },
+  clip: { src: "assets/binder-clip.webp", width: 320, height: 411 },
 
   experience: [
     {
-      company: "Le Mini Macaron",
-      role: "Global Marketing & Content Manager",
-      note: "Global nail beauty brand at ULTA, Sephora & Douglas",
-      city: "Barcelona",
       dates: "Oct 2022 — Present",
-      bullets: [
-        "Lead global social media, influencer marketing and creative campaigns across Europe and the US — managing a team of three and ensuring consistent brand execution across markets.",
-        "Manage paid and organic media strategies across Europe (IT, FR & ES) and the US — achieving +50% ROAS and improving conversion performance.",
-        "Lead the creative development and production of photoshoots — concept creation, briefing, styling direction, asset planning and execution across social media, e-commerce, newsletters, retailer assets and product launches.",
-        "Lead brand activations and events — generating strong media coverage and a +200% increase in retailer orders post-event.",
-        "Support brand development initiatives, including rebranding projects and go-to-market strategies — contributing to +15% MoM growth in social reach.",
-        "Coordinate external partners — agencies, influencers and retailers — managing timelines, budgets and deliverables across multiple markets."
+      city: "Barcelona",
+      role: "Global Marketing & Content Manager",
+      company: "Le Mini Macaron",
+      note: "Global nail beauty brand at ULTA, Sephora & Douglas",
+      points: [
+        "Lead global social media, influencer marketing and creative campaigns across Europe and the US, managing a team of 3.",
+        "Manage paid and organic media across Europe (IT, FR & ES) and the US, achieving **+50% ROAS** and improving conversion.",
+        "Lead the creative production of photoshoots, from concept and briefing to styling direction and assets for social, e‑commerce and retail.",
+        "Lead brand activations and events, generating strong media coverage and **+200% retailer orders** post‑event.",
+        "Support rebranding projects and go‑to‑market strategies, contributing to **+15% MoM growth** in social reach."
       ]
     },
     {
-      company: "TandEM",
-      role: "Event Management Assistant",
-      note: "Travel & Event Management",
+      dates: "Jan — Jul 2019",
       city: "Fabriano, Italy",
-      dates: "Jan 2019 — Jul 2019",
-      bullets: [
-        "Supported the planning and execution of multiple B2B and B2C events — ensuring smooth coordination and client satisfaction.",
-        "Managed on-site operations during an international UNESCO event, leading a team of 15 to serve delegates from around the world.",
-        "Assisted with logistics, vendor coordination and client communication to guarantee seamless event experiences."
+      role: "Event Management Assistant",
+      company: "TandEM",
+      note: "Travel & Event Management",
+      points: [
+        "Supported the planning and execution of B2B and B2C events.",
+        "Managed on‑site operations at an international UNESCO event, leading a team of 15."
       ]
     }
   ],
 
   education: [
-    {
-      school: "EAE Business School",
-      title: "Master in Digital Marketing & E-Commerce",
-      note: "with a minor in Adobe InDesign",
-      city: "Barcelona",
-      dates: "2022"
-    },
-    {
-      school: "Università degli Studi di Urbino",
-      title: "Bachelor's in Business & Foreign Languages",
-      note: null,
-      city: "Urbino, Italy",
-      dates: "2021"
-    }
+    { dates: "2022", city: "Barcelona", title: "Master in Digital Marketing & E‑commerce", school: "EAE Business School · minor in Adobe InDesign" },
+    { dates: "2021", city: "Urbino, Italy", title: "Bachelor’s in Business & Foreign Languages", school: "Università degli Studi di Urbino" }
   ],
 
   languages: [
@@ -77,41 +64,25 @@ window.PORTFOLIO.cv = {
     { name: "German", level: "A2" }
   ],
 
-  /* skills become the draggable stickers — size: lg / md / sm */
+  /* the skills are coloured stickers — colours from the sticker palette in styles.css:
+     cobalt, electric, acid, orange, burgundy, white */
   skills: [
-    { label: "Brand Management", size: "lg", colour: "cobalt" },
-    { label: "Social Media", size: "lg", colour: "pink" },
-    { label: "Performance Marketing", size: "md", colour: "lemon" },
-    { label: "Influencer & PR", size: "lg", colour: "lilac" },
-    { label: "E-commerce", size: "md", colour: "tomato" },
-    { label: "Paid Media Strategy", size: "lg", colour: "lemon" },
-    { label: "Copywriting & SEO", size: "md", colour: "cobalt" },
-    { label: "Short-form content strategy", size: "lg", colour: "pink", isNew: true },
-    { label: "Go-to-market strategy", size: "lg", colour: "lemon", isNew: true },
-    { label: "AI workflow design", size: "lg", colour: "lilac", isNew: true },
-    { label: "Shopify", size: "sm", colour: "lilac" },
-    { label: "Google Ads", size: "sm", colour: "cobalt" },
-    { label: "Meta", size: "sm", colour: "pink" },
-    { label: "TikTok Shop", size: "sm", colour: "lemon" },
-    { label: "GA4", size: "sm", colour: "tomato" },
-    { label: "Figma", size: "sm", colour: "cobalt" },
-    { label: "Adobe InDesign", size: "sm", colour: "lilac" },
-    { label: "Photoshop", size: "sm", colour: "pink" },
-    { label: "Canva", size: "sm", colour: "lemon" },
-    { label: "WordPress", size: "sm", colour: "tomato" },
-    { label: "AI Tools", size: "sm", colour: "cobalt" },
-    { label: "Notion", size: "sm", colour: "lilac" },
-    { label: "Microsoft Office", size: "sm", colour: "pink" },
-    { label: "Communication", size: "md", colour: "tomato" },
-    { label: "Creativity & Innovation", size: "md", colour: "lemon" },
-    { label: "Collaborative Leadership", size: "md", colour: "cobalt" },
-    { label: "Attention to Detail", size: "md", colour: "pink" },
-    { label: "Analytical Thinking", size: "md", colour: "lilac" }
+    { label: "Brand management", colour: "cobalt" },
+    { label: "Social media", colour: "acid" },
+    { label: "Influencer & PR", colour: "orange" },
+    { label: "Paid media", colour: "white" },
+    { label: "Performance marketing", colour: "burgundy" },
+    { label: "Content production", colour: "electric" },
+    { label: "E‑commerce", colour: "acid" },
+    { label: "Go‑to‑market", colour: "cobalt" },
+    { label: "Short‑form content", colour: "orange" },
+    { label: "AI workflows", colour: "white" }
   ],
+  tools: ["Meta", "Google Ads", "TikTok Shop", "Shopify", "GA4", "Figma", "InDesign", "Photoshop", "Canva", "Notion"],
 
   todo: [
     "Indirizzo del sito nei contatti: aspetto il tuo dominio, poi lo metto qui.",
-    "Telefono e foto: per ora lasciati fuori, come mi hai detto.",
-    "Il PDF scaricabile è quello vecchio: non contiene ancora le 3 nuove skill."
+    "Telefono: per ora lasciato fuori, come mi hai detto.",
+    "Il PDF scaricabile è quello vecchio: non contiene ancora le 3 nuove skill (short-form content, go-to-market, AI workflow)."
   ]
 };

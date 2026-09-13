@@ -29,6 +29,10 @@
   --st-lemon: #ffe45c;
   --st-lilac: #bba8ff;
   --st-tomato: #ff6b45;
+  --st-electric: #387cf8;       /* + the colour palette poster: electric, acid, orange, burgundy */
+  --st-acid: #dfe85a;
+  --st-orange: #fc4524;
+  --st-burgundy: #451d20;
 
   /* type */
   --font-display: "Bebas Neue", "Arial Narrow", sans-serif;
@@ -304,6 +308,11 @@ img, video { max-width: 100%; }
 .sticker--lemon { background: var(--st-lemon); }
 .sticker--lilac { background: var(--st-lilac); }
 .sticker--tomato { background: var(--st-tomato); }
+.sticker--electric { background: var(--st-electric); color: #2f1215; }
+.sticker--acid { background: var(--st-acid); color: var(--blue); }
+.sticker--orange { background: var(--st-orange); color: #2f1215; }
+.sticker--burgundy { background: var(--st-burgundy); color: #f7f3ea; }
+.sticker--white { background: var(--white); color: var(--blue); }
 .sticker--lg { font-size: 1.25rem; }
 .sticker--sm { font-size: 0.8rem; }
 
@@ -862,7 +871,7 @@ img, video { max-width: 100%; }
 .c-card__m { grid-column: 2; align-self: center; justify-self: end; text-align: right; }
 
 .c-more__wrap { display: flex; justify-content: center; margin-top: clamp(2.4rem, 5vw, 4rem); }
-.c-more { font-family: var(--font-mono); letter-spacing: 0.12em; text-transform: uppercase; }
+.c-more, .cv-cta { font-family: var(--font-mono); letter-spacing: 0.12em; text-transform: uppercase; }
 
 /* =========================================================
    FUN STUFF — small tilted cards, the playful corner of the site
@@ -1292,7 +1301,6 @@ img, video { max-width: 100%; }
   text-align: left;
   cursor: zoom-in;
 }
-.has-cursor .tile { cursor: none; }
 .tile__thumb {
   position: relative;
   display: block;
@@ -1393,8 +1401,7 @@ img, video { max-width: 100%; }
 }
 .viewer[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; }
 .viewer::backdrop { background: rgba(20, 20, 23, 0.35); }
-.has-cursor .viewer, .has-cursor .viewer * { cursor: auto; }
-.has-cursor .viewer button { cursor: pointer; }
+.viewer button { cursor: pointer; }
 .viewer__bar {
   display: flex;
   align-items: center;
@@ -1438,103 +1445,228 @@ img, video { max-width: 100%; }
 .viewer__btn:hover { background: var(--ink); color: var(--white); }
 
 /* =========================================================
-   CV — a resume sheet on the page; the skills are draggable stickers
+   CV — a printed resume lying on the blue stage, set small and tight: the
+   portrait held on it by a red binder clip, the skills as coloured stickers,
+   the full PDF one button below
    ========================================================= */
-.cv {
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: clamp(1.4rem, 3.5vw, 3rem);
-  border: 1px solid var(--line);
-  border-radius: var(--r-md);
-  background: var(--paper);
-  box-shadow: var(--shadow-soft);
+.sec--cv {
+  overflow-x: clip;               /* the tilted sheet never widens the page */
+  padding-top: clamp(3.2rem, 9vh, 6rem);
+  /* a soft pool of light behind the sheet, like a photo of paper on a blue desk */
+  background:
+    radial-gradient(ellipse 58% 46% at 50% 56%, rgba(90, 140, 255, 0.26), transparent 72%),
+    var(--blue);
 }
-.cv__head {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 1.2rem 2rem;
-  align-items: start;
-  padding-bottom: var(--s-5);
-  border-bottom: 2px solid var(--ink);
-}
-.cv__name {
-  font-family: var(--font-display);
+/* no big section title here: just a painted note above the sheet */
+.cv-hello {
+  padding: 0 var(--pad);
+  font-family: var(--font-hand);
   font-weight: 400;
-  font-size: clamp(2.6rem, 6vw, 4.6rem);
-  line-height: 0.86;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  font-size: clamp(1rem, 1.9vw, 1.4rem);
+  line-height: 1.6;
+  text-align: center;
+  rotate: -2deg;
 }
-.cv__role { margin-top: 0.45rem; font-size: clamp(1rem, 1.5vw, 1.25rem); font-weight: 600; }
-.cv__sub { margin-top: 0.2rem; font-size: 0.92rem; color: var(--ink-3); }
-.cv__contacts {
-  list-style: none;
+.sec--cv .sec__body { margin-top: clamp(3.1rem, 5vw, 3.4rem); }   /* room for the clip under the title */
+
+.cv-sheet {
+  --photo-w: clamp(6.4rem, 23cqw, 10.5rem);   /* cqw: a share of the sheet's own width */
+  position: relative;
+  container-type: inline-size;
+  width: min(100%, 46rem);
+  margin: 0 auto;
+  rotate: -0.8deg;                /* its own property: the reveal transform leaves it alone */
+}
+/* lifted lower corners: two soft shadows tucked behind the paper */
+.cv-sheet::before,
+.cv-sheet::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  bottom: 1rem;
+  width: 46%;
+  height: 20%;
+  box-shadow: 0 1.3rem 1.5rem rgba(0, 8, 40, 0.5);
+}
+.cv-sheet::before { left: 0.9rem; transform: skewY(-2.5deg) rotate(-2.5deg); }
+.cv-sheet::after { right: 0.9rem; transform: skewY(2.5deg) rotate(2.5deg); }
+
+.cv-sheet__paper {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  font-size: 0.9rem;
-  color: var(--ink-2);
-  text-align: right;
+  aspect-ratio: 8.5 / 11;         /* a letter page; taller only if the content needs it */
+  padding: clamp(1.1rem, 5cqw, 2.4rem) clamp(1.1rem, 6cqw, 2.8rem) clamp(0.8rem, 2.2cqw, 1.1rem);
+  color: var(--ink);
+  background-color: #fbfaf5;
+  background-image:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0) 40%, rgba(0, 0, 0, 0) 68%, rgba(60, 45, 10, 0.05)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9 0.4' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.3 0 0 0 0 0.2 0 0 0 0.1 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23p)'/%3E%3C/svg%3E");
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.03),
+    0 1px 2px rgba(0, 12, 50, 0.25),
+    0 18px 36px -18px rgba(0, 10, 45, 0.55),
+    0 46px 80px -42px rgba(0, 8, 40, 0.6);
 }
-.cv__contacts a:hover { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
 
-.cv__block {
-  display: grid;
-  grid-template-columns: 8.5rem minmax(0, 1fr);
-  gap: 1rem 2rem;
-  padding: clamp(1.4rem, 3vw, 2.2rem) 0;
-  border-bottom: 1px solid var(--line);
+/* header, like a printed resume: contacts on a ruled line, the name small at the
+   foot of the photo; the right side is left to the photo */
+.cv-sheet__id {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(var(--photo-w) * 1.3 - 1rem);
+  padding-right: calc(var(--photo-w) + clamp(0.8rem, 3cqw, 1.5rem));
 }
-.cv__h {
-  padding-top: 0.25em;
-  font-size: var(--fs-meta);
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+.cv-sheet__contacts {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.1rem 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--line-strong);
+  font-size: 0.7rem;
+  color: var(--ink-2);
+}
+.cv-sheet__contacts a:hover { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+.cv-sheet__who { margin-top: auto; padding-top: 1.2rem; }
+.cv-sheet__name {
+  font-weight: 500;
+  font-size: clamp(1.5rem, 4.6cqw, 2.1rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+.cv-sheet__role { margin-top: 0.25rem; font-size: 0.84rem; color: var(--ink-2); }
+.cv-sheet__sub { font-size: 0.72rem; color: var(--ink-3); }
+
+/* sections: a hairline, a small grey label, the content — the page's spare height
+   is shared by the gaps between them */
+.cv-sheet__paper > .cv-sheet__sec,
+.cv-sheet__cols { margin-top: auto; padding-top: clamp(1rem, 3cqw, 1.5rem); }
+.cv-sheet__col > .cv-sheet__sec + .cv-sheet__sec { margin-top: 1.1rem; }
+.cv-sheet__h {
+  margin-bottom: 0.55rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid var(--line-strong);
+  font-size: 0.7rem;
+  font-weight: 500;
   color: var(--ink-3);
 }
-.cv__profile { max-width: 66ch; line-height: 1.5; color: var(--ink-2); }
-.cv__profile p + p { margin-top: 0.7rem; }
 
-.cv__entry + .cv__entry { margin-top: var(--s-6); padding-top: var(--s-6); border-top: 1px solid var(--line); }
-.cv__entry-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.6rem 2rem; }
-.cv__org { font-family: var(--font-display); font-size: clamp(1.3rem, 2vw, 1.7rem); line-height: 1; text-transform: uppercase; }
-.cv__title { margin-top: 0.25rem; font-weight: 600; }
-.cv__note { margin-top: 0.15rem; font-size: 0.88rem; color: var(--ink-3); }
-.cv__when { text-align: right; font-size: 0.85rem; color: var(--ink-3); }
-.cv__dates { color: var(--blue); font-weight: 600; letter-spacing: 0.04em; white-space: nowrap; }
-.cv__bullets { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-top: var(--s-4); }
-.cv__bullets li { position: relative; padding-left: 1.4rem; font-size: 0.97rem; line-height: 1.5; color: var(--ink-2); }
-.cv__bullets li::before { content: "—"; position: absolute; left: 0; color: var(--blue); }
+.cv-entry + .cv-entry { margin-top: 0.85rem; }
+.cv-entry__meta,
+.cv-entry__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 1rem; }
+.cv-entry__meta { font-size: 0.68rem; color: var(--ink-3); }
+.cv-entry__role { font-size: 0.9rem; font-weight: 600; line-height: 1.3; letter-spacing: -0.01em; }
+.cv-entry__org { font-size: 0.8rem; font-weight: 500; }
+.cv-entry__note { font-size: 0.72rem; line-height: 1.4; color: var(--ink-3); }
+.cv-entry__points { list-style: none; margin-top: 0.35rem; }
+.cv-entry__points li { position: relative; padding-left: 0.9rem; font-size: 0.78rem; line-height: 1.5; color: var(--ink-2); }
+.cv-entry__points li::before { content: "–"; position: absolute; left: 0; color: var(--ink-3); }
+.cv-entry__points b { font-weight: 700; color: var(--ink); }   /* the figures: bold, nothing louder */
+.cv-entry--edu .cv-entry__role { font-size: 0.82rem; }
 
-.cv__langs { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.5rem 1.5rem; }
-.cv__langs li { display: flex; justify-content: space-between; gap: 1rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--line); }
-.cv__langs span { font-family: var(--font-display); font-size: 1.25rem; text-transform: uppercase; }
-.cv__langs em { font-style: normal; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+/* education + languages | skills */
+.cv-sheet__cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 0 clamp(1.2rem, 4cqw, 2rem);
+  padding-bottom: clamp(1rem, 3cqw, 1.4rem);
+}
+.cv-langs { list-style: none; display: flex; flex-wrap: wrap; gap: 0.1rem 0.85rem; font-size: 0.78rem; }
+.cv-langs span { font-size: 0.66rem; color: var(--ink-3); }
 
-/* the board needs the full width of the sheet, so this block stacks */
-.cv__block--skills { grid-template-columns: 1fr; gap: 0.4rem; border-bottom: 0; }
-.cv__hint { margin-bottom: var(--s-4); font-family: var(--font-hand); font-size: 0.78rem; line-height: 1.7; color: var(--ink-3); }
-.cv__actions { padding-top: var(--s-5); }
-.cv__todo { display: flex; flex-direction: column; align-items: flex-start; gap: 0.4rem; margin-top: var(--s-5); }
+/* skills: coloured stickers on the page; tools: small white pills */
+.cv-badges { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem 0.28rem; }
+.cv-badge {
+  padding: 0.38em 0.72em;
+  border-radius: var(--r-xs);
+  font-size: 0.68rem;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), 0 6px 10px -7px rgba(0, 0, 0, 0.45);
+}
+.cv-badge.sticker--white { box-shadow: inset 0 0 0 1px rgba(0, 51, 153, 0.25), 0 1px 0 rgba(0, 0, 0, 0.06), 0 6px 10px -7px rgba(0, 0, 0, 0.35); }
+.cv-sheet__label { margin: 0.8rem 0 0.4rem; font-size: 0.66rem; color: var(--ink-3); }
+.cv-badges--tools { gap: 0.28rem 0.24rem; }
+.cv-tool {
+  padding: 0.22em 0.62em;
+  border-radius: var(--r-pill);
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  font-size: 0.64rem;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--ink-2);
+}
 
-/* the sticker board: measured in normal flow, then scattered and draggable */
-.skills { position: relative; }
-.skills .skill {
+.cv-sheet__foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: auto;
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--ink-3);
+}
+
+/* the portrait: a small print held by the clip, swinging a little on hover */
+.cv-photo {
   position: absolute;
-  cursor: grab;
-  touch-action: none;
-  user-select: none;
+  z-index: 2;
+  top: clamp(0.5rem, 2cqw, 0.9rem);
+  right: clamp(1rem, 6cqw, 2.8rem);
+  width: var(--photo-w);
+  rotate: 3deg;
+  transform-origin: 58% 0;        /* hangs from the clip */
+  transition: rotate 0.8s var(--ease);
 }
-.has-cursor .skills .skill { cursor: none; }
-.skills .skill.is-dragging {
-  cursor: grabbing;
-  z-index: 5;
-  will-change: left, top; /* only the one in your hand: no need to promote all 28 */
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1), 0 22px 30px -18px rgba(0, 0, 0, 0.5);
+.cv-photo:hover { rotate: 1deg; }
+.cv-photo__print {
+  margin: 0;
+  padding: 5% 5% 0;
+  background: #fff;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.18), 0 12px 22px -10px rgba(0, 10, 40, 0.5);
 }
-.skills.is-flow { display: flex; flex-wrap: wrap; gap: 0.7rem 0.6rem; }
-.skills.is-flow .skill { position: static; transform: none; }
+.cv-photo__print img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
+.cv-photo__cap {
+  padding: 0.35em 0 0.55em;
+  font-family: var(--font-hand);
+  font-size: clamp(0.48rem, 1.4cqw, 0.62rem);
+  line-height: 1.5;
+  text-align: center;
+  color: var(--blue);
+}
+/* Martina's red binder clip (assets/binder-clip.webp): the jaws bite the top of the
+   print, the body and the wire rise above it */
+.cv-clip {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 58%;
+  width: 34%;
+  height: auto;
+  translate: -50% -72%;
+  rotate: -4deg;
+  filter: drop-shadow(0 1.5px 1px rgba(0, 0, 0, 0.3)) drop-shadow(0 6px 7px rgba(0, 10, 40, 0.25));
+  pointer-events: none;
+}
+
+/* "Download full CV" — the site's light pill, set like "Check out more" */
+.cv-cta__wrap { display: flex; justify-content: center; margin-top: clamp(3rem, 7vw, 5rem); }
+.cv-cta:hover .btn__ic { transform: translateY(3px); }   /* a download arrow drops */
+.cv-todo { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; margin-top: var(--s-5); }
+
+/* a narrow sheet (phones): one column, contacts stacked, the page as tall as its content */
+@container (max-width: 34rem) {
+  .cv-sheet__paper { aspect-ratio: auto; }
+  .cv-sheet__contacts { flex-direction: column; justify-content: flex-start; padding-bottom: 0; border-bottom: 0; }
+  .cv-sheet__cols { grid-template-columns: minmax(0, 1fr); }
+  .cv-sheet__col + .cv-sheet__col { margin-top: 1.1rem; }
+  .cv-entry__points li,
+  .cv-langs { font-size: 0.8rem; }
+  .cv-sheet__foot span:nth-child(2) { display: none; }
+}
 
 /* =========================================================
    CONTACT
@@ -1655,21 +1787,30 @@ body::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* custom cursor */
+/* cursor: a plain white arrow, drawn like the system one; links, buttons and the
+   zoomable tiles keep the system hand and magnifier */
+body {
+  cursor: url("assets/cursor-arrow.png") 5 3, auto;
+  cursor: -webkit-image-set(url("assets/cursor-arrow.png") 1x, url("assets/cursor-arrow-2x.png") 2x) 5 3, auto;
+  cursor: image-set(url("assets/cursor-arrow.png") 1x, url("assets/cursor-arrow-2x.png") 2x) 5 3, auto;
+}
+/* over the hero of the home page the drawn flower takes its place (script.js) */
 .has-cursor, .has-cursor a, .has-cursor button { cursor: none; }
 
-/* the drawn flower (home page): sits on the pointer, tilts as you move */
+/* the drawn flower: sits on the pointer, tilts as you move, sways a little while you rest */
 .cursor-flower {
   position: fixed;
   left: 0;
   top: 0;
-  width: 68px;
-  height: 68px;
-  margin: -34px 0 0 -34px;
+  width: 88px;
+  height: 88px;
+  margin: -44px 0 0 -44px;
   z-index: 9999;
   pointer-events: none;
-  transition: opacity 0.3s;
+  opacity: 0;
+  transition: opacity 0.2s;
 }
+.cursor-flower.is-on { opacity: 1; }
 .cursor-flower__in {
   position: absolute;
   inset: 0;
@@ -1681,44 +1822,9 @@ body::after {
   inset: 0;
   width: 100%;
   height: 100%;
-  transition: opacity 0.25s linear;
+  /* a whisper of shadow, so the flower stays readable on top of photos */
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.35));
 }
-/* a whisper of shadow, so the flower stays readable on top of photos */
-.cursor-flower__w { filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.35)); }
-.cursor-flower__b { opacity: 0; filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.95)); }
-.cursor-flower.is-ink .cursor-flower__b { opacity: 1; }
-.cursor-flower.is-ink .cursor-flower__w { opacity: 0; }
-.cursor-dot,
-.cursor-ring {
-  position: fixed;
-  top: 0; left: 0;
-  z-index: 9999;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-.cursor-dot::after {
-  content: "";
-  display: block;
-  width: 6px; height: 6px;
-  margin: -3px 0 0 -3px;
-  border-radius: 50%;
-  background: var(--white);
-  transition: transform 0.3s var(--ease), background 0.25s;
-}
-.cursor-dot.is-ink::after { background: var(--blue); }
-.cursor-dot.is-hot::after { transform: scale(0.5); }
-.cursor-ring { z-index: 9998; }
-.cursor-ring span {
-  display: block;
-  width: 34px; height: 34px;
-  margin: -17px 0 0 -17px;
-  border: 1.5px solid rgba(255, 255, 255, 0.75);
-  border-radius: 50%;
-  transition: transform 0.35s var(--ease), border-color 0.25s, background 0.25s;
-}
-.cursor-ring.is-ink span { border-color: rgba(0, 51, 153, 0.75); }
-.cursor-ring.is-hot span { transform: scale(1.55); background: rgba(255, 255, 255, 0.08); }
-.cursor-ring.is-ink.is-hot span { background: rgba(0, 51, 153, 0.06); }
 
 /* skip link + focus visibility */
 .skip {
@@ -1769,12 +1875,6 @@ body::after {
   .case__overview { grid-template-columns: 1fr; }
   .quotes { position: static; }
 
-  /* CV sheet: one column */
-  .cv__head { grid-template-columns: 1fr; }
-  .cv__contacts { text-align: left; }
-  .cv__block { grid-template-columns: 1fr; gap: 0.7rem; }
-  .cv__when { text-align: left; }
-
   /* collabs: images on top, lockup and text below */
   .collab__link { grid-template-columns: 1fr; gap: var(--s-5); }
   .collab:nth-child(even) .collab__pair { order: 0; }
@@ -1793,9 +1893,8 @@ body::after {
 }
 
 @media (max-width: 640px) {
-  /* narrow screens: long skills wrap instead of sticking out of the board */
-  .skills .skill { max-width: 100%; white-space: normal; }
-  .sticker--lg { font-size: 1.05rem; }
+  /* CV sheet: straighter on a phone */
+  .cv-sheet { rotate: -0.4deg; }
 
   .c-grid { gap: 1.4rem 0.8rem; }
   .files { grid-template-columns: repeat(2, minmax(0, 1fr)); }

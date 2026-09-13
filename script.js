@@ -56,11 +56,11 @@
   if ("IntersectionObserver" in window) {
     var themeObs = new IntersectionObserver(
       function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            navEl.setAttribute("data-theme", entry.target.getAttribute("data-navtheme"));
-          }
-        });
+        entries.forEach(function (entry) { entry.target._navOn = entry.isIntersecting; });
+        // the innermost surface under the nav wins: the CV paper inside its blue section
+        var pick = null;
+        themed.forEach(function (s) { if (s._navOn && (!pick || pick.contains(s))) pick = s; });
+        if (pick) navEl.setAttribute("data-theme", pick.getAttribute("data-navtheme"));
       },
       { rootMargin: "-7% 0px -93% 0px", threshold: 0 }
     );
@@ -121,84 +121,63 @@
   }
 
   /* ---------- Custom cursor ----------
-     Two flavours: the little drawn flower on the home page (data-cursor="flower")
-     and the minimal dot + ring everywhere else. Both follow the palette: blue on
-     the paper sections, white on the blue ones. */
+     The site's cursor is a plain white arrow (styles.css). On the home page
+     (data-cursor="flower") the little drawn flower takes its place over the hero:
+     it sits on the pointer, tilts as you move and sways, just barely, while the
+     pointer rests. Below the hero the arrow comes back. */
   (function () {
     var fine = window.matchMedia("(pointer: fine)").matches;
-    if (!fine || reduceMotion) return;
+    var hero = document.querySelector(".hero");
+    if (!fine || reduceMotion || !hero ||
+        document.documentElement.getAttribute("data-cursor") !== "flower") return;
 
-    var flower = document.documentElement.getAttribute("data-cursor") === "flower";
-    document.body.classList.add("has-cursor");
-
-    var parts = [];        // everything that follows the pointer
-    var dot, ring, wrap, inner;
-
-    if (flower) {
-      wrap = document.createElement("div");
-      wrap.className = "cursor-flower";
-      wrap.innerHTML =
-        '<div class="cursor-flower__in">' +
-        '<img src="assets/cursor-flower-white.webp" alt="" width="256" height="256" class="cursor-flower__w">' +
-        '<img src="assets/cursor-flower-blue.webp" alt="" width="256" height="256" class="cursor-flower__b">' +
-        "</div>";
-      inner = wrap.firstChild;
-      wrap.style.opacity = "0";   // stays hidden until the first move tells us the colour
-      document.body.appendChild(wrap);
-      parts = [wrap];
-    } else {
-      dot = document.createElement("div");
-      dot.className = "cursor-dot";
-      ring = document.createElement("div");
-      ring.className = "cursor-ring";
-      ring.innerHTML = "<span></span>";
-      document.body.appendChild(dot);
-      document.body.appendChild(ring);
-      parts = [dot, ring];
-    }
+    var wrap = document.createElement("div");
+    wrap.className = "cursor-flower";
+    wrap.innerHTML =
+      '<div class="cursor-flower__in">' +
+      '<img src="assets/cursor-flower-white.webp" alt="" width="256" height="256">' +
+      "</div>";
+    var inner = wrap.firstChild;
+    document.body.appendChild(wrap);
 
     var mx = window.innerWidth / 2, my = window.innerHeight / 2;
-    var rx = mx, ry = my, lastX = mx, tilt = 0;
+    var lastX = mx, tilt = 0, sway = 0, lastMove = 0;
+    var moved = false, inside = true;
+
+    // flower while the hero is under the pointer, arrow below it. The flower waits
+    // for the first move, so it never shows up where the pointer is not.
+    function update() {
+      var onHero = my < hero.getBoundingClientRect().bottom;
+      document.body.classList.toggle("has-cursor", onHero);
+      wrap.classList.toggle("is-on", onHero && moved && inside);
+    }
+    update();
 
     document.addEventListener("mousemove", function (e) {
       mx = e.clientX; my = e.clientY;
-      if (flower && wrap.style.opacity === "0") wrap.style.opacity = "1";
-      if (!e.target || !e.target.closest) return;
-      // palette-aware: blue cursor on light sections, white on dark/blue
-      var sec = e.target.closest("[data-navtheme]");
-      var ink = !!(sec && sec.getAttribute("data-navtheme") === "dark");
-      // grow over interactive elements (the skill stickers you can drag included)
-      var hot = !!e.target.closest("a, button, .skill");
-      parts.forEach(function (p) { p.classList.toggle("is-ink", ink); });
-      if (flower) {
-        inner.classList.toggle("is-hot", hot);
-      } else {
-        ring.classList.toggle("is-hot", hot);
-        dot.classList.toggle("is-hot", hot);
-      }
+      moved = true;
+      lastMove = performance.now();
+      update();
+      // grow over anything clickable
+      if (e.target && e.target.closest) inner.classList.toggle("is-hot", !!e.target.closest("a, button"));
     }, { passive: true });
+    // scrolling carries the hero away from a pointer that stands still
+    window.addEventListener("scroll", update, { passive: true });
+    document.documentElement.addEventListener("mouseleave", function () { inside = false; update(); });
+    document.documentElement.addEventListener("mouseenter", function () { inside = true; update(); });
 
-    document.documentElement.addEventListener("mouseleave", function () {
-      parts.forEach(function (p) { p.style.opacity = "0"; });
-    });
-    document.documentElement.addEventListener("mouseenter", function () {
-      parts.forEach(function (p) { p.style.opacity = "1"; });
-    });
-
-    (function loop() {
-      if (flower) {
-        // a little tilt in the direction you are moving, then back to rest
-        tilt += ((mx - lastX) * 0.6 - tilt) * 0.12;
-        tilt = Math.max(-16, Math.min(16, tilt));
-        lastX = mx;
-        wrap.style.transform = "translate3d(" + mx + "px," + my + "px,0) rotate(" + tilt.toFixed(2) + "deg)";
-      } else {
-        rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
-        dot.style.transform = "translate(" + mx + "px," + my + "px)";
-        ring.style.transform = "translate(" + rx + "px," + ry + "px)";
-      }
+    (function loop(now) {
+      // a little tilt in the direction you are moving, then back to rest...
+      tilt += ((mx - lastX) * 0.6 - tilt) * 0.12;
+      tilt = Math.max(-16, Math.min(16, tilt));
+      lastX = mx;
+      // ...where it sways, just barely: ±4° every 3 seconds, easing in once the pointer stops
+      var still = now - lastMove > 200;
+      sway += ((still ? 1 : 0) - sway) * (still ? 0.02 : 0.2);
+      var angle = tilt + sway * 4 * Math.sin(now / 480);
+      wrap.style.transform = "translate3d(" + mx + "px," + my + "px,0) rotate(" + angle.toFixed(2) + "deg)";
       requestAnimationFrame(loop);
-    })();
+    })(performance.now());
   })();
 
   /* ---------- Mobile menu ---------- */
