@@ -34,6 +34,7 @@
   --font-display: "Bebas Neue", "Arial Narrow", sans-serif;
   --font-text: "Inter", system-ui, -apple-system, sans-serif;
   --font-serif: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --font-hand: "Rock Salt", "Segoe Print", "Bradley Hand", cursive;   /* small painted accents only */
   --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
 
   --fs-display: clamp(3.2rem, 10vw, 8.5rem);
@@ -471,22 +472,15 @@ img, video { max-width: 100%; }
 
 /* the greeting is the hero's headline now: two lines, each rising from its mask */
 .hero__hi {
-  font-family: var(--font-text);
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-weight: 400;
   text-transform: uppercase;
-  font-size: clamp(2.3rem, 6.6vw, 7rem);
-  line-height: 0.94;
-  letter-spacing: -0.015em;
+  font-size: clamp(3.4rem, 11.5vw, 11.5rem);
+  line-height: 0.86;
+  letter-spacing: 0.005em;
 }
 .hero__hi .line { display: block; overflow: hidden; }
 .hero__hi .line > span { display: block; }
-.hero__hi em {                        /* the one phrase in script, like the reference */
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
-  text-transform: none;
-  letter-spacing: 0;
-}
 .hero__hi .line > span {
   transform: translateY(115%);
   animation: heroRise 1.15s var(--ease) both;
@@ -838,7 +832,7 @@ img, video { max-width: 100%; }
 /* caption: name and year on one line, the rest underneath, small and quiet */
 .c-card__cap {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 1fr) auto;   /* the painted kicker may wrap, the right column never */
   align-items: baseline;
   gap: 0.1rem 0.6rem;
   margin-top: 0.7rem;
@@ -859,13 +853,13 @@ img, video { max-width: 100%; }
 }
 .c-card__k {
   grid-column: 1;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 0.95rem;
-  line-height: 1.15;
+  margin-top: 0.2rem;
+  font-family: var(--font-hand);
+  font-size: 0.7rem;
+  line-height: 1.6;
   color: var(--blue);
 }
-.c-card__m { grid-column: 2; justify-self: end; text-align: right; }
+.c-card__m { grid-column: 2; align-self: center; justify-self: end; text-align: right; }
 
 .c-more__wrap { display: flex; justify-content: center; margin-top: clamp(2.4rem, 5vw, 4rem); }
 .c-more { font-family: var(--font-mono); letter-spacing: 0.12em; text-transform: uppercase; }
@@ -914,7 +908,7 @@ img, video { max-width: 100%; }
   color: var(--ink-3);
 }
 .fun__text { padding: var(--s-4) var(--s-2) var(--s-2); }
-.fun__kicker { font-family: var(--font-serif); font-style: italic; font-size: 1.05rem; color: var(--ink-3); }
+.fun__kicker { font-family: var(--font-hand); font-size: 0.76rem; line-height: 1.7; color: var(--ink-3); }
 .fun__title {
   margin-top: 0.1rem;
   font-family: var(--font-display);
@@ -984,10 +978,10 @@ img, video { max-width: 100%; }
 }
 .collab__partner { font-size: clamp(2.6rem, 6vw, 5rem); letter-spacing: 0.01em; }
 .collab__kicker {
-  margin-top: 0.3rem;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: clamp(1.2rem, 2vw, 1.7rem);
+  margin-top: 0.4rem;
+  font-family: var(--font-hand);
+  font-size: clamp(0.8rem, 1.2vw, 1rem);
+  line-height: 1.6;
   color: var(--ink-2);
 }
 .collab .meta { margin-top: var(--s-3); }
@@ -1520,7 +1514,7 @@ img, video { max-width: 100%; }
 
 /* the board needs the full width of the sheet, so this block stacks */
 .cv__block--skills { grid-template-columns: 1fr; gap: 0.4rem; border-bottom: 0; }
-.cv__hint { margin-bottom: var(--s-4); font-family: var(--font-serif); font-style: italic; color: var(--ink-3); }
+.cv__hint { margin-bottom: var(--s-4); font-family: var(--font-hand); font-size: 0.78rem; line-height: 1.7; color: var(--ink-3); }
 .cv__actions { padding-top: var(--s-5); }
 .cv__todo { display: flex; flex-direction: column; align-items: flex-start; gap: 0.4rem; margin-top: var(--s-5); }
 
@@ -1767,10 +1761,10 @@ body::after {
 }
 
 @media (max-width: 1100px) {
-  .c-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 900px) {
+  .c-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .case__head { grid-template-columns: 1fr; align-items: start; }
   .case__overview { grid-template-columns: 1fr; }
   .quotes { position: static; }
