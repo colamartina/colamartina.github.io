@@ -41,15 +41,16 @@ window.PORTFOLIO.campaigns = [
     ],
     "cover": {
       "type": "image",
-      "src": "content/campaigns/rebranding-2026/final-assets/girls-cherry-pop-blue",
+      "src": "content/campaigns/rebranding-2026/final-assets/girls-multiproduct",
       "widths": [
         640,
         1280,
         1920
       ],
       "ratio": 0.6667,
-      "name": "girls-cherry-pop-blue.webp",
-      "focus": "50% 30%"
+      "zoom": 1.16,
+      "name": "girls-multiproduct.webp",
+      "focus": "50% 62%"
     },
     "sections": [
       {
