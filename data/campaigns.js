@@ -541,14 +541,15 @@ window.PORTFOLIO.campaigns = [
     ],
     "cover": {
       "type": "image",
-      "src": "content/campaigns/summer-2026/assets/dragon-fruit-tropi-teal-lamp-face",
+      "src": "content/campaigns/summer-2026/assets/maxi-kit-lifestyle",
       "widths": [
         640,
         1280,
         1920
       ],
       "ratio": 0.6667,
-      "name": "dragon-fruit-tropi-teal-lamp-face.webp"
+      "name": "maxi-kit-lifestyle.webp",
+      "focus": "50% 45%"
     },
     "sections": [
       {
@@ -767,14 +768,15 @@ window.PORTFOLIO.campaigns = [
     ],
     "cover": {
       "type": "image",
-      "src": "content/campaigns/fall-2026/assets/kv-main",
+      "src": "content/campaigns/fall-2026/assets/items-shoes",
       "widths": [
         640,
         1280,
         1920
       ],
-      "ratio": 0.6667,
-      "name": "kv-top-view.webp"
+      "ratio": 1.4988,
+      "name": "items-shoes.webp",
+      "focus": "50% 50%"
     },
     "sections": [
       {
@@ -1060,7 +1062,7 @@ window.PORTFOLIO.campaigns = [
     ],
     "cover": {
       "type": "image",
-      "zoom": 1.18,
+      "zoom": 1.06,
       "src": "content/campaigns/spring-2026/assets/shoot-0785",
       "widths": [
         640,
