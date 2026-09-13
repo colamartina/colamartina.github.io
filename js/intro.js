@@ -1,6 +1,6 @@
 /* =========================================================
    INTRO — the name full-screen; the two words part to flash a few photos,
-   then the blue curtain lifts onto the hero (~2s in total).
+   then the burgundy curtain lifts onto the hero (~2s in total).
    Runs only when the gate script in <head> added .intro-on
    (first visit of the session, no prefers-reduced-motion).
    Skip: click / tap, wheel or scroll, any key.

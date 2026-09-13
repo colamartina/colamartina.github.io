@@ -121,7 +121,7 @@
   }
 
   /* ---------- Custom cursor ----------
-     The site's cursor is a plain white arrow (styles.css). On the home page
+     The site's cursor is a cream arrow (styles.css). On the home page
      (data-cursor="flower") the little drawn flower takes its place over the hero:
      it sits on the pointer, tilts as you move and sways, just barely, while the
      pointer rests. Below the hero the arrow comes back. */
@@ -135,7 +135,7 @@
     wrap.className = "cursor-flower";
     wrap.innerHTML =
       '<div class="cursor-flower__in">' +
-      '<img src="assets/cursor-flower-white.webp" alt="" width="256" height="256">' +
+      '<img src="assets/cursor-flower-acid.webp" alt="" width="256" height="256">' +
       "</div>";
     var inner = wrap.firstChild;
     document.body.appendChild(wrap);

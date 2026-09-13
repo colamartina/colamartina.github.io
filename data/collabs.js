@@ -6,6 +6,7 @@
 
    Texts: null = still to write ([TODO] on the working copy only).
    Quotes come from the collab materials. Internal slides are left out.
+   accent: "blue", "yellow" or "orange": the colour of the project page's kicker and quotes.
    ========================================================= */
 window.PORTFOLIO = window.PORTFOLIO || {};
 window.PORTFOLIO.collabs = [
@@ -17,6 +18,7 @@ window.PORTFOLIO.collabs = [
     "brand": "Le Mini Macaron",
     "year": "2023",
     "type": "Pop-up",
+    "accent": "yellow",
     "line": null,
     "role": null,
     "context": null,
@@ -260,6 +262,7 @@ window.PORTFOLIO.collabs = [
     "brand": "Le Mini Macaron",
     "year": "2025",
     "type": "Co-branded collection",
+    "accent": "blue",
     "line": null,
     "role": null,
     "context": null,
@@ -525,6 +528,7 @@ window.PORTFOLIO.collabs = [
     "brand": "Le Mini Macaron",
     "year": "2026",
     "type": "Giveaway & gift",
+    "accent": "blue",
     "line": null,
     "role": null,
     "context": null,
@@ -651,6 +655,7 @@ window.PORTFOLIO.collabs = [
     "brand": "Le Mini Macaron",
     "year": "2026",
     "type": "Retail promotion",
+    "accent": "yellow",
     "line": null,
     "role": null,
     "context": null,

@@ -1,6 +1,6 @@
 /* =========================================================
    CASE STUDY — case.html?p=<slug>, rendered from data/*.js.
-   A white, document-like page: breadcrumb, "get info" panel,
+   A cream, document-like page: breadcrumb, "get info" panel,
    section tabs that follow the scroll, overview, the project's
    folders as file grids, and a viewer for images and videos.
    ========================================================= */
@@ -38,6 +38,9 @@
 
   var c = found.c, kind = found.kind;
   document.title = c.title + " — " + c.brand + " · Martina Cola";
+  // the page stays cream; the project's accent (blue · yellow · orange) colours its kicker and quotes
+  var page = root.closest(".case-page");
+  if (page) page.setAttribute("data-accent", c.accent || "blue");
 
   // every media item in page order, for the viewer
   var flat = [];

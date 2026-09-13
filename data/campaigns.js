@@ -10,6 +10,7 @@
    (ratio = width / height). Videos are MP4 with a -poster.webp image.
    To add a campaign: copy an entry, change slug/texts/paths.
    Generated from content/manifest.json — safe to edit by hand.
+   accent: "blue", "yellow" or "orange": the colour of the project page's kicker and quotes.
    ========================================================= */
 window.PORTFOLIO = window.PORTFOLIO || {};
 window.PORTFOLIO.campaigns = [
@@ -20,6 +21,7 @@ window.PORTFOLIO.campaigns = [
     "brand": "Le Mini Macaron",
     "year": "2026",
     "type": "Rebranding",
+    "accent": "blue",
     "line": null,
     "role": null,
     "context": null,
@@ -524,6 +526,7 @@ window.PORTFOLIO.campaigns = [
     "brand": "Le Mini Macaron",
     "year": "2026",
     "type": "Collection launch",
+    "accent": "orange",
     "line": null,
     "role": null,
     "context": null,
@@ -751,6 +754,7 @@ window.PORTFOLIO.campaigns = [
     "brand": "Le Mini Macaron",
     "year": null,
     "type": "Out-of-home",
+    "accent": "yellow",
     "line": "High-impact outdoor advertising across six Italian cities, leveraging industry connections to maximize reach and efficiency.",
     "role": "OOH & Media Lead",
     "context": null,
@@ -1030,6 +1034,7 @@ window.PORTFOLIO.campaigns = [
     "brand": "Le Mini Macaron",
     "year": "2026",
     "type": "Collection launch",
+    "accent": "yellow",
     "line": null,
     "role": null,
     "context": null,
@@ -1241,6 +1246,7 @@ window.PORTFOLIO.campaigns = [
     "brand": "Le Mini Macaron",
     "year": "2026",
     "type": "Collection launch",
+    "accent": "orange",
     "line": null,
     "role": null,
     "context": null,
@@ -1535,6 +1541,7 @@ window.PORTFOLIO.campaigns = [
     "brand": "Le Mini Macaron",
     "year": "2025",
     "type": "Promotion",
+    "accent": "orange",
     "line": null,
     "role": null,
     "context": null,
@@ -1645,6 +1652,7 @@ window.PORTFOLIO.campaigns = [
     "brand": "Le Mini Macaron",
     "year": "2025",
     "type": "Collection launch",
+    "accent": "blue",
     "line": null,
     "role": null,
     "context": null,

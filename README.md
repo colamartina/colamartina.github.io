@@ -8,7 +8,7 @@ dependencies — rebuilt from the original Framer site so you fully own it.
 | File | What it holds |
 |------|----------------|
 | `index.html` | All the content — bio, projects, contact. **Edit text here.** |
-| `styles.css` | All styling (colors, type, layout). Brand color is `--blue: #003399`. |
+| `styles.css` | All styling (colors, type, layout). The palette is the tokens at the top: burgundy `#451d20`, electric blue `#387cf8` (`#2a62e0` on cream), cream `#f7f3ea`, acid yellow `#dfe85a`, red-orange `#fc4524`, pink `#ff86cf`. |
 | `script.js` | Scroll reveals, adaptive nav, count-up stats, mobile menu. |
 | `fonts.css` + `assets/fonts/` | Self-hosted Bebas Neue + Inter (no Google Fonts call). |
 | `assets/` | Optimized OOH campaign photos + favicon. |
