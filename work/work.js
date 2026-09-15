@@ -416,10 +416,12 @@
       ])
     ]);
 
-    // first: "videos": the videos open the page, all in one row, and the photos follow the text
+    // first: "videos": the videos open the page, three a row, and the photos follow the text
     var videosFirst = p.first === "videos" && p.videos.length > 0;
+    var rows = [];
+    if (videosFirst) p.videos.forEach(function (m, k) { if (k % 3 === 0) rows.push([]); rows[rows.length - 1].push(video(m)); });
     var pictures = el("div.visuals", {}, videosFirst
-      ? [el("div.reels.reels--first", {}, p.videos.map(function (m) { var fig = video(m); fig.style.setProperty("--r", m.it.ratio); return fig; }))]
+      ? rows.map(function (row) { return el("div.reels.reels--first", {}, row); })
       : visuals(p));
     formatsIn(pictures, p.formats);
     var photos = videosFirst && p.images.length ? mosaic(p.images, p.title) : null;

@@ -93,19 +93,17 @@
   .reels video, .duo video { width: 100%; height: 100%; object-fit: cover; }
   .reel__sound { position: absolute; left: 10px; bottom: 10px; padding: 6px 11px; border: 0; border-radius: 999px; background: var(--blue); color: #fff; font: 400 10.5px/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
 
-  /* a project that opens with its videos (first: "videos" in projects.js): all in one row, one height, none bigger
-     than usual (three a row on a phone); its photos follow the text, side by side in their order, each row one
-     height and as wide as the page. --r is a picture's shape: a row takes what fits at --h of the width per unit
-     of shape, then grows to the edges; one that can't fill stays in the middle */
-  .reels--first { flex-wrap: nowrap; }
-  .reels--first figure { flex: var(--r) 1 0; height: auto; max-width: calc(var(--reel-h) * var(--r)); }
+  /* a project that opens with its videos (first: "videos" in projects.js): three a row at the usual height, across
+     the width on a phone; its photos follow the text, side by side in their order, each row one height and as wide
+     as the page. --r is a picture's shape: a row takes what fits at --h of the width per unit of shape, then grows
+     to the edges; one that can't fill stays in the middle */
+  .reels--first + .reels--first { margin-top: 8px; }
   .mosaic { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 48px; padding: 0 8px; --h: 37%; }
   .mosaic figure { flex: var(--r) 1 calc(var(--r) * var(--h)); max-width: calc(var(--r) * var(--h) * 1.6); aspect-ratio: var(--r); }
   .mosaic img { width: 100%; height: 100%; object-fit: cover; }
-  @media (max-width: 1000px) { .reels--first .reel__sound { left: 6px; bottom: 6px; padding: 5px 8px; font-size: 9.5px; } }   /* narrow videos: a smaller pill */
   @media (max-width: 700px) {
-    .reels--first { flex-wrap: wrap; }
-    .reels--first figure { flex: 0 0 calc((100% - 16px) / 3); max-width: none; }
+    .reels--first figure { flex: 0 0 calc((100% - 16px) / 3); height: auto; }
+    .reels--first .reel__sound { left: 6px; bottom: 6px; padding: 5px 8px; font-size: 9.5px; }   /* narrow videos: a smaller pill */
     .mosaic { --h: 55%; }
   }
 

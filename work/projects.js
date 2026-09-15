@@ -11,7 +11,7 @@
              (a name, { name: "…", focus: "…", upright: true } to cut a landscape image to 4:5 as well,
              or one of the PHOTOS below)
      videos  played muted and in loop while on screen
-     first   "videos": the videos open the project page, in one row, then the text, then the photos side by side
+     first   "videos": the videos open the project page, three a row, then the text, then the photos side by side
              in the order given, each row one height ({ name: "…", whole: true } keeps a photo uncut)
      hide    files of the project's folders to leave out; every other file (banners, ads, social,
              behind the scenes) is shown under the text, whole
