@@ -19,6 +19,7 @@
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var STICKERS = { graphics: true, stickers: true, badges: true };   // data sections shown as a sticker sheet
   var LABELS = { "key-visuals": "More visuals" };                    // what's left of a section already shown above
+  var FOLDERS = { ecom: "E-commerce", social: "Social", "paid-ads": "Paid ads", ugc: "UGC", bts: "Behind the scenes" };   // names for a folder a file is moved to (move)
 
   // tiny DOM builder: el("p.class", { href: "#" }, [children | "text"])
   function el(tag, attrs, children) {
@@ -83,7 +84,19 @@
     images.concat(videos).forEach(function (m) { shown[m.it.name] = true; });
     (e.hide || []).forEach(function (name) { shown[name] = true; });
     function rank(s) { return s.id === "bts" ? 2 : STICKERS[s.id] ? 1 : 0; }
-    var more = sections
+    // files moved to another folder in projects.js (move); a folder the project does not have is added after the others
+    var moved = e.move || {};
+    var folders = sections.map(function (s) {
+      return { id: s.id, label: s.label, items: s.items.filter(function (it) { return !moved[it.name]; }) };
+    });
+    Object.keys(moved).forEach(function (name) {
+      var it = files.filter(function (f) { return f && f.name === name; })[0];
+      if (!it) return;
+      var to = folders.filter(function (s) { return s.id === moved[name]; })[0];
+      if (!to) folders.push(to = { id: moved[name], label: FOLDERS[moved[name]] || moved[name], items: [] });
+      to.items.push(it);
+    });
+    var more = folders
       .map(function (s) {
         // the files added in projects.js (add), in the order given there (order); the others follow in their own
         var extra = ((e.add || {})[s.id] || []).map(function (x) { return Object.assign({ type: "image" }, x); });

@@ -15,6 +15,7 @@
              stickers, behind the scenes) is shown under the text, whole
      add     files that are not in data/, added to one of those folders: { social: [PHOTOS.x] }
      order   the order of a folder's files: { ecom: ["b.webp", "a.webp"] }; the files not listed follow
+     move    a file shown in another folder: { "file.webp": "social" }; a folder the project lacks ("ecom") is added
    Files are picked by name from data/campaigns.js, collabs.js and events.js.
    Order: the projects with the most material first, the covers grouped by colour.
    ========================================================= */
@@ -48,7 +49,8 @@
       text: "All Dolled Up! is the first collection by Le Mini Macaron and Fazit, made for getting ready together before a night out: four exclusive shades, 3D nail stickers and freckles, all in a lunch box.",
       cover: "model-dollhouse-bottles.webp",
       images: ["model-dollhouse-bottles.webp", "model-bottle-confetti-crush.webp", "bundle-lifestyle-models.webp"],
-      videos: ["out-in-2-days.mp4", "i-dont-think-we-should-be-together.mp4", "video-collage-all-models.mp4"]
+      videos: ["out-in-2-days.mp4", "i-dont-think-we-should-be-together.mp4", "video-collage-all-models.mp4"],
+      move: { "moodboard-grid.webp": "social", "asset-moodboard.webp": "ecom" }
     },
     {
       slug: "ooh-italy",
