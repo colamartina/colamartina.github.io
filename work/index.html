@@ -74,7 +74,10 @@
   /* ---------- one project ---------- */
   .visuals { padding-top: 8px; }
   .gallery, .reels, .duo, .run { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 0 8px; }
-  .gallery + .gallery, .gallery + .reels, .run + .run { margin-top: 8px; }
+  .gallery + .gallery, .gallery + .reels, .gallery + .run, .run + .reels, .run + .run { margin-top: 8px; }
+  /* a banner made twice, for computers and for phones: only the one for this kind of screen shows (formats in work.js) */
+  @media not all and (max-width: 700px) { .for-narrow { display: none; } }
+  @media (max-width: 700px) { .for-wide { display: none; } }
   figure { overflow: hidden; background: var(--well); }
 
   /* photos: cut to 4:5 (landscape ones to 5:4), three a row */
@@ -107,8 +110,6 @@
   .run--row figure { flex: 0 0 auto; height: var(--row-h); max-width: 100%; }
   .run img { width: 100%; height: 100%; object-fit: cover; }
   .run--row img { object-fit: contain; }
-  .run--stickers { align-items: center; gap: 28px 44px; margin: 0 8px; padding: 48px var(--pad); background: var(--blue); }
-  .run--stickers img { width: auto; height: clamp(64px, 9vw, 124px); }
 
   .pager { display: flex; align-items: center; gap: 24px; margin: 80px var(--pad) 0; padding: 18px 0 44px; border-top: 2px solid var(--blue); }
   .pager a { display: flex; align-items: center; gap: 14px; min-width: 0; }
@@ -117,6 +118,23 @@
   .pager__t { display: block; font-size: 15px; font-weight: 700; }
   .pager__arrow { font-size: 22px; line-height: 1; color: var(--blue); }
   .pager a:hover .pager__t { color: var(--blue); }
+
+  /* the badges of a project (the files of its sticker folders): big, lying loose across the pictures, above
+     them and under the ×. Never quite still: each sways a little, out of step, and holds still under the
+     pointer. Picked up with the mouse or a finger, one follows the pointer and stays wherever it is let go.
+     Sized by area, so a long one weighs as much as a round one; smaller on narrow screens. The sway uses
+     rotate and translate, which add to the tilt and the lift in transform. */
+  .has-badges { position: relative; --badge: clamp(92px, 8vw + 64px, 220px); }
+  .badges { position: absolute; inset: 0; z-index: 4; overflow: hidden; overflow: clip; pointer-events: none; }
+  .badge { position: absolute; left: 0; top: 0; width: calc(var(--badge) * var(--k, 1) * var(--wide, 1)); aspect-ratio: var(--ratio, 1); pointer-events: auto; touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; will-change: transform; }
+  .badge img { width: 100%; height: 100%; pointer-events: none; -webkit-user-drag: none; -webkit-touch-callout: none; transform: rotate(var(--tilt, 0deg)); filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .1)); transition: transform .22s cubic-bezier(.25, .8, .35, 1), filter .22s ease; animation: badgeSway var(--sway, 4s) ease-in-out var(--sway-delay, 0s) infinite alternate; }
+  @keyframes badgeSway { from { rotate: -1.8deg; translate: 0 1px; } to { rotate: 1.8deg; translate: 0 -4px; } }
+  @media (hover: hover) {
+    .badge:hover img { transform: rotate(var(--tilt, 0deg)) scale(1.04); filter: drop-shadow(0 6px 8px rgba(0, 0, 0, .14)); animation-play-state: paused; }
+  }
+  .badge.is-held img { transform: rotate(calc(var(--tilt, 0deg) + 3deg)) scale(1.08); filter: drop-shadow(0 14px 16px rgba(0, 0, 0, .2)); animation-play-state: paused; }
+  .is-grabbing, .is-grabbing * { cursor: grabbing !important; user-select: none !important; -webkit-user-select: none !important; }
+  @media (prefers-reduced-motion: reduce) { .badge img { transition: none; animation: none; } }
 
   @media (max-width: 1000px) {
     .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 24px; }

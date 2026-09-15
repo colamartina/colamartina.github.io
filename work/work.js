@@ -3,7 +3,8 @@
    Without ?p: every project, one image each with its title under it.
    With ?p=<slug>: that project — its photos and videos, the title and the
    short text, then everything else from its folders (banners, ads, social,
-   stickers, behind the scenes), then the previous and next project.
+   behind the scenes), then the previous and next project. The files of its
+   sticker folders lie loose on the page as big badges, to pick up and move.
    A round × (or the header, or Esc) closes a project and goes back to the grid,
    scrolled where it was left.
    What is shown is set in work/projects.js; the files are described in
@@ -17,7 +18,7 @@
   if (!main) return;
   var ROOT = "../";                                   // paths in data/ start at the site root
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var STICKERS = { graphics: true, stickers: true, badges: true };   // data sections shown as a sticker sheet
+  var STICKERS = { graphics: true, stickers: true, badges: true };   // data sections whose files become the badges
   var LABELS = { "key-visuals": "More visuals" };                    // what's left of a section already shown above
   var FOLDERS = { ecom: "E-commerce", social: "Social", "paid-ads": "Paid ads", ugc: "UGC", bts: "Behind the scenes" };   // names for a folder a file is moved to (move)
 
@@ -79,11 +80,11 @@
     var images = (e.images || []).map(find).filter(function (m) { return m && m.it.type === "image"; });
     var videos = (e.videos || []).map(find).filter(function (m) { return m && m.it.type === "video"; });
 
-    // the rest of the project's folders, in their order; the stickers and behind the scenes close the page
+    // the rest of the project's folders, in their order, behind the scenes last;
+    // the files of the sticker folders are not shown there: they become the badges
     var shown = {};
     images.concat(videos).forEach(function (m) { shown[m.it.name] = true; });
     (e.hide || []).forEach(function (name) { shown[name] = true; });
-    function rank(s) { return s.id === "bts" ? 2 : STICKERS[s.id] ? 1 : 0; }
     // files moved to another folder in projects.js (move); a folder the project does not have is added after the others
     var moved = e.move || {};
     var folders = sections.map(function (s) {
@@ -96,7 +97,7 @@
       if (!to) folders.push(to = { id: moved[name], label: FOLDERS[moved[name]] || moved[name], items: [] });
       to.items.push(it);
     });
-    var more = folders
+    var rest = folders
       .map(function (s) {
         // the files added in projects.js (add), in the order given there (order); the others follow in their own
         var extra = ((e.add || {})[s.id] || []).map(function (x) { return Object.assign({ type: "image" }, x); });
@@ -107,8 +108,27 @@
           .map(function (x) { return x.it; });
         return { id: s.id, label: (e.labels || {})[s.id] || LABELS[s.id] || s.label, items: items.filter(function (it) { return !shown[it.name]; }) };
       })
-      .filter(function (s) { return s.items.length; })
-      .sort(function (a, b) { return rank(a) - rank(b); });
+      .filter(function (s) { return s.items.length; });
+    var more = rest
+      .filter(function (s) { return !STICKERS[s.id]; })
+      .sort(function (a, b) { return (a.id === "bts") - (b.id === "bts"); });
+    // a banner made twice, for computers and for phones, shows only on its own kind of screen: files named
+    // …desktop… and …mobile… pair up by themselves, others are paired in projects.js (mobile)
+    var formats = {}, present = {};
+    images.concat(videos).forEach(function (m) { present[m.it.name] = true; });
+    rest.forEach(function (s) { s.items.forEach(function (it) { present[it.name] = true; }); });
+    function twins(wide, narrow) {
+      if (wide !== narrow && present[wide] && present[narrow]) { formats[wide] = "wide"; formats[narrow] = "narrow"; }
+    }
+    Object.keys(present).forEach(function (name) { if (/desktop/i.test(name)) twins(name, name.replace(/desktop/gi, "mobile")); });
+    Object.keys(e.mobile || {}).forEach(function (name) { twins(name, e.mobile[name]); });
+    var spots = {};
+    (e.badges || []).forEach(function (b) { spots[b.name] = b; });
+    var badges = rest
+      .filter(function (s) { return STICKERS[s.id]; })
+      .reduce(function (all, s) { return all.concat(s.items); }, [])
+      .filter(function (it) { return it.type === "image"; })
+      .map(function (it) { return { it: it, spot: spots[it.name] || null }; });
 
     return {
       slug: e.slug,
@@ -117,7 +137,9 @@
       cover: { it: cover.it, focus: e.focus || cover.focus, zoom: e.zoom || null },
       images: images,
       videos: videos,
-      more: more
+      more: more,
+      badges: badges,
+      formats: formats
     };
   }).filter(Boolean);
   if (!projects.length) return;
@@ -127,6 +149,7 @@
     var it = m.it, node = document.createElement("img");
     node.alt = "";
     node.decoding = "async";
+    node.setAttribute("data-file", it.name || "");
     node.loading = eager ? "eager" : "lazy";          // before src, or the file starts loading at once
     if (it.type === "video") {
       node.src = ROOT + it.poster;
@@ -251,15 +274,37 @@
         return el("figure", { style: "aspect-ratio: " + (m.upright ? "4 / 5" : "5 / 4") }, [node]);
       }).concat(p.videos.map(video)))];
     }
-    var nodes = gallery(p.images, p.title, true);
+    // a banner among them (twice as wide as tall, or more, or one made for one kind of screen) is not cut:
+    // whole, across the page, after the photos
+    var banners = p.images.filter(function (m) { return (!m.upright && m.it.ratio >= 2) || p.formats[m.it.name]; });
+    var nodes = gallery(p.images.filter(function (m) { return banners.indexOf(m) < 0; }), p.title, true);
+    if (banners.length) nodes.push(el("div.run.run--wide", {}, banners.map(function (m) { return natural(m, "(max-width: 1400px) 100vw, 1400px", p.title); })));
     if (p.videos.length) nodes.push(el("div.reels", {}, p.videos.map(video)));
     return nodes;
+  }
+
+  // a banner made for one kind of screen (formats) hides on the other; so does its run, and its folder when
+  // nothing else is in it
+  function formatsIn(node, formats) {
+    function kind(n) { return n.classList.contains("for-wide") ? "wide" : n.classList.contains("for-narrow") ? "narrow" : ""; }
+    function only(list) { var k = list.length ? kind(list[0]) : ""; return k && list.every(function (n) { return kind(n) === k; }) ? k : ""; }
+    [].forEach.call(node.querySelectorAll("img[data-file]"), function (im) {
+      var f = formats[im.getAttribute("data-file")];
+      if (f && im.parentNode.tagName === "FIGURE") im.parentNode.classList.add("for-" + f);
+    });
+    [].forEach.call(node.querySelectorAll(".gallery, .run, .reels, .duo"), function (run) {
+      var k = only([].slice.call(run.children));
+      if (k) run.classList.add("for-" + k);
+    });
+    if (node.classList.contains("block")) {
+      var k = only([].slice.call(node.children, 1));
+      if (k) node.classList.add("for-" + k);
+    }
   }
 
   // how a file from the rest of the folders is shown: whole, except the photos behind the scenes
   function shape(section, it) {
     if (it.type === "video") return "reels";
-    if (STICKERS[section.id]) return "stickers";
     if (section.id === "bts") return "photos";
     if (it.ratio >= 2) return "wide";                  // banners, moodboards, profile grids
     if (it.ratio >= 1.2) return "pair";                // slides, postcards, landscape visuals
@@ -281,8 +326,6 @@
         nodes.push(el("div.run.reels", {}, r.items.map(video)));
       } else if (r.shape === "photos") {
         gallery(r.items, alt, false).forEach(function (g) { g.classList.add("run"); nodes.push(g); });
-      } else if (r.shape === "stickers") {
-        nodes.push(el("div.run.run--stickers", {}, r.items.map(function (m) { return img(m, "240px", false); })));
       } else if (r.shape === "wide") {
         nodes.push(el("div.run.run--wide", {}, r.items.map(function (m) { return natural(m, "(max-width: 1400px) 100vw, 1400px", alt); })));
       } else if (r.shape === "pair") {
@@ -293,7 +336,9 @@
         nodes.push(el("div.run.run--row", {}, r.items.map(function (m) { return natural(m, "(max-width: 700px) 70vw, 36vw", alt); })));
       }
     });
-    return el("section.block", { "aria-label": s.label }, [el("h2.block__label", { text: s.label })].concat(nodes));
+    var section = el("section.block", { "aria-label": s.label, "data-section": s.id }, [el("h2.block__label", { text: s.label })].concat(nodes));
+    formatsIn(section, p.formats);
+    return section;
   }
 
   // "Le Mini Macaron | Rebranding" → the project in capitals, the brand in italics under it, like a job on the CV
@@ -326,8 +371,16 @@
       ])
     ]);
 
-    main.replaceChildren.apply(main, [el("div.visuals", {}, visuals(p)), about]
-      .concat(p.more.map(function (s) { return block(p, s); }), [pager]));
+    var pictures = el("div.visuals", {}, visuals(p));
+    formatsIn(pictures, p.formats);
+    var blocks = p.more.map(function (s) { return block(p, s); });
+    main.replaceChildren.apply(main, [pictures, about].concat(blocks, [pager]));
+    if (p.badges.length) {
+      var anchors = { top: pictures, text: about };     // the parts of the page a badge can belong to, top to bottom
+      p.more.forEach(function (s, k) { anchors[s.id] = blocks[k]; });
+      anchors.end = pager;
+      scatter(p.badges, anchors);
+    }
 
     // the × in the corner, the name and the line in the header all close the project
     document.body.classList.add("is-project");
@@ -346,6 +399,186 @@
       if (e.key === "ArrowRight") location.href = href(next);
       if (e.key === "Escape") { closing(); location.href = "./"; }
     });
+  }
+
+  /* ---------- the badges: big stickers lying loose on a project page ---------- */
+  // Each starts where projects.js puts it and keeps clear of words and links. Picked up with the mouse or a
+  // finger (pointer events), it follows the pointer from the point where it was taken, anywhere on the page,
+  // and stays where it is let go: from then on it belongs to the part of the page under it, so it keeps its
+  // place there when the window changes size. Only a badge in hand stops the page from scrolling.
+  function scatter(list, anchors) {
+    var EDGE = 4;                                      // px between a badge and the edges of the page
+    var keys = Object.keys(anchors);
+    var layer = el("div.badges", { "aria-hidden": "true" });
+    main.classList.add("has-badges");
+    main.appendChild(layer);
+
+    function num(v, d) { return typeof v === "number" && isFinite(v) ? v : d; }
+    function within(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+    function put(b, left, top) {
+      b.left = left;
+      b.top = top;
+      b.node.style.transform = "translate3d(" + left.toFixed(1) + "px, " + top.toFixed(1) + "px, 0)";
+    }
+
+    // the parts of the page with two pictures or more: where a file without a spot goes, each in turn
+    var roomy = keys.filter(function (k) { return anchors[k].querySelectorAll("figure").length > 1; });
+    var badges = list.map(function (b, i) {
+      var ratio = b.it.ratio || 1;
+      var spot = b.spot || (roomy.length ? { at: roomy[i % roomy.length], pics: [1, 2] } : { at: "top", x: i % 2 ? 10 : 90, y: 30 });
+      var pic = img({ it: b.it }, "(max-width: 700px) 160px, 320px", false);
+      pic.draggable = false;
+      var sway = 3.6 + (i * 0.7) % 1.8;                    // each sways at its own pace, out of step with the others
+      var node = el("div.badge", {
+        style: "--ratio: " + ratio + "; --wide: " + Math.sqrt(ratio).toFixed(3) + "; --k: " + num(spot.size, 1) + "; --tilt: " + num(spot.tilt, 0) + "deg" +
+          "; --sway: " + sway.toFixed(2) + "s; --sway-delay: -" + ((i * 1.3) % sway).toFixed(2) + "s"
+      }, [pic]);
+      layer.appendChild(node);
+      return {
+        node: node, at: anchors[spot.at] ? spot.at : "top", pics: Array.isArray(spot.pics) ? spot.pics : null,
+        x: num(spot.x, 50), y: num(spot.y, spot.pics ? 50 : 0), moved: false, left: 0, top: 0
+      };
+    });
+
+    var held = null, stack = 0, rolling = 0, queued = 0;
+
+    // where a badge's centre goes (box: the layer's rectangle). Across its pictures: in the space they share or
+    // enclose, so on the seam between two, or on the corner where four meet, whatever the width of the window;
+    // x and y slide it along that space (50 = the middle). Once moved, or without pictures: x across the page,
+    // y down its part of the page. Only the pictures showing at this width are counted.
+    function centre(b, box) {
+      var part = anchors[b.at], figs = [].filter.call(part.querySelectorAll("figure"), function (f) { return f.getClientRects().length; });
+      var rects = b.moved || !b.pics ? [] : b.pics
+        .map(function (n) { return figs[n - 1]; })
+        .filter(Boolean)
+        .map(function (f) { return f.getBoundingClientRect(); });
+      if (rects.length) {
+        var edge = function (side, most) { return most.apply(Math, rects.map(function (q) { return q[side]; })); };
+        var x1 = edge("left", Math.max), x2 = edge("right", Math.min), y1 = edge("top", Math.max), y2 = edge("bottom", Math.min);
+        return {
+          x: Math.min(x1, x2) + Math.abs(x2 - x1) * b.x / 100 - box.left,
+          y: Math.min(y1, y2) + Math.abs(y2 - y1) * b.y / 100 - box.top
+        };
+      }
+      var r = part.getBoundingClientRect();
+      return { x: layer.clientWidth * b.x / 100, y: r.top - box.top + r.height * b.y / 100 };
+    }
+
+    // each at its centre; one not moved yet steps aside from words and links
+    function place() {
+      var box = layer.getBoundingClientRect(), W = layer.clientWidth, H = layer.clientHeight;
+      var taken = [];
+      function mark(r) { taken.push({ l: r.left - box.left, t: r.top - box.top, r: r.right - box.left, b: r.bottom - box.top }); }
+      [].slice.call(main.querySelectorAll(".about__title, .about__brand, .about__text, .block__label, .pager a, .reel__sound")).forEach(function (n) {
+        if (n.matches("a, button")) return mark(n.getBoundingClientRect());
+        var range = document.createRange();               // the lines of text, not the whole width of the paragraph
+        range.selectNodeContents(n);
+        [].slice.call(range.getClientRects()).forEach(mark);
+      });
+      function free(l, t, w, h) {
+        return !taken.some(function (q) { return l < q.r + 10 && l + w > q.l - 10 && t < q.b + 10 && t + h > q.t - 10; });
+      }
+      // the moved ones first: they stay exactly where they were put, the others keep clear of them
+      badges.slice().sort(function (a, b) { return b.moved - a.moved; }).forEach(function (b) {
+        if (held && held.b === b) return;
+        var w = b.node.offsetWidth, h = b.node.offsetHeight, maxL = W - w - EDGE, maxT = H - h - EDGE;
+        var c = centre(b, box), l = c.x - w / 2, t = c.y - h / 2;
+        function aside() {                                // a little up or down; then the same against the nearer edge
+          var side = l + w / 2 < W / 2 ? EDGE : maxL, steps = [0, .25, -.25, .5, -.5, .75, -.75, 1, -1, 1.25, -1.25, 1.5, -1.5];
+          for (var k = 0; k < 2; k++) {
+            for (var s = 0; s < steps.length; s++) {
+              var cl = within(k ? side : l, EDGE, maxL), ct = within(t + steps[s] * h, EDGE, maxT);
+              if (free(cl, ct, w, h)) return { l: cl, t: ct };
+            }
+          }
+          return null;
+        }
+        var at = (!b.moved && aside()) || { l: within(l, EDGE, maxL), t: within(t, EDGE, maxT) };
+        put(b, at.l, at.t);
+        taken.push({ l: at.l, t: at.t, r: at.l + w, b: at.t + h });
+      });
+    }
+
+    // put down: it now belongs to the part of the page under its centre
+    function pin(b) {
+      var box = layer.getBoundingClientRect(), best = null;
+      var cx = b.left + b.node.offsetWidth / 2, cy = b.top + b.node.offsetHeight / 2;
+      keys.forEach(function (k) {
+        var r = anchors[k].getBoundingClientRect(), t = r.top - box.top;
+        var d = Math.max(t - cy, cy - t - r.height, 0);
+        if (!best || d < best.d) best = { k: k, t: t, h: r.height, d: d };
+      });
+      b.at = best.k;
+      b.x = cx / layer.clientWidth * 100;
+      b.y = best.h ? (cy - best.t) / best.h * 100 : 0;
+    }
+
+    function follow() {
+      put(held.b, within(held.x + window.scrollX - held.ox, EDGE, held.maxL), within(held.y + window.scrollY - held.oy, EDGE, held.maxT));
+    }
+
+    // held close to the top or bottom of the window (after a first move), the page scrolls along, gently
+    function roll() {
+      rolling = 0;
+      if (!held || !held.far) return;
+      var zone = Math.min(80, window.innerHeight / 8), vh = window.innerHeight, speed = 0;
+      if (held.y < zone) speed = (held.y - zone) / zone;
+      else if (held.y > vh - zone) speed = (held.y - vh + zone) / zone;
+      if (!speed) return;
+      var before = window.scrollY;
+      window.scrollBy(0, Math.round(within(speed, -1, 1) * 14));
+      if (window.scrollY === before) return;              // the page ends here
+      follow();                                           // in the same frame as the scroll: the badge never trails the pointer
+      rolling = requestAnimationFrame(roll);
+    }
+
+    layer.addEventListener("pointerdown", function (e) {
+      var node = e.target.closest && e.target.closest(".badge");
+      if (!node || held || (e.pointerType === "mouse" && e.button !== 0)) return;
+      e.preventDefault();                                 // no text selected, no image dragged away
+      var b = badges.filter(function (q) { return q.node === node; })[0];
+      held = {
+        b: b, id: e.pointerId, x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY, far: false,
+        ox: e.clientX + window.scrollX - b.left, oy: e.clientY + window.scrollY - b.top,   // keeps the grip: no jump
+        maxL: layer.clientWidth - node.offsetWidth - EDGE, maxT: layer.clientHeight - node.offsetHeight - EDGE
+      };
+      try { node.setPointerCapture(e.pointerId); } catch (err) {}
+      node.style.zIndex = 1000;                           // the one in hand above everything else
+      node.classList.add("is-held");
+      document.documentElement.classList.add("is-grabbing");
+    });
+    layer.addEventListener("pointermove", function (e) {
+      if (!held || e.pointerId !== held.id) return;
+      held.x = e.clientX;
+      held.y = e.clientY;
+      if (Math.abs(held.x - held.sx) + Math.abs(held.y - held.sy) > 10) held.far = true;
+      follow();
+      if (!rolling) roll();
+    });
+    function letGo(e) {
+      if (!held || e.pointerId !== held.id) return;
+      var b = held.b;
+      held = null;
+      cancelAnimationFrame(rolling);
+      rolling = 0;
+      b.node.classList.remove("is-held");
+      b.node.style.zIndex = ++stack;                      // put down on top of the others
+      document.documentElement.classList.remove("is-grabbing");
+      b.moved = true;
+      pin(b);
+    }
+    layer.addEventListener("pointerup", letGo);
+    layer.addEventListener("pointercancel", letGo);
+    layer.addEventListener("lostpointercapture", letGo);
+    window.addEventListener("scroll", function () { if (held) follow(); }, { passive: true });
+
+    function later() {
+      if (!queued) queued = requestAnimationFrame(function () { queued = 0; place(); });
+    }
+    if ("ResizeObserver" in window) new ResizeObserver(later).observe(main);
+    else window.addEventListener("resize", later);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(later);
+    place();
   }
 
   var slug = new URLSearchParams(location.search).get("p");

@@ -12,11 +12,25 @@
              or one of the PHOTOS below)
      videos  played muted and in loop while on screen
      hide    files of the project's folders to leave out; every other file (banners, ads, social,
-             stickers, behind the scenes) is shown under the text, whole
+             behind the scenes) is shown under the text, whole
      add     files that are not in data/, added to one of those folders: { social: [PHOTOS.x] }
      order   the order of a folder's files: { ecom: ["b.webp", "a.webp"] }; the files not listed follow
      move    a file shown in another folder: { "file.webp": "social" }; a folder the project lacks ("ecom") is added
      labels  a folder's heading, renamed: { "key-visuals": "Assets" }
+     mobile  a banner made twice, for computers and for phones: { "banner-web.webp": "banner-phone.webp" }; on a
+             phone only the second shows, elsewhere only the first. Files named …desktop… and …mobile… pair up
+             by themselves
+     badges  the files of its sticker folders (graphics, stickers, badges) lie loose on the project
+             page, big and swaying a little, and can be picked up and moved. Where each one lies when
+             the page opens: { name, at, pics, tilt, size }
+               at    the part of the page: "top" (the photos and videos) or a folder, e.g. "social",
+                     "paid-ads", "bts"
+               pics  the pictures of that part it lies across, counted in reading order as they show: two
+                     next to each other, e.g. [2, 3], or four around a corner, e.g. [2, 3, 5, 6]; x and y
+                     then slide it along the space they share, in % (50 = the middle)
+                     (without pics, x and y are its centre across the page and down that part, in %)
+               tilt  in degrees; size: 1 = the usual size, 0.8 = smaller
+             They keep clear of words and links; a file without a spot finds one by itself.
    Files are picked by name from data/campaigns.js, collabs.js and events.js.
    Order: the projects with the most material first, the covers grouped by colour.
    ========================================================= */
@@ -27,7 +41,10 @@
     presentation: { src: "content/events/pr-brand-presentation/window-display", widths: [640, 1280, 1920], ratio: 0.75, name: "window-display.webp" },
     selfie: { src: "content/events/retail-torino/mirror-selfie", widths: [640, 1280, 1920], ratio: 0.75, name: "mirror-selfie.webp" },
     hotpoint: { src: "content/events/fuorisalone-beko/hotpoint-truck", widths: [640, 1280, 1920], ratio: 0.75, name: "hotpoint-truck.webp" },
-    lampPost: { src: "content/campaigns/rebranding-2026/social/new-rechargeable-lamp", widths: [640, 1080], ratio: 0.8, name: "new-rechargeable-lamp.webp" }
+    lampPost: { src: "content/campaigns/rebranding-2026/social/new-rechargeable-lamp", widths: [640, 1080], ratio: 0.8, name: "new-rechargeable-lamp.webp" },
+    // DAISE's banner.webp holds the computer and the phone version side by side: here each one on its own
+    daiseBannerDesktop: { src: "content/collabs/daise-2025/banner-desktop", widths: [640, 1280, 1920], ratio: 2.6713, name: "banner-desktop.webp" },
+    daiseBannerMobile: { src: "content/collabs/daise-2025/banner-mobile", widths: [640, 829], ratio: 1.1498, name: "banner-mobile.webp" }
   };
 
   window.SELECTED = [
@@ -42,7 +59,15 @@
         "evergreen-bottles-in-hands.webp", "bogo-bottles-kv.webp", "cat-eye-kit-pouch.webp"
       ],
       add: { social: [PHOTOS.lampPost] },
-      order: { ecom: ["new-mini-kits-banner-1-desktop.webp", "new-mini-kits-banner-4-desktop.webp", "new-mini-kits-banner-1-mobile.webp", "new-mini-kits-banner-4-mobile.webp", "ecom-banner-nail-the-fun.webp"] }
+      order: { ecom: ["new-mini-kits-banner-1-desktop.webp", "new-mini-kits-banner-4-desktop.webp", "new-mini-kits-banner-1-mobile.webp", "new-mini-kits-banner-4-mobile.webp", "ecom-banner-nail-the-fun.webp"] },
+      badges: [
+        { name: "badge-sparkle.webp", at: "top", pics: [2, 3, 5, 6], tilt: 8, size: 0.85 },
+        { name: "badge-asterisk.webp", at: "top", pics: [7, 8], tilt: -10, size: 0.9 },
+        { name: "badge-candy.webp", at: "social", pics: [1, 2], tilt: -6, size: 1.1 },
+        { name: "badge-half-circles.webp", at: "ugc", pics: [1, 2], tilt: 10 },
+        { name: "badge-macaron.webp", at: "paid-ads", pics: [2, 3], tilt: -5, size: 0.9 },
+        { name: "badge-starburst.webp", at: "bts", pics: [3, 4], tilt: 9 }
+      ]
     },
     {
       slug: "fazit-2025",
@@ -74,7 +99,8 @@
         "kv-top-view.webp", "nail-art-hand-apples.webp", "mini-kit-blush.webp",
         "mini-kit-cassis.webp", "items-hands-usage.webp", "chrome-pen-silver-packaging.webp",
         "kv-main.webp", "items-apples-skirt.webp", "items-shoes.webp"
-      ]
+      ],
+      hide: ["star-21.webp", "star-22.webp", "star-23.webp", "star-24.webp", "badge-new.webp"]   // no badges on this page: the white stars are made for a blue ground
     },
     {
       slug: "cat-eye-2025",
@@ -86,7 +112,13 @@
         "05-cosmopolitan-lavender-haze-drink.webp", "hands-flash.webp"
       ],
       videos: ["bottles-drip.mp4", "cosmopolitan-recipe.mp4"],
-      hide: ["drive-folder-sm.webp"]
+      hide: ["drive-folder-sm.webp"],
+      badges: [
+        { name: "sticker-shine-bright.webp", at: "top", pics: [2, 3], tilt: -7 },
+        { name: "sticker-cocktail.webp", at: "top", pics: [5, 7], tilt: 8, size: 1.1 },
+        { name: "sticker-heel.webp", at: "bts", pics: [1, 3], x: 90, tilt: 10 },
+        { name: "sticker-shaker.webp", at: "website", pics: [2, 3], tilt: -6 }
+      ]
     },
     {
       slug: "summer-2026",
@@ -116,16 +148,23 @@
       title: "Le Mini Macaron x GoodNews",
       text: "Manis & Coffee: for one day in June 2023, Le Mini Macaron and GoodNews opened a pop-up in Barcelona, with free manicures, stickers on the cups and one motto, good coffee, good nails.",
       cover: "popup-01.webp",
-      images: ["popup-01.webp", "popup-05.webp", "popup-03.webp"],
-      videos: ["reel.mp4", "newsletter-es.mp4", "stickers-on-cups.mp4"]
+      images: ["popup-01.webp", "popup-05.webp", "popup-03.webp", "popup-02.webp", "popup-04.webp"],
+      videos: ["reel.mp4", "newsletter-es.mp4", "stickers-on-cups.mp4"],
+      hide: ["good-coffee-good-nails.webp"],                                      // white lettering: made for a blue ground, lost on white
+      badges: [
+        { name: "badge-ohlala.webp", at: "top", pics: [4, 5], tilt: 8, size: 1.05 },
+        { name: "badge-smiley.webp", at: "top", pics: [1, 2], y: 25, tilt: -10, size: 0.85 },
+        { name: "badge-macaron-2026.webp", at: "top", pics: [7, 8], tilt: 6, size: 0.9 }
+      ]
     },
     {
       slug: "daise-2025",
       title: "Le Mini Macaron x DAISE",
       text: "After living side by side in Ulta Beauty baskets, Le Mini Macaron and DAISE made it official: a giveaway of head-to-toe routines and a free DAISE gift on orders of $65 or more.",
       cover: "kv-post.webp",
-      images: ["kv-post.webp", { name: "homepage-mockup.webp", upright: true }, "instagram-post-mockup.webp"],
-      videos: ["nail-art-video.mp4"]
+      images: ["kv-post.webp", { name: "homepage-mockup.webp", upright: true }, "instagram-post-mockup.webp", PHOTOS.daiseBannerDesktop, PHOTOS.daiseBannerMobile],
+      videos: ["nail-art-video.mp4"],
+      hide: ["banner.webp"]
     },
     {
       slug: "pr-brand-presentation",
@@ -168,7 +207,8 @@
       title: "Le Mini Macaron x Tezenis",
       text: "In March 2026, Tezenis stores across Spain gave away a Le Mini Macaron gel manicure kit with every purchase of two Natural Lifting Bras.",
       cover: "in-store-03.webp",
-      images: ["in-store-03.webp", "in-store-04.webp", "in-store-01.webp", "in-store-02.webp"]
+      images: ["in-store-03.webp", "in-store-04.webp", "in-store-01.webp", "in-store-02.webp"],
+      labels: { "key-visuals": "Assets" }
     },
     {
       slug: "fuorisalone-beko",
