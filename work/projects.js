@@ -18,7 +18,7 @@
 (function () {
   // photos that are not in data/: web copies of Martina's originals, made for this page
   var PHOTOS = {
-    collanine: { src: "content/events/retail-milan/bead-table", widths: [640, 720], ratio: 0.75, name: "bead-table.webp" },
+    collanine: { src: "content/events/retail-milan/bead-table-photo", widths: [640, 1159], ratio: 0.75, name: "bead-table-photo.webp" },
     presentation: { src: "content/events/pr-brand-presentation/window-display", widths: [640, 1280, 1920], ratio: 0.75, name: "window-display.webp" },
     selfie: { src: "content/events/retail-torino/mirror-selfie", widths: [640, 1280, 1920], ratio: 0.75, name: "mirror-selfie.webp" },
     hotpoint: { src: "content/events/fuorisalone-beko/hotpoint-truck", widths: [640, 1280, 1920], ratio: 0.75, name: "hotpoint-truck.webp" }
