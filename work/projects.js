@@ -11,6 +11,8 @@
              (a name, { name: "…", focus: "…", upright: true } to cut a landscape image to 4:5 as well,
              or one of the PHOTOS below)
      videos  played muted and in loop while on screen
+     first   "videos": the videos open the project page, in one row, then the text, then the photos side by side
+             in the order given, each row one height ({ name: "…", whole: true } keeps a photo uncut)
      hide    files of the project's folders to leave out; every other file (banners, ads, social,
              behind the scenes) is shown under the text, whole
      add     files that are not in data/, added to one of those folders: { social: [PHOTOS.x] }
@@ -44,7 +46,15 @@
     lampPost: { src: "content/campaigns/rebranding-2026/social/new-rechargeable-lamp", widths: [640, 1080], ratio: 0.8, name: "new-rechargeable-lamp.webp" },
     // DAISE's banner.webp holds the computer and the phone version side by side: here each one on its own
     daiseBannerDesktop: { src: "content/collabs/daise-2025/banner-desktop", widths: [640, 1280, 1920], ratio: 2.6713, name: "banner-desktop.webp" },
-    daiseBannerMobile: { src: "content/collabs/daise-2025/banner-mobile", widths: [640, 829], ratio: 1.1498, name: "banner-mobile.webp" }
+    daiseBannerMobile: { src: "content/collabs/daise-2025/banner-mobile", widths: [640, 829], ratio: 1.1498, name: "banner-mobile.webp" },
+    // OOH: the best photos of the Spain & US 2022 slides, cut out at the size they have in the slides' PDF
+    bcnDiagonal: { src: "content/campaigns/ooh-italy/spain-us-2022/photos/barcelona-diagonal", widths: [640, 1143], ratio: 1.6834, name: "barcelona-diagonal.webp", whole: true },   // the team: never cut
+    bcnPasseig: { src: "content/campaigns/ooh-italy/spain-us-2022/photos/barcelona-passeig-de-gracia", widths: [640, 698], ratio: 0.8221, name: "barcelona-passeig-de-gracia.webp" },
+    bcnZona: { src: "content/campaigns/ooh-italy/spain-us-2022/photos/barcelona-zona-universitaria", widths: [549], ratio: 0.6466, name: "barcelona-zona-universitaria.webp" },
+    madAmerica: { src: "content/campaigns/ooh-italy/spain-us-2022/photos/madrid-america", widths: [640, 718], ratio: 0.8487, name: "madrid-america.webp" },
+    madPlazaEspana: { src: "content/campaigns/ooh-italy/spain-us-2022/photos/madrid-plaza-espana", widths: [576], ratio: 0.6809, name: "madrid-plaza-espana.webp" },
+    usTruck1: { src: "content/campaigns/ooh-italy/spain-us-2022/photos/us-truck-1", widths: [594], ratio: 1.5, name: "us-truck-1.webp" },
+    usTruck2: { src: "content/campaigns/ooh-italy/spain-us-2022/photos/us-truck-2", widths: [594], ratio: 1.5, name: "us-truck-2.webp" }
   };
 
   window.SELECTED = [
@@ -81,14 +91,27 @@
     },
     {
       slug: "ooh-italy",
-      title: "Le Mini Macaron | OOH Italy",
-      text: "Out-of-home across Italy, in metro stations, streets and on digital screens: 450+ placements worth €60K, secured at no media cost, driving +70% website traffic in key cities and +144% sales.",
+      title: "Le Mini Macaron | OOH",
+      text: "Out-of-home in metro stations, streets and on digital screens in Milan, Rome, Naples, Genoa, Barcelona and Madrid, and on trucks in the US: 450+ placements worth €60K, secured at no media cost, driving +70% website traffic in key cities and +144% sales.",
       cover: "bologna-4.webp",
-      images: [
-        "bologna-4.webp", "milan-duomo-metro-1.webp", "napoli-3.webp",
-        "milan-cordusio.webp", "bologna-2025.webp", "street-screen-aug-2023.webp"
+      first: "videos",
+      videos: [
+        "milan-duomo-metro-3.mp4", "bologna-2.mp4", "milan-duomo-metro-2.mp4",
+        "bologna-1.mp4", "street-screens-dec-2023.mp4", "bologna-5.mp4"
       ],
-      videos: ["milan-duomo-metro-3.mp4", "bologna-2.mp4", "street-screens-dec-2023.mp4"]
+      // Italy mixed with the best photos of the Spain & US slides; on a computer the rows fall in threes,
+      // the two trucks together and the Barcelona team beside one photo
+      images: [
+        "bologna-4.webp", PHOTOS.bcnZona, "milan-cordusio.webp",
+        PHOTOS.madAmerica, "napoli-3.webp", PHOTOS.bcnPasseig,
+        PHOTOS.usTruck1, PHOTOS.usTruck2,
+        PHOTOS.bcnDiagonal, "street-screen-aug-2023.webp",
+        "milan-duomo-metro-1.webp", PHOTOS.madPlazaEspana, "bologna-2025.webp"
+      ],
+      hide: [                                                                     // the Spain & US slides: their best photos are in images
+        "ooh-spain-us-2022.pdf — p. 1", "ooh-spain-us-2022.pdf — p. 2", "ooh-spain-us-2022.pdf — p. 3", "ooh-spain-us-2022.pdf — p. 4",
+        "ooh-spain-us-2022.pdf — p. 5", "ooh-spain-us-2022.pdf — p. 6", "ooh-spain-us-2022.pdf — p. 7"
+      ]
     },
     {
       slug: "fall-2026",

@@ -55,9 +55,10 @@
     (P[k] || []).forEach(function (p) { bySlug[p.slug] = p; });
   });
 
-  // focus: which part of a photo stays in the cut; upright: true cuts a landscape photo to 4:5 too
+  // focus: which part of a photo stays in the cut; upright: true cuts a landscape photo to 4:5 too;
+  // whole: true keeps it uncut among the photos under the text (mosaic)
   function asMedia(it, pick) {
-    return { it: it, focus: (pick && pick.focus) || null, upright: (pick && pick.upright === true) || it.ratio < 1.1 };
+    return { it: it, focus: (pick && pick.focus) || null, upright: (pick && pick.upright === true) || it.ratio < 1.1, whole: !!(pick && pick.whole) };
   }
 
   var projects = (window.SELECTED || []).map(function (e) {
@@ -139,7 +140,8 @@
       videos: videos,
       more: more,
       badges: badges,
-      formats: formats
+      formats: formats,
+      first: e.first || null
     };
   }).filter(Boolean);
   if (!projects.length) return;
@@ -180,6 +182,18 @@
         return el("figure", {}, [node]);
       }));
     });
+  }
+
+  // the photos under the text of a project that opens with its videos (first: "videos"): side by side in the
+  // order given, upright ones cut to 4:5, landscape ones to 5:4, a whole one in its own shape; each row one
+  // height and as wide as the page, how many to a row set by the width of the screen (.mosaic in index.html)
+  function mosaic(list, alt) {
+    return el("div.mosaic", {}, list.map(function (m) {
+      var r = m.whole ? m.it.ratio : m.upright ? 0.8 : 1.25;
+      var node = img(m, "(max-width: 700px) " + (r > 1 ? "100vw" : "50vw") + ", " + Math.round(r * 41) + "vw", false);
+      node.alt = alt;
+      return el("figure", { style: "--r: " + r }, [node]);
+    }));
   }
 
   // muted and in loop, played while on screen; a pill turns the sound on when the file has it
@@ -402,10 +416,16 @@
       ])
     ]);
 
-    var pictures = el("div.visuals", {}, visuals(p));
+    // first: "videos": the videos open the page, all in one row, and the photos follow the text
+    var videosFirst = p.first === "videos" && p.videos.length > 0;
+    var pictures = el("div.visuals", {}, videosFirst
+      ? [el("div.reels.reels--first", {}, p.videos.map(function (m) { var fig = video(m); fig.style.setProperty("--r", m.it.ratio); return fig; }))]
+      : visuals(p));
     formatsIn(pictures, p.formats);
+    var photos = videosFirst && p.images.length ? mosaic(p.images, p.title) : null;
+    if (photos) formatsIn(photos, p.formats);
     var blocks = p.more.map(function (s) { return block(p, s); });
-    main.replaceChildren.apply(main, [pictures, about].concat(blocks, [pager]));
+    main.replaceChildren.apply(main, [pictures, about].concat(photos ? [photos] : [], blocks, [pager]));
     beside(blocks);
     if (p.badges.length) {
       var anchors = { top: pictures, text: about };     // the parts of the page a badge can belong to, top to bottom
