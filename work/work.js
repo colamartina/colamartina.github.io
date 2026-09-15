@@ -4,6 +4,8 @@
    With ?p=<slug>: that project — its photos and videos, the title and the
    short text, then everything else from its folders (banners, ads, social,
    stickers, behind the scenes), then the previous and next project.
+   A round × (or the header, or Esc) closes a project and goes back to the grid,
+   scrolled where it was left.
    What is shown is set in work/projects.js; the files are described in
    data/campaigns.js, collabs.js and events.js.
    ========================================================= */
@@ -33,6 +35,16 @@
       node.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
     });
     return node;
+  }
+
+  // the grid's scroll position, kept for the way back from a project;
+  // sessionStorage can be missing or refuse to write (private windows): then nothing is kept
+  function keep(key, value) {
+    try {
+      if (value === undefined) return sessionStorage.getItem("work:" + key);
+      if (value === null) sessionStorage.removeItem("work:" + key);
+      else sessionStorage.setItem("work:" + key, value);
+    } catch (e) { return null; }
   }
 
   /* ---------- the list, matched to the files in data/ ---------- */
@@ -193,6 +205,16 @@
         ])
       ]);
     })));
+
+    // back from a project: open the grid where it was left (the tiles keep their shape while loading)
+    if (keep("back") === "1") {
+      keep("back", null);
+      var y = +keep("gridY") || 0;
+      if (y) window.scrollTo(0, y);
+    }
+    main.addEventListener("click", function (e) {
+      if (e.target.closest(".tile a")) keep("gridY", String(Math.round(window.scrollY)));
+    });
   }
 
   /* ---------- one project ---------- */
@@ -283,11 +305,22 @@
     main.replaceChildren.apply(main, [el("div.visuals", {}, visuals(p)), about]
       .concat(p.more.map(function (s) { return block(p, s); }), [pager]));
 
-    // ← → move between projects
+    // the × in the corner, the name and the line in the header all close the project
+    document.body.classList.add("is-project");
+    var top = document.querySelector(".top");
+    var close = el("a.close", { href: "./", "aria-label": "Close the project, back to all projects" });
+    close.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
+    if (top) top.appendChild(close);
+    function closing() { keep("back", "1"); }
+    [].slice.call(document.querySelectorAll(".top a")).forEach(function (a) { a.addEventListener("click", closing); });
+
+    // ← → move between projects, Esc closes
     document.addEventListener("keydown", function (e) {
-      if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || e.target.closest("video")) return;
+      var target = e.target;                           // the page itself when nothing has focus
+      if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || (target && target.closest && target.closest("video"))) return;
       if (e.key === "ArrowLeft") location.href = href(prev);
       if (e.key === "ArrowRight") location.href = href(next);
+      if (e.key === "Escape") { closing(); location.href = "./"; }
     });
   }
 

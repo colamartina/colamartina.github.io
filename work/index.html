@@ -44,15 +44,19 @@
   img, video { display: block; max-width: 100%; }
   a { color: inherit; text-decoration: none; }
   a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
-  .skip { position: absolute; left: 8px; top: -48px; z-index: 2; padding: 6px 10px; background: var(--blue); color: #fff; }
+  .skip { position: absolute; left: 8px; top: -48px; z-index: 6; padding: 6px 10px; background: var(--blue); color: #fff; }
   .skip:focus { top: 8px; }
 
-  /* ---------- header: the name as on the CV, a blue rule under it ---------- */
+  /* ---------- header: the name as on the CV, her line on the right, a blue rule under both ---------- */
   .top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 10px 24px; margin: 0 var(--pad); padding: 16px 0 12px; border-bottom: 2px solid var(--blue); }
   .top__name { font: 400 clamp(30px, calc(18px + 3vw), 64px)/1 var(--display); letter-spacing: .22em; text-transform: uppercase; color: var(--blue); }
-  .top__nav { display: flex; gap: 22px; padding-bottom: 3px; font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; }
-  .top__nav a:hover { color: var(--blue); }
-  .top__nav .is-current { color: var(--blue); font-weight: 700; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
+  .top__note { padding-bottom: 3px; font-size: 15px; letter-spacing: .01em; color: var(--blue); }
+  .top__note:hover { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
+
+  /* a project page gets a round × in the corner, there all the way down: back to all the projects */
+  .close { position: fixed; top: 14px; right: var(--pad); z-index: 5; display: grid; place-items: center; width: 46px; height: 46px; border: 2px solid var(--blue); border-radius: 50%; background: var(--paper); color: var(--blue); }
+  .close:hover { background: var(--blue); color: #fff; }
+  .is-project .top { padding-right: 64px; }       /* the line on the right keeps clear of the × */
 
   /* ---------- all projects: one image each, the title under it ---------- */
   .grid { list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px 30px; padding: 26px var(--pad) 72px; }
@@ -125,15 +129,15 @@
   @media (max-width: 480px) {
     :root { --pad: 6vw; }
     .grid { grid-template-columns: minmax(0, 1fr); padding-top: 20px; }
+    .is-project .top { padding-right: 0; }         /* here the line drops under the name, the × sits beside the name */
+    .close { top: 12px; width: 42px; height: 42px; }
   }
 </style>
 
 <a class="skip" href="#main">Skip to content</a>
 <header class="top">
   <a class="top__name" href="./">Martina Cola</a>
-  <nav class="top__nav" aria-label="Primary">
-    <a class="is-current" href="./">Brand &amp; Creative Marketing</a>
-  </nav>
+  <a class="top__note" href="./">some of my projects :)</a>
 </header>
 
 <main id="main">
