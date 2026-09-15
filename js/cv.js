@@ -76,11 +76,12 @@
     ]);
   }
 
-  // the skills are stickers: a colour each and a small, steady tilt
+  // the skills are stickers: a colour each, a small tilt, and a place in the sway
+  // (--i staggers it, styles.css) so they never move in step
   var TILT = [-2.5, 1.5, -1, 2, -1.5, 2.5, -2, 1];
   var skills = block("Skills", [
     list("ul.cv-badges", cv.skills, function (s, i) {
-      return el("li.sticker.cv-badge.sticker--" + s.colour, { style: "--rot: " + TILT[i % TILT.length] + "deg", text: s.label });
+      return el("li.sticker.cv-badge.sticker--" + s.colour, { style: "--rot: " + TILT[i % TILT.length] + "deg; --i: " + i, text: s.label });
     }),
     el("p.cv-sheet__label", { text: "Tools" }),
     list("ul.cv-badges.cv-badges--tools", cv.tools, function (t) { return el("li.cv-tool", { text: t }); })

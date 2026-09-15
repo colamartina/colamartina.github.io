@@ -221,7 +221,15 @@
     if ("requestIdleCallback" in window) requestIdleCallback(preload);
     else setTimeout(preload, 1200);
 
-    var i = 0, lx = null, ly = null, MIN = 95;
+    var i = 0, lx = null, ly = null, MIN = 160;
+    // a few sizes, never far apart (styles.css multiplies the width by --s). Five
+    // steps: while the photo count is not a multiple of five, a photo changes size
+    // on every pass.
+    var SIZES = [1, 0.8, 1.25, 0.9, 1.15];
+    // an editorial scatter rather than a line glued to the pointer: each photo lands
+    // a little apart from it, a beat later, stays a moment, then fades. At most MAX
+    // at once; FADE matches .trail__img.is-out in styles.css
+    var HOLD = 1300, FADE = 700, MAX = 6;
 
     heroEl.addEventListener("pointermove", function (e) {
       if (lx === null) { lx = e.clientX; ly = e.clientY; return; }
@@ -239,18 +247,32 @@
 
     function spawn(cx, cy) {
       var r = trail.getBoundingClientRect();
+      // the direction turns by the golden angle each time, so the photos spread
+      // around the pointer's way instead of lining up on it
+      var turn = i * 2.4, reach = 75 + Math.random() * 110;
+      var x = Math.max(0, Math.min(r.width, cx - r.left + Math.cos(turn) * reach));
+      var y = Math.max(0, Math.min(r.height, cy - r.top + Math.sin(turn) * reach));
       var img = document.createElement("img");
-      img.src = IMGS[i % IMGS.length]; i++;
+      img.src = IMGS[i % IMGS.length];
+      img.style.setProperty("--s", SIZES[i % SIZES.length]);
+      i++;
       img.className = "trail__img";
       img.alt = "";
-      img.style.left = (cx - r.left) + "px";
-      img.style.top = (cy - r.top) + "px";
-      img.style.setProperty("--rot", (Math.random() * 20 - 10).toFixed(1) + "deg");
-      trail.appendChild(img);
-      requestAnimationFrame(function () { img.classList.add("is-live"); });
-      setTimeout(function () { img.classList.add("is-out"); }, 450);
-      setTimeout(function () { if (img.parentNode) img.remove(); }, 1050);
-      while (trail.children.length > 8) trail.firstElementChild.remove();
+      img.style.left = x + "px";
+      img.style.top = y + "px";
+      setTimeout(function () {
+        trail.appendChild(img);
+        requestAnimationFrame(function () { img.classList.add("is-live"); });
+        setTimeout(function () { leave(img); }, HOLD);
+        var shown = trail.querySelectorAll(".trail__img:not(.is-out)");
+        for (var k = 0; k < shown.length - MAX; k++) leave(shown[k]);   // the oldest make room
+      }, 80 + Math.random() * 120);
+    }
+
+    function leave(img) {
+      if (img.classList.contains("is-out")) return;
+      img.classList.add("is-out");
+      setTimeout(function () { img.remove(); }, FADE);
     }
   })();
 
@@ -271,26 +293,30 @@
     heroEl.appendChild(stack);
     var i = 1, timer = null, visible = true;
 
-    // the greeting sits at the bottom, so the free room is above it: centre the
-    // stack between the nav and the top of the greeting
+    // the stack sits on top of the greeting and the two are centred together
+    // between the nav and the foot: the greeting makes room with its top padding
+    var foot = heroEl.querySelector(".hero__foot");
     function place() {
+      intro.style.paddingTop = "";
       var h = heroEl.getBoundingClientRect();
       var top = parseFloat(getComputedStyle(heroEl).paddingTop) || 0;
-      var free = intro.getBoundingClientRect().top - h.top - top;
-      var w = Math.min((free - 40) / 1.25, heroEl.clientWidth * 0.62, 300);
+      var bottom = foot ? foot.getBoundingClientRect().top : h.bottom;
+      var free = bottom - h.top - top - intro.offsetHeight;
+      var w = Math.min((free - 96) / 1.25, heroEl.clientWidth * 0.62, 300);
       stack.hidden = w < 96;
+      if (stack.hidden) return;
       stack.style.width = w + "px";
       stack.style.height = w * 1.25 + "px";
-      stack.style.top = top + (free - w * 1.25) / 2 + "px";
+      intro.style.paddingTop = w * 1.25 + 24 + "px";   // the photo, then a little gap
+      stack.style.top = intro.getBoundingClientRect().top - h.top + "px";
     }
 
-    // a pile of two photos: the next one always waits, slightly rotated, behind the top one
+    // a pile of two photos: the next one always waits right behind the top one
     function addToBack() {
       var img = document.createElement("img");
       img.src = pool[i % pool.length]; i++;
       img.alt = "";
       img.decoding = "async";
-      img.style.setProperty("--rot", (Math.random() * 14 - 7).toFixed(1) + "deg");
       stack.insertBefore(img, stack.firstChild);
     }
     function topCard() {
@@ -314,6 +340,8 @@
     addToBack();
     addToBack();
     window.addEventListener("resize", place, { passive: true });
+    // the title's own font can wrap it differently from the fallback: measure again
+    if (document.fonts) document.fonts.ready.then(place);
     stack.addEventListener("click", function () { next(); restart(); });
     if ("IntersectionObserver" in window) {
       new IntersectionObserver(function (entries) {

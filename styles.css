@@ -259,7 +259,6 @@ img, video { max-width: 100%; }
 /* window — a thin, quiet frame for media inside case studies */
 .window {
   border: 1px solid var(--line);
-  border-radius: var(--r-md);
   background: var(--cream);
   overflow: hidden;
 }
@@ -286,7 +285,6 @@ img, video { max-width: 100%; }
 .card__media {
   position: relative;
   overflow: hidden;
-  border-radius: var(--r-sm);
   background: var(--cream-2);
 }
 .card__media img, .card__media video {
@@ -512,66 +510,87 @@ img, video { max-width: 100%; }
 }
 .hero__meta-dot { opacity: 0.5; }
 
-/* the greeting is the hero's headline now: two lines, each rising from its mask */
-.hero__hi {
-  font-family: var(--font-display);
-  font-weight: 400;
-  text-transform: uppercase;
-  font-size: clamp(3.4rem, 11.5vw, 11.5rem);
-  line-height: 0.86;
-  letter-spacing: 0.005em;
-  color: var(--electric);
-}
-.hero__hi .line { display: block; overflow: hidden; }
-.hero__hi .line > span { display: block; }
-.hero__hi .line > span {
-  transform: translateY(115%);
-  animation: heroRise 1.15s var(--ease) both;
-}
-.hero__hi .line:nth-child(1) > span { animation-delay: 0.12s; }
-.hero__hi .line:nth-child(2) > span { animation-delay: 0.30s; }
-@keyframes heroRise {
-  from { transform: translateY(115%); }
-  to   { transform: translateY(0); }
-}
-
-/* the greeting, then the claim as a little collage: words with pictures between
-   them, in the right half under COLA */
+/* the greeting, all lowercase, in the middle of the page: "hi, it's" and "welcome to
+   my portfolio" in the italic serif, the name big in heavy, tight Inter (Bebas has no
+   lowercase). Yellow stickers hold on to the name: the CV skill badges, bigger */
 .hero__intro {
-  margin-top: auto;                  /* sits down at the bottom left */
-  max-width: min(1040px, 100%);
+  margin-block: auto;                /* centred between the nav and the foot */
+  text-align: center;
 }
-.hero__claim {
-  margin-top: 0.6em;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.3em 0.36em;
-  font-size: clamp(1.05rem, 2.6vw, 2.35rem);
+.hero__greeting {
+  position: relative;
+  display: inline-block;             /* as wide as the name, so the stickers hold on to its edges */
+}
+.hero__title { font-weight: 400; }
+.hero__hello,
+.hero__name { display: block; }
+.hero__hello {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(2.1rem, 4.8vw, 4.9rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+.hero__name {
+  font-family: var(--font-text);
   font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--cream);
-}
-.hero__grp {                          /* words and their picture travel together */
-  display: inline-flex;
-  align-items: center;
-  gap: 0.34em;
+  font-size: clamp(3.2rem, 14.5vw, 14rem);
+  line-height: 0.92;
+  letter-spacing: -0.065em;
   white-space: nowrap;
 }
-.hero__pic {                          /* sized in em, so it grows with the words */
-  flex: 0 0 auto;
-  width: 2.95em;
-  height: 1.78em;
-  object-fit: cover;
-  border-radius: 3px;
+.hero__welcome {
+  margin-top: 1.05em;                /* room for the sticker hanging under the name */
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.35rem, 2.5vw, 2.4rem);
+  line-height: 1.1;
 }
-.hero__pic--flower {
-  width: 1.45em;
-  height: 1.45em;
-  object-fit: contain;
-  border-radius: 0;
+/* the lines rise into place one after the other */
+.hero__hello, .hero__name, .hero__welcome { animation: heroRise 1s var(--ease) both; }
+.hero__hello { animation-delay: 0.08s; }
+.hero__name { animation-delay: 0.2s; }
+.hero__welcome { animation-delay: 0.36s; }
+@keyframes heroRise {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* the stickers pop in after the name, then sway like the CV badges, out of step */
+.hero__stickers { list-style: none; }
+.hero__sticker {
+  position: absolute;
+  z-index: 1;
+  padding: 0.42em 0.78em;
+  border-radius: var(--r-xs);
+  font-size: clamp(0.8rem, 1.2vw, 1.2rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 1px 0 rgba(47, 18, 21, 0.1), 0 12px 18px -10px rgba(35, 10, 13, 0.55);
+  animation: stickerPop 0.7s var(--ease) both, cvSway 3.4s ease-in-out infinite;
+  animation-delay: calc(0.6s + var(--i) * 0.12s), calc(var(--i) * -0.7s);
+  transition: transform var(--dur) var(--ease);
+}
+.hero__sticker:hover { transform: translateY(-2px) scale(1.05); }   /* the tilt lets go, as in the CV */
+@keyframes stickerPop {
+  from { opacity: 0; scale: 0.6; }
+  to   { opacity: 1; scale: 1; }
+}
+/* where each one holds on, in percent of the greeting's box */
+.hero__sticker:nth-child(1) { --i: 0; --rot: -7deg; left: -4%; top: 14%; }
+.hero__sticker:nth-child(2) { --i: 1; --rot: 5deg; right: -6%; top: 32%; animation-duration: 0.7s, 4.1s; }
+.hero__sticker:nth-child(3) { --i: 2; --rot: -3deg; left: 33%; bottom: -5%; animation-duration: 0.7s, 2.9s; animation-direction: normal, reverse; }
+
+/* on a phone the name fills the width and the stickers step off the letters:
+   two above the greeting, one under the name */
+@media (max-width: 640px) {
+  .hero__greeting { padding-block: 2.6rem 2.8rem; }
+  .hero__name { font-size: 16.5vw; }
+  .hero__sticker { font-size: 0.8rem; }
+  .hero__sticker:nth-child(1) { --rot: -6deg; left: 0; top: 0.3rem; }
+  .hero__sticker:nth-child(2) { --rot: 4deg; right: 0; top: 0.1rem; }
+  .hero__sticker:nth-child(3) { --rot: -3deg; left: 26%; bottom: 0.3rem; }
+  .hero__welcome { margin-top: 0.4em; }
 }
 
 .hero__foot {
@@ -584,7 +603,6 @@ img, video { max-width: 100%; }
 /* shown only while the photo trail is actually running (mouse, motion allowed) */
 .hero__hint {
   align-self: flex-end;
-  margin-bottom: auto;               /* keeps the greeting pinned to the bottom */
   display: none;
   align-items: center;
   gap: 0.5em;
@@ -617,33 +635,33 @@ img, video { max-width: 100%; }
 @keyframes bob { 0%,100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
 
 /* ---------- hero image trail (cursor) ---------- */
-.trail {
+.trail {                             /* under the name and the title, never over them */
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 0;
   overflow: hidden;
   pointer-events: none;
 }
 .hero > *:not(.trail) { position: relative; z-index: 1; }
 .trail__img {
   position: absolute;
-  width: clamp(118px, 11vw, 176px);
+  width: calc(clamp(145px, 14vw, 220px) * var(--s, 1));   /* --s: a few sizes, script.js */
   height: auto;
   margin: 0;
-  border-radius: 8px;
   opacity: 0;
   will-change: transform, opacity;
-  transform: translate(-50%, -50%) scale(0.55) rotate(var(--rot, 0deg));
-  transition: transform 0.55s var(--ease), opacity 0.5s var(--ease);
+  transform: translate(-50%, -50%) scale(0.96);   /* straight and square, like prints on a page */
+  transition: transform 0.6s var(--ease), opacity 0.35s ease-out;
   box-shadow: var(--shadow-float);
 }
-.trail__img.is-live { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(var(--rot, 0deg)); }
-.trail__img.is-out  { opacity: 0; transform: translate(-50%, -50%) scale(1.06) rotate(var(--rot, 0deg)); }
+.trail__img.is-live { opacity: 1; transform: translate(-50%, -50%); }
+.trail__img.is-out  { opacity: 0; transition: opacity 0.7s ease-in-out; }   /* 0.7s = FADE in script.js */
 
 /* ---------- hero photo stack (touch screens / reduced motion) ---------- */
 .hero > .hero__stack {
   position: absolute;
-  right: var(--pad);
+  left: 50%;                         /* above the centred greeting */
+  translate: -50% 0;
   z-index: 1;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -654,14 +672,12 @@ img, video { max-width: 100%; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: var(--r-sm);
   box-shadow: var(--shadow-float);
-  transform: rotate(var(--rot, 0deg));
   transition: transform 0.6s var(--ease), opacity 0.6s var(--ease);
 }
-.hero__stack img.is-leaving {
+.hero__stack img.is-leaving {            /* straight like the rest: it slides aside and fades */
   opacity: 0;
-  transform: translate(-38%, -10%) rotate(-16deg) scale(0.96);
+  transform: translateX(-14%);
 }
 
 /* =========================================================
@@ -712,7 +728,6 @@ img, video { max-width: 100%; }
   width: min(52vw, 560px);
   height: 0;
   overflow: hidden;
-  border-radius: var(--r-sm);
   background: var(--burgundy-deep);
   transition: height 0.5s var(--ease), margin 0.5s var(--ease);
 }
@@ -736,7 +751,8 @@ img, video { max-width: 100%; }
 }
 
 /* the hero title waits for the curtain, then rises as usual */
-.hero-hold .hero__hi .line > span { animation: none; }
+.hero-hold .hero__hello, .hero-hold .hero__name, .hero-hold .hero__welcome,
+.hero-hold .hero__sticker { animation: none; opacity: 0; }
 
 /* =========================================================
    BIO
@@ -847,7 +863,6 @@ img, video { max-width: 100%; }
   position: relative;
   aspect-ratio: 3 / 4;
   overflow: hidden;
-  border-radius: var(--r-sm);
   background: var(--cream-2);
 }
 .c-card__media img {
@@ -923,7 +938,6 @@ img, video { max-width: 100%; }
 }
 .fun__card {
   padding: clamp(1rem, 1.6vw, 1.4rem);
-  border-radius: var(--r-md);
   background: var(--cream-2);
   box-shadow: 0 1px 0 rgba(69, 29, 32, 0.06), 0 18px 36px -26px rgba(47, 18, 21, 0.45);
   transform: rotate(var(--tilt, -1.5deg));
@@ -937,7 +951,7 @@ img, video { max-width: 100%; }
 .fun__card[data-colour="lilac"] { background: color-mix(in srgb, var(--orange) 17%, var(--cream)); }
 .fun__card[data-colour="lemon"] { background: color-mix(in srgb, var(--acid) 44%, var(--cream)); }
 
-.fun__media { overflow: hidden; border-radius: var(--r-sm); background: var(--cream); }
+.fun__media { overflow: hidden; background: var(--cream); }
 .fun__media img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
 .fun__media--empty {
   display: grid;
@@ -997,7 +1011,6 @@ img, video { max-width: 100%; }
   height: auto; /* beats the width/height attributes, so the 4:5 box below applies */
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  border-radius: var(--r-sm);
   background: var(--cream-2);
   transition: transform var(--dur-slow) var(--ease);
 }
@@ -1076,7 +1089,6 @@ img, video { max-width: 100%; }
   width: auto;
   aspect-ratio: 9 / 16;
   object-fit: cover;
-  border-radius: var(--r-md);
   background: var(--burgundy-deep);
   box-shadow: var(--shadow-float);
 }
@@ -1366,7 +1378,6 @@ img, video { max-width: 100%; }
   position: relative;
   display: block;
   overflow: hidden;
-  border-radius: var(--r-sm);
   background: var(--cream-2);
 }
 .tile__thumb img {
@@ -1389,7 +1400,6 @@ img, video { max-width: 100%; }
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  border-radius: 3px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 10px 22px -14px rgba(0, 0, 0, 0.35);
 }
 .files .tile__thumb--blue { background: var(--electric-ink); border-color: var(--electric-ink); }
@@ -1487,7 +1497,6 @@ img, video { max-width: 100%; }
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  border-radius: var(--r-sm);
   box-shadow: var(--shadow-soft);
 }
 .viewer__stage video { height: 100%; background: var(--ink); }
@@ -1530,6 +1539,7 @@ img, video { max-width: 100%; }
   rotate: -2deg;
 }
 .sec--cv .sec__body { margin-top: clamp(3.1rem, 5vw, 3.4rem); }   /* room for the clip under the title */
+@media (max-width: 640px) { .sec--cv .sec__body { margin-top: 4.1rem; } }   /* on a phone the clip sits right under the note */
 
 .cv-sheet {
   --photo-w: clamp(6.4rem, 23cqw, 10.5rem);   /* cqw: a share of the sheet's own width */
@@ -1638,13 +1648,28 @@ img, video { max-width: 100%; }
 .cv-langs { list-style: none; display: flex; flex-wrap: wrap; gap: 0.1rem 0.85rem; font-size: 0.78rem; }
 .cv-langs span { font-size: 0.66rem; color: var(--ink-3); }
 
-/* skills: coloured stickers on the page; tools: small white pills */
+/* skills: coloured stickers that are never quite still — each sways a couple of
+   degrees and floats a hair, out of step with the others (--i comes from js/cv.js);
+   under the pointer one straightens and lifts. Tools: small white pills */
 .cv-badges { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem 0.28rem; }
 .cv-badge {
   padding: 0.38em 0.72em;
   border-radius: var(--r-xs);
   font-size: 0.68rem;
   box-shadow: 0 1px 0 rgba(47, 18, 21, 0.08), 0 6px 10px -7px rgba(47, 18, 21, 0.45);
+  animation: cvSway 3.4s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * -0.7s);
+  transition: transform var(--dur) var(--ease);
+}
+.cv-badge:nth-child(3n + 2) { animation-duration: 4.1s; }
+.cv-badge:nth-child(3n) { animation-duration: 2.9s; animation-direction: reverse; }
+.cv-badge:hover { transform: translateY(-2px) scale(1.05); }   /* the tilt lets go */
+@keyframes cvSway {
+  0%, 100% { rotate: -2deg; translate: 0 0; }
+  50% { rotate: 2deg; translate: 0 -2px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cv-badge { animation: none; }
 }
 .cv-badge.sticker--white { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--electric-ink) 30%, transparent), 0 1px 0 rgba(47, 18, 21, 0.06), 0 6px 10px -7px rgba(47, 18, 21, 0.35); }
 .cv-sheet__label { margin: 0.8rem 0 0.4rem; font-size: 0.66rem; color: var(--ink-3); }
@@ -1706,7 +1731,7 @@ img, video { max-width: 100%; }
   z-index: 1;
   top: 0;
   left: 58%;
-  width: 42%;
+  width: 56%;
   height: auto;
   translate: -50% -72%;
   rotate: -4deg;
@@ -1979,7 +2004,6 @@ body {
 }
 
 @media (max-width: 520px) {
-  .hero__claim { font-size: 1.02rem; letter-spacing: 0.1em; margin-right: auto; margin-left: auto; }
   .hero__meta { flex-wrap: wrap; }
   .hero__foot { gap: 1.4rem; }
   .foot { justify-content: flex-start; gap: 0.4rem 1.5rem; }
@@ -1998,5 +2022,5 @@ body {
   }
   [data-reveal] { opacity: 1; transform: none; }
   .trail { display: none; }
-  .hero__hi .line > span { transform: none; animation: none; }
+  .hero__hello, .hero__name, .hero__welcome, .hero__sticker { animation: none; }
 }

@@ -83,23 +83,21 @@
     <div class="trail" aria-hidden="true"></div>
     <p class="hero__hint" aria-hidden="true">Move your mouse <span>&#10033;</span></p>
 
-    <!-- the greeting is the page title now; under it the same line as a small
-         collage: words with pictures between them (swap a file in assets/wordpics) -->
+    <!-- the greeting, all lowercase, in the middle of the page; yellow stickers hold on
+         to the name, and the photos that follow the mouse pass underneath (script.js) -->
     <div class="hero__intro">
-      <h1 class="hero__hi">
-        <span class="line"><span>Hi, my name is</span></span>
-        <span class="line"><span>Martina Cola</span></span>
-      </h1>
-      <p class="hero__claim" data-reveal>
-        <span class="hero__grp"><span>An Italian</span>
-          <img class="hero__pic" src="assets/wordpics/wp-01.webp" alt="" width="260" height="462" loading="eager" /></span>
-        <span class="hero__grp"><span>creative</span>
-          <img class="hero__pic" src="assets/wordpics/wp-02.webp" alt="" width="260" height="390" loading="eager" /></span>
-        <span class="hero__grp"><span>marketer</span>
-          <img class="hero__pic" src="assets/wordpics/wp-03.webp" alt="" width="260" height="391" loading="eager" /></span>
-        <span class="hero__grp"><span>based in Barcelona</span>
-          <img class="hero__pic" src="assets/wordpics/wp-04.webp" alt="" width="260" height="390" loading="eager" /></span>
-      </p>
+      <div class="hero__greeting">
+        <h1 class="hero__title">
+          <span class="hero__hello">hi, it’s</span>
+          <span class="hero__name">martina cola</span>
+        </h1>
+        <ul class="hero__stickers" aria-label="In short">
+          <li class="sticker sticker--acid hero__sticker">Italian</li>
+          <li class="sticker sticker--acid hero__sticker">Creative marketer</li>
+          <li class="sticker sticker--acid hero__sticker">Barcelona-based</li>
+        </ul>
+      </div>
+      <p class="hero__welcome">welcome to my portfolio</p>
     </div>
 
     <div class="hero__foot">
