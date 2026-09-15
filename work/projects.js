@@ -147,7 +147,6 @@
       title: "Le Mini Macaron x Collanine Colorate",
       text: "An in-store workshop in Milan with Collanine Colorate: tables of bead jars and Le Mini Macaron polishes, where guests made their own jewelry and nail art.",
       cover: PHOTOS.collanine,
-      images: [PHOTOS.collanine],
       videos: ["retail-milan.mp4"]
     },
     {
