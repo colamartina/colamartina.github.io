@@ -154,7 +154,6 @@
       title: "Le Mini Macaron | Retail event, Turin",
       text: "A holiday pop-up inside a Turin department store: a Le Mini Macaron corner full of gift sets, shoppers trying the kits and manicures at the table.",
       cover: PHOTOS.selfie,
-      images: [PHOTOS.selfie],
       videos: ["retail-torino.mp4"]
     },
     {
