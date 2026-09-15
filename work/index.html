@@ -110,6 +110,17 @@
   .run--row figure { flex: 0 0 auto; height: var(--row-h); max-width: 100%; }
   .run img { width: 100%; height: 100%; object-fit: cover; }
   .run--row img { object-fit: contain; }
+  /* small folders one after the other share a line on a wide screen (beside in work.js): all their files at the
+     height that fits them in, never taller than a row. On narrower screens each keeps a line of its own */
+  .side { display: contents; }
+  @media (min-width: 1001px) {
+    .side { --line-h: min(var(--row-h), calc((100cqw - var(--gaps)) / var(--sum))); container-type: inline-size; display: flex; justify-content: center; align-items: flex-start; gap: 40px; margin-top: 64px; padding: 0 8px; }
+    .side > .block { flex: 0 0 auto; margin: 0; }
+    .side .block__label { margin: 0 0 14px; }
+    .side .run { display: inline-flex; flex-wrap: nowrap; vertical-align: top; margin: 0; padding: 0; }
+    .side .run + .run { margin-left: 8px; }
+    .side .run figure { flex: 0 0 auto; width: auto; max-width: none; height: var(--line-h); }
+  }
 
   .pager { display: flex; align-items: center; gap: 24px; margin: 80px var(--pad) 0; padding: 18px 0 44px; border-top: 2px solid var(--blue); }
   .pager a { display: flex; align-items: center; gap: 14px; min-width: 0; }

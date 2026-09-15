@@ -341,6 +341,37 @@
     return section;
   }
 
+  // small folders one after the other (paid ads and social, say) share a line on a wide screen instead of a
+  // line each: their files at one height, the one that fits them all, never taller than a row (.side in
+  // index.html). Only folders shown whole at one height count, and together their files are at most 4.2 times
+  // as wide as they are tall (about five posts)
+  function beside(blocks) {
+    var line = [], sum = 0;
+    function close() {
+      if (line.length > 1) {
+        var inner = line.reduce(function (n, b) { return n + b.files - 1; }, 0);
+        var side = el("div.side", { style: "--sum: " + sum.toFixed(3) + "; --gaps: " + (40 * (line.length - 1) + 8 * inner + 2) + "px" });
+        line[0].node.parentNode.insertBefore(side, line[0].node);
+        line.forEach(function (b) { side.appendChild(b.node); });
+      }
+      line = [];
+      sum = 0;
+    }
+    blocks.forEach(function (node) {
+      var runs = [].slice.call(node.querySelectorAll(".run"));
+      var whole = runs.length && runs.every(function (r) {
+        return r.classList.contains("run--row") || r.classList.contains("reels") || r.classList.contains("is-single");
+      });
+      var figs = [].filter.call(node.querySelectorAll("figure"), function (f) { return !f.closest(".for-narrow"); });
+      var width = whole ? figs.reduce(function (n, f) { return n + (parseFloat(f.style.aspectRatio) || 1); }, 0) : 0;
+      if (!width) { close(); return; }
+      if (sum + width > 4.2) close();
+      line.push({ node: node, files: figs.length });
+      sum += width;
+    });
+    close();
+  }
+
   // "Le Mini Macaron | Rebranding" → the project in capitals, the brand in italics under it, like a job on the CV
   function titleParts(title) {
     var cut = title.indexOf(" | ");
@@ -375,6 +406,7 @@
     formatsIn(pictures, p.formats);
     var blocks = p.more.map(function (s) { return block(p, s); });
     main.replaceChildren.apply(main, [pictures, about].concat(blocks, [pager]));
+    beside(blocks);
     if (p.badges.length) {
       var anchors = { top: pictures, text: about };     // the parts of the page a badge can belong to, top to bottom
       p.more.forEach(function (s, k) { anchors[s.id] = blocks[k]; });
