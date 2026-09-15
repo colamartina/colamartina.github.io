@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Martina Cola · Selected work</title>
+<meta name="description" content="Campaigns, events and brand collabs by Martina Cola, Brand &amp; Creative Marketing, Barcelona." />
+<meta name="author" content="Martina Cola" />
+<meta name="theme-color" content="#ffffff" />
+<meta property="og:title" content="Martina Cola · Selected work" />
+<meta property="og:description" content="Campaigns, events and brand collabs." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://colamartina.github.io/work/" />
+<meta property="og:image" content="https://colamartina.github.io/work/og.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hammersmith+One&amp;family=Roboto:ital,wght@0,400;0,700;1,400&amp;display=swap" />
+
+<style>
+  /* SELECTED WORK — a page of its own, apart from the main site. Laid out like
+     luciagarciarey.com (images first, a title under each), dressed like Martina's CV
+     (assets/Martina-Cola-CV.pdf): white paper, black Roboto, the name in Hammersmith One,
+     and the CV's blue for the name, the rules and the links. Photos keep square corners. */
+  :root {
+    --paper: #fff;
+    --ink: #000;
+    --blue: #003399;                 /* the blue of the CV */
+    --well: #f0f0f0;                 /* behind an image while it loads */
+    --pad: 3vw;
+    --display: "Hammersmith One", Futura, "Century Gothic", system-ui, sans-serif;
+    --sans: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --reel-h: min(clamp(300px, 44vw, 600px), 80vh);   /* videos side by side, all one height */
+    --duo-h: min(clamp(300px, 46vw, 620px), 80vh);    /* a photo and a video side by side */
+    --row-h: clamp(240px, 32vw, 460px);               /* ads and screens side by side */
+    color-scheme: light;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 400 14px/1.45 var(--sans); -webkit-font-smoothing: antialiased; }
+  h1, h2, p, figure, ul { margin: 0; padding: 0; }
+  img, video { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+  .skip { position: absolute; left: 8px; top: -48px; z-index: 2; padding: 6px 10px; background: var(--blue); color: #fff; }
+  .skip:focus { top: 8px; }
+
+  /* ---------- header: the name as on the CV, a blue rule under it ---------- */
+  .top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 10px 24px; margin: 0 var(--pad); padding: 16px 0 12px; border-bottom: 2px solid var(--blue); }
+  .top__name { font: 400 clamp(30px, calc(18px + 3vw), 64px)/1 var(--display); letter-spacing: .22em; text-transform: uppercase; color: var(--blue); }
+  .top__nav { display: flex; gap: 22px; padding-bottom: 3px; font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; }
+  .top__nav a:hover { color: var(--blue); }
+  .top__nav .is-current { color: var(--blue); font-weight: 700; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
+
+  /* ---------- all projects: one image each, the title under it ---------- */
+  .grid { list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px 30px; padding: 26px var(--pad) 72px; }
+  .tile a { display: block; }
+  .tile__img { aspect-ratio: 3 / 4; overflow: hidden; background: var(--well); }
+  .tile__img img { width: 100%; height: 100%; object-fit: cover; }
+  .tile__title { margin-top: 9px; font-size: 12px; font-weight: 400; line-height: 1.4; letter-spacing: .06em; text-transform: uppercase; }
+  .tile a:hover .tile__title { color: var(--blue); }
+
+  /* ---------- one project ---------- */
+  .visuals { padding-top: 8px; }
+  .gallery, .reels, .duo, .run { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 0 8px; }
+  .gallery + .gallery, .gallery + .reels, .run + .run { margin-top: 8px; }
+  figure { overflow: hidden; background: var(--well); }
+
+  /* photos: cut to 4:5 (landscape ones to 5:4), three a row */
+  .gallery figure { flex: 0 0 calc((100% - 16px) / 3); aspect-ratio: 4 / 5; }
+  .gallery--wide figure { aspect-ratio: 5 / 4; }
+  .gallery--four figure { flex-basis: calc((100% - 24px) / 4); }
+  .gallery img, .duo img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* videos (and a small project's photo beside its video): one height, their own shape */
+  .reels figure, .duo figure { position: relative; flex: 0 0 auto; max-width: 100%; }
+  .reels figure { height: var(--reel-h); background: #111; }
+  .duo figure { height: var(--duo-h); }
+  .reels video, .duo video { width: 100%; height: 100%; object-fit: cover; }
+  .reel__sound { position: absolute; left: 10px; bottom: 10px; padding: 6px 11px; border: 0; border-radius: 999px; background: var(--blue); color: #fff; font: 400 10.5px/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
+
+  /* title and short text, set like an entry of the CV */
+  .about { margin: 56px var(--pad) 0; padding-top: 16px; border-top: 2px solid var(--blue); }
+  .about > * { max-width: 760px; }
+  .about__title { font-size: 22px; font-weight: 700; line-height: 1.2; letter-spacing: .03em; text-transform: uppercase; }
+  .about__brand { margin-top: 4px; font-size: 16px; font-style: italic; }
+  .about__text { margin-top: 12px; font-size: 16px; line-height: 1.5; }
+
+  /* the rest of the folders: banners, ads, social, stickers, behind the scenes — never cut */
+  .block { margin-top: 64px; }
+  .block__label { margin: 0 var(--pad) 14px; font-size: 14px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+  .run--wide { flex-direction: column; align-items: center; }
+  .run--wide figure { width: 100%; max-width: 1400px; }
+  .run--pair figure { flex: 0 0 calc((100% - 8px) / 2); }
+  .run--pair.is-single figure { flex-basis: min(100%, 900px); }
+  .run--row figure { flex: 0 0 auto; height: var(--row-h); max-width: 100%; }
+  .run img { width: 100%; height: 100%; object-fit: cover; }
+  .run--row img { object-fit: contain; }
+  .run--stickers { align-items: center; gap: 28px 44px; margin: 0 8px; padding: 48px var(--pad); background: var(--blue); }
+  .run--stickers img { width: auto; height: clamp(64px, 9vw, 124px); }
+
+  .pager { display: flex; align-items: center; gap: 24px; margin: 80px var(--pad) 0; padding: 18px 0 44px; border-top: 2px solid var(--blue); }
+  .pager a { display: flex; align-items: center; gap: 14px; min-width: 0; }
+  .pager__next { margin-left: auto; text-align: right; }
+  .pager small { display: block; margin-bottom: 3px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--blue); }
+  .pager__t { display: block; font-size: 15px; font-weight: 700; }
+  .pager__arrow { font-size: 22px; line-height: 1; color: var(--blue); }
+  .pager a:hover .pager__t { color: var(--blue); }
+
+  @media (max-width: 1000px) {
+    .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 24px; }
+  }
+  @media (max-width: 700px) {
+    :root { --reel-h: min(80vw, 72vh); --duo-h: 66vw; --row-h: 60vw; }
+    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 16px; }
+    .gallery figure, .gallery--four figure { flex-basis: calc((100% - 8px) / 2); }
+    .run--pair figure { flex-basis: 100%; }
+    .about__title { font-size: 19px; }
+    .about__brand, .about__text { font-size: 15px; }
+    .pager__t { font-size: 14px; }
+    .pager__arrow { display: none; }
+  }
+  @media (max-width: 480px) {
+    :root { --pad: 6vw; }
+    .grid { grid-template-columns: minmax(0, 1fr); padding-top: 20px; }
+  }
+</style>
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="top__name" href="./">Martina Cola</a>
+  <nav class="top__nav" aria-label="Primary">
+    <a class="is-current" href="./">Brand &amp; Creative Marketing</a>
+    <a href="mailto:colamartina@gmail.com">Contact</a>
+  </nav>
+</header>
+
+<main id="main">
+  <noscript><p class="about">This page needs JavaScript to show the projects. Write to <a href="mailto:colamartina@gmail.com">colamartina@gmail.com</a>.</p></noscript>
+</main>
+
+<script src="../data/campaigns.js"></script>
+<script src="../data/collabs.js"></script>
+<script src="../data/events.js"></script>
+<script src="projects.js"></script>
+<script src="work.js"></script>
