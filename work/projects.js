@@ -89,7 +89,8 @@
         "dragon-fruit-tropi-teal-lamp-face.webp", "dragon-fruit-hand-face.webp", "bottles-fruit-hands.webp",
         "dragon-fruit-painting-curing.webp", "dragon-fruit-tropi-teal-hand-bottles.webp", "dragon-fruit-tropi-teal-pedi.webp",
         "maxi-kit-lifestyle.webp", "maxi-kit-items-hand.webp"
-      ]
+      ],
+      hide: ["shades-swatch.webp"]
     },
     {
       slug: "spring-2026",
@@ -97,9 +98,9 @@
       text: "Macaron-core is the spring 2026 collection: pastel shades with a rebellious touch, from sheer Coquette to shimmering Pastel Riot and Mint Royale.",
       cover: "shoot-0785.webp",
       images: [
-        "shoot-0785.webp", "shoot-0626.webp", "shoot-0649.webp",
+        "shoot-0785.webp", "shoot-0626.webp", "mint-royale-brush-texture.webp",
         "hp-banner-2.webp", "shoot-0662.webp", "newsletter-visual.webp",
-        "shoot-0749.webp", "mint-royale-brush-texture.webp", "pastel-riot-brush-texture.webp"
+        "pastel-riot-brush-texture.webp", "shoot-0649.webp", "shoot-0749.webp"
       ]
     },
     {
