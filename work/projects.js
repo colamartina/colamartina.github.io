@@ -6,6 +6,7 @@
      text    the short text on the project page
      cover   the image on the page, cut to 3:4
              focus: the part that stays in the cut, e.g. "50% 30%" = centre, upper part
+             zoom: a closer cut around the focus, e.g. 1.1
      images  the photos at the top of the project page: upright ones cut to 4:5, landscape ones to 5:4
              (a name, { name: "…", focus: "…", upright: true } to cut a landscape image to 4:5 as well,
              or one of the PHOTOS below)
@@ -29,7 +30,7 @@
       slug: "rebranding-2026",
       title: "Le Mini Macaron | Rebranding",
       text: "Le Mini Macaron kicked off 2026 with a new tagline, Nail the Fun, and a new look built on one belief: nail beauty should feel easy, expressive and never too serious.",
-      cover: "girls-cherry-pop-blue.webp",
+      cover: "girls-multiproduct.webp", focus: "50% 75%", zoom: 1.1,
       images: [
         "girls-cherry-pop-blue.webp", "cherry-pop-girl-mini-kit.webp", "girls-multiproduct.webp",
         "evergreen-kv-cassis.webp", "cherry-pop-lamp-face.webp", "evergreen-usage-cassis.webp",
@@ -60,7 +61,7 @@
       slug: "fall-2026",
       title: "Le Mini Macaron | Garden Daydream",
       text: "Garden Daydream is the fall 2026 collection, from pumpkin spice to bordeaux, launched with the new Blush gel kit and a shoot among baskets of apples.",
-      cover: "kv-top-view.webp",
+      cover: "items-apples-skirt.webp",
       images: [
         "kv-top-view.webp", "nail-art-hand-apples.webp", "mini-kit-blush.webp",
         "mini-kit-cassis.webp", "items-hands-usage.webp", "chrome-pen-silver-packaging.webp",
@@ -83,7 +84,7 @@
       slug: "summer-2026",
       title: "Le Mini Macaron | Tropical Heat",
       text: "Tropical Heat is the summer 2026 collection: eight bright shades, from Mango to Blue Vanilla, and an invitation to skip the salon, because this summer your manicure is DIY.",
-      cover: "dragon-fruit-hand-face.webp",
+      cover: "maxi-kit-lifestyle.webp", focus: "50% 45%",
       images: [
         "dragon-fruit-tropi-teal-lamp-face.webp", "dragon-fruit-hand-face.webp", "bottles-fruit-hands.webp",
         "dragon-fruit-painting-curing.webp", "dragon-fruit-tropi-teal-hand-bottles.webp", "dragon-fruit-tropi-teal-pedi.webp",

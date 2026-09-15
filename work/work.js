@@ -94,7 +94,7 @@
       slug: e.slug,
       title: e.title,
       text: e.text,
-      cover: { it: cover.it, focus: e.focus || cover.focus },
+      cover: { it: cover.it, focus: e.focus || cover.focus, zoom: e.zoom || null },
       images: images,
       videos: videos,
       more: more
@@ -116,6 +116,10 @@
       node.src = ROOT + it.src + "-" + it.widths[0] + ".webp";
     }
     if (m.focus) node.style.objectPosition = m.focus;
+    if (m.zoom) {                                     // a closer cut: zoom in around the focus (the frame hides the rest)
+      node.style.transform = "scale(" + m.zoom + ")";
+      node.style.transformOrigin = m.focus || "50% 50%";
+    }
     return node;
   }
 
