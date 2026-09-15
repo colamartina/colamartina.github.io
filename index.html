@@ -109,19 +109,26 @@
   </section>
 
   <!-- ============================ BIO ============================ -->
+  <!-- the statement is the design: it holds still while the photo scrolls up under it,
+       seen through the sheet the words are printed on (styles.css, no script) -->
   <section class="about" id="about" data-navtheme="dark">
-    <div class="section-head">
-      <span class="eyebrow" data-reveal>( About )</span>
+    <div class="about__stage">
+      <div class="about__canvas">
+        <div class="section-head">
+          <span class="eyebrow" data-reveal>( About )</span>
+        </div>
+        <p class="about__statement">I’m Martina, a <mark>creative marketing professional</mark> with experience in <span class="serif">creative direction</span>, <span class="serif">social media</span>, <span class="serif">content &amp;&nbsp;campaign management</span>, <span class="serif">influencer marketing</span>, and <span class="serif">paid&nbsp;media</span>.</p>
+      </div>
     </div>
 
-    <div class="about__grid">
-      <p class="about__lead" data-reveal>
-        I turn concepts into <span class="hl">engaging brand experiences</span>,
-        where creativity and data work hand in hand.
-      </p>
-      <div class="about__body">
-        <p data-reveal>Italian, Barcelona-based. I lead global campaigns, content productions and brand activations in beauty &amp; FMCG across the EU &amp; US: from photoshoots and creator collaborations to paid media, translating creative ideas into measurable results.</p>
-      </div>
+    <div class="about__rail">
+      <figure class="about__photo">
+        <img src="assets/about/about-720.webp"
+             srcset="assets/about/about-720.webp 720w, assets/about/about-1200.webp 1200w"
+             sizes="(max-width: 640px) 58vw, min(31vw, 465px)"
+             width="1200" height="1600" loading="lazy" decoding="async"
+             alt="Martina biting into a pastel de nata in a tiled street" />
+      </figure>
     </div>
   </section>
 

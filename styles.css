@@ -755,48 +755,138 @@ img, video { max-width: 100%; }
 .hero-hold .hero__sticker { animation: none; opacity: 0; }
 
 /* =========================================================
-   BIO
+   BIO — the statement is the design. The stage holds the words still while
+   the photo, in the page flow under it, scrolls up beneath them and away:
+   a picture sliding under a printed sheet. No script.
    ========================================================= */
 .about {
+  position: relative;
   background: var(--cream);
   color: var(--ink);
-  padding: var(--section-y) 0;
   border-radius: var(--r-lg) var(--r-lg) 0 0;
-  margin-top: -1px;
+  margin-block: -1px;                  /* a pixel into both neighbours, so no hairline shows at either edge */
 }
 .about .eyebrow { opacity: 1; color: var(--electric-ink); }
 
-.about__grid {
-  max-width: var(--maxw);
-  margin: 1.8rem auto 0;
-  padding: 0 var(--pad);
-  display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  gap: clamp(2rem, 6vw, 6rem);
-  align-items: start;
-}
-.about__lead {
-  font-family: var(--font-text);
-  font-weight: 500;
-  font-size: var(--fs-lead);
-  line-height: 1.12;
-  letter-spacing: -0.015em;
-}
-.about__lead .hl {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  color: var(--electric-ink);
-}
-.about__body {
+/* one screen, held while the section scrolls past */
+.about__stage {
+  position: sticky;
+  top: 0;
+  z-index: 1;                          /* the words stay over the photo */
+  height: 100svh;
   display: flex;
   flex-direction: column;
-  gap: 1.15rem;
-  font-size: var(--fs-body);
-  color: var(--ink-2);
-  max-width: 46ch;
-  padding-top: 0.4rem;
+  padding-block: clamp(4.5rem, 9vh, 6rem) clamp(1.5rem, 4vh, 3rem);
+}
+/* the room for the label and the words, which sit at its top: the photo comes in
+   through the space below them. The type is sized by the room's width (cqi), and
+   the room's shape picks the setting (below) */
+.about__canvas {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.25rem, 3vh, 2.25rem);
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--pad);
+  container: about / size;
+}
+.about__canvas > .section-head { max-width: none; margin: 0; padding: 0; }
+
+/* the statement, justified into one block. Two settings, both picked for their even
+   spacing and both keeping the same line breaks at any size: five lines in a wide,
+   short room, six when the room is tall enough. The height terms only step in on
+   unusually short screens */
+.about__statement {
+  position: relative;
+  z-index: 0;
+  font-weight: 500;
+  font-size: min(6.45cqi, (100cqh - 4rem) / 5.3);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  word-spacing: -0.04em;
+  text-align: justify;
+  text-align-last: left;
+}
+@container about (max-aspect-ratio: 2 / 1) {
+  .about__statement { font-size: min(7.45cqi, (100cqh - 4rem) / 6.3); }
+}
+/* the skills are in the serif italic (.serif), whose own space is narrow: a touch more
+   keeps "paid media" from reading as one word. The title gets a highlighter stroke,
+   drawn a little past the words without moving them (padding and margin cancel out) */
+.about__statement .serif { word-spacing: 0.06em; }
+.about__statement mark {
+  padding-inline: 0.08em;
+  margin-inline: -0.08em;
+  color: inherit;
+  background: linear-gradient(transparent 30%, var(--acid) 30%, var(--acid) 90%, transparent 90%);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+/* the sheet the words are printed on: cream on the cream page, it only shows
+   over the photo, which it softens so the type always reads */
+.about__statement::before {
+  content: "";
+  position: absolute;
+  inset: -0.3em calc(-1 * var(--pad));
+  z-index: -1;
+  background: var(--cream);
+  opacity: 0.58;
+}
+
+/* the photo's lane, on the words' grid. It starts right under the stage, so it
+   comes in as the words settle; the screen of room after it keeps the stage
+   held until the photo has left through the top */
+.about__rail {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--pad) 100svh;
+  container-type: inline-size;
+}
+.about__photo { width: 31%; margin-left: 50%; }
+.about__photo img {                   /* square, like a print */
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+/* portrait tablets: a room taller than wide gets a left-aligned column, as on phones
+   but bigger */
+@container about (max-aspect-ratio: 1 / 1) {
+  .about__statement {
+    font-size: min(10cqi, (100cqh - 4rem) / 10);
+    word-spacing: normal;
+    text-align: left;
+  }
+}
+@media (min-width: 641px) and (max-aspect-ratio: 4 / 5) {
+  .about__photo { width: 44%; margin-left: 46%; }
+}
+
+/* reduced motion: nothing held — one still composition, the photo tucked under
+   the last lines of the statement */
+@media (prefers-reduced-motion: reduce) {
+  .about__stage { position: relative; height: auto; }
+  .about__canvas { container-type: inline-size; }   /* no fixed room to measure */
+  .about__statement { font-size: 7.45cqi; }
+  .about__rail { padding-bottom: var(--section-y); }
+  .about__photo { margin-top: -22cqi; }
+}
+
+/* phones: a column, not a shrunk block — a word or two a line, big for the width.
+   Justified, lines that short would open wide gaps, so the right edge is ragged */
+@media (max-width: 640px) {
+  .about__stage { padding-block: 4.5rem 1.5rem; }
+  .about__statement {
+    font-size: min(12cqi, (100cqh - 4rem) / 11.8);
+    letter-spacing: -0.015em;
+    word-spacing: normal;
+    text-align: left;
+  }
+  .about__photo { width: 58%; margin-left: 34%; }
 }
 
 
@@ -1959,8 +2049,6 @@ body {
 @media (max-width: 900px) {
   .nav__links { display: none; }
   .nav__toggle { display: flex; }
-
-  .about__grid { grid-template-columns: 1fr; gap: 2rem; }
 
 
 }
