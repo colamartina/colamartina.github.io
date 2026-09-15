@@ -13,6 +13,8 @@
      videos  played muted and in loop while on screen
      hide    files of the project's folders to leave out; every other file (banners, ads, social,
              stickers, behind the scenes) is shown under the text, whole
+     add     files that are not in data/, added to one of those folders: { social: [PHOTOS.x] }
+     order   the order of a folder's files: { ecom: ["b.webp", "a.webp"] }; the files not listed follow
    Files are picked by name from data/campaigns.js, collabs.js and events.js.
    Order: the projects with the most material first, the covers grouped by colour.
    ========================================================= */
@@ -22,7 +24,8 @@
     collanine: { src: "content/events/retail-milan/bead-table-photo", widths: [640, 1159], ratio: 0.75, name: "bead-table-photo.webp" },
     presentation: { src: "content/events/pr-brand-presentation/window-display", widths: [640, 1280, 1920], ratio: 0.75, name: "window-display.webp" },
     selfie: { src: "content/events/retail-torino/mirror-selfie", widths: [640, 1280, 1920], ratio: 0.75, name: "mirror-selfie.webp" },
-    hotpoint: { src: "content/events/fuorisalone-beko/hotpoint-truck", widths: [640, 1280, 1920], ratio: 0.75, name: "hotpoint-truck.webp" }
+    hotpoint: { src: "content/events/fuorisalone-beko/hotpoint-truck", widths: [640, 1280, 1920], ratio: 0.75, name: "hotpoint-truck.webp" },
+    lampPost: { src: "content/campaigns/rebranding-2026/social/new-rechargeable-lamp", widths: [640, 1080], ratio: 0.8, name: "new-rechargeable-lamp.webp" }
   };
 
   window.SELECTED = [
@@ -36,7 +39,8 @@
         "evergreen-kv-cassis.webp", "cherry-pop-lamp-face.webp", "evergreen-usage-cassis.webp",
         "evergreen-bottles-in-hands.webp", "bogo-bottles-kv.webp", "cat-eye-kit-pouch.webp"
       ],
-      videos: ["cherry-pop-on-the-go-train.mp4", "testimonial-es-cassis.mp4", "cherry-pop-on-the-go-trend.mp4"]
+      add: { social: [PHOTOS.lampPost] },
+      order: { ecom: ["new-mini-kits-banner-1-desktop.webp", "new-mini-kits-banner-4-desktop.webp", "new-mini-kits-banner-1-mobile.webp", "new-mini-kits-banner-4-mobile.webp", "ecom-banner-nail-the-fun.webp"] }
     },
     {
       slug: "fazit-2025",

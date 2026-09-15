@@ -85,7 +85,14 @@
     function rank(s) { return s.id === "bts" ? 2 : STICKERS[s.id] ? 1 : 0; }
     var more = sections
       .map(function (s) {
-        return { id: s.id, label: LABELS[s.id] || s.label, items: s.items.filter(function (it) { return !shown[it.name]; }) };
+        // the files added in projects.js (add), in the order given there (order); the others follow in their own
+        var extra = ((e.add || {})[s.id] || []).map(function (x) { return Object.assign({ type: "image" }, x); });
+        var wanted = (e.order || {})[s.id] || [];
+        var items = s.items.concat(extra)
+          .map(function (it, k) { var w = wanted.indexOf(it.name); return { it: it, key: w < 0 ? wanted.length + k : w }; })
+          .sort(function (a, b) { return a.key - b.key; })
+          .map(function (x) { return x.it; });
+        return { id: s.id, label: LABELS[s.id] || s.label, items: items.filter(function (it) { return !shown[it.name]; }) };
       })
       .filter(function (s) { return s.items.length; })
       .sort(function (a, b) { return rank(a) - rank(b); });
