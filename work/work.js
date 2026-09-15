@@ -105,7 +105,7 @@
           .map(function (it, k) { var w = wanted.indexOf(it.name); return { it: it, key: w < 0 ? wanted.length + k : w }; })
           .sort(function (a, b) { return a.key - b.key; })
           .map(function (x) { return x.it; });
-        return { id: s.id, label: LABELS[s.id] || s.label, items: items.filter(function (it) { return !shown[it.name]; }) };
+        return { id: s.id, label: (e.labels || {})[s.id] || LABELS[s.id] || s.label, items: items.filter(function (it) { return !shown[it.name]; }) };
       })
       .filter(function (s) { return s.items.length; })
       .sort(function (a, b) { return rank(a) - rank(b); });

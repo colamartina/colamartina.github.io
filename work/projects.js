@@ -16,6 +16,7 @@
      add     files that are not in data/, added to one of those folders: { social: [PHOTOS.x] }
      order   the order of a folder's files: { ecom: ["b.webp", "a.webp"] }; the files not listed follow
      move    a file shown in another folder: { "file.webp": "social" }; a folder the project lacks ("ecom") is added
+     labels  a folder's heading, renamed: { "key-visuals": "Assets" }
    Files are picked by name from data/campaigns.js, collabs.js and events.js.
    Order: the projects with the most material first, the covers grouped by colour.
    ========================================================= */
@@ -50,7 +51,8 @@
       cover: "model-dollhouse-bottles.webp",
       images: ["model-dollhouse-bottles.webp", "model-bottle-confetti-crush.webp", "bundle-lifestyle-models.webp"],
       videos: ["out-in-2-days.mp4", "i-dont-think-we-should-be-together.mp4", "video-collage-all-models.mp4"],
-      move: { "moodboard-grid.webp": "social", "asset-moodboard.webp": "ecom" }
+      move: { "moodboard-grid.webp": "social", "banner-desktop.webp": "ecom", "landing-page-models-desktop.webp": "ecom", "asset-moodboard.webp": "ecom" },
+      labels: { "key-visuals": "Influencer flyer" }
     },
     {
       slug: "ooh-italy",
@@ -130,7 +132,6 @@
       title: "Le Mini Macaron | Brand presentation",
       text: "A brand presentation inside a cake shop, with polishes on a tiered cake stand, manicure stations and guests getting their nails done.",
       cover: PHOTOS.presentation,
-      images: [PHOTOS.presentation],
       videos: ["pr-brand-presentation.mp4"]
     },
     {
