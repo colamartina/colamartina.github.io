@@ -43,7 +43,9 @@
           }
         });
       },
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+      // as soon as it comes in: waiting for 12% of it kept a tall block (the CV sheet on a
+      // phone) blank until 200px of it was on screen
+      { threshold: 0, rootMargin: "0px 0px -8% 0px" }
     );
     revealEls.forEach(function (el) { revealObs.observe(el); });
   } else {
@@ -53,19 +55,28 @@
   /* ---------- Nav: adaptive color per section ---------- */
   var navEl = document.querySelector(".nav");
   var themed = document.querySelectorAll("[data-navtheme]");
+  function navTheme() {
+    // the innermost surface under the nav wins: the CV paper inside its blue section
+    var pick = null;
+    themed.forEach(function (s) { if (s._navOn && (!pick || pick.contains(s))) pick = s; });
+    if (pick) navEl.setAttribute("data-theme", pick.getAttribute("data-navtheme"));
+  }
   if ("IntersectionObserver" in window) {
     var themeObs = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) { entry.target._navOn = entry.isIntersecting; });
-        // the innermost surface under the nav wins: the CV paper inside its blue section
-        var pick = null;
-        themed.forEach(function (s) { if (s._navOn && (!pick || pick.contains(s))) pick = s; });
-        if (pick) navEl.setAttribute("data-theme", pick.getAttribute("data-navtheme"));
+        navTheme();
       },
       { rootMargin: "-7% 0px -93% 0px", threshold: 0 }
     );
     themed.forEach(function (s) { themeObs.observe(s); });
   }
+
+  // the bar's height, for what has to stay clear of it: the case page's sticky tabs (styles.css)
+  function navHeight() { document.documentElement.style.setProperty("--nav-h", navEl.offsetHeight + "px"); }
+  navHeight();
+  window.addEventListener("resize", navHeight, { passive: true });
+  if (document.fonts) document.fonts.ready.then(navHeight);
 
   /* ---------- Scroll progress bar ---------- */
   var progress = document.createElement("div");
@@ -135,7 +146,7 @@
     wrap.className = "cursor-flower";
     wrap.innerHTML =
       '<div class="cursor-flower__in">' +
-      '<img src="assets/cursor-flower-acid.webp" alt="" width="256" height="256">' +
+      '<img src="assets/cursor-flower-blue.webp" alt="" width="256" height="256">' +
       "</div>";
     var inner = wrap.firstChild;
     document.body.appendChild(wrap);
@@ -189,15 +200,23 @@
     menu.inert = !open; // closed menu: links are not focusable
     toggle.setAttribute("aria-expanded", String(open));
     document.body.style.overflow = open ? "hidden" : "";
+    // over the burgundy menu the bar is light; once closed it takes the colours of the section
+    // under it again (it stayed light, and on a cream section the name and the button vanished)
     if (open) navEl.setAttribute("data-theme", "light");
+    else navTheme();
   }
   if (toggle && menu) {
     menu.inert = true;
     toggle.addEventListener("click", function () {
       setMenu(!menu.classList.contains("is-open"));
     });
+    // the menu's links, and the name in the bar, close it on their way
     menu.querySelectorAll("a").forEach(function (a) {
       a.addEventListener("click", function () { setMenu(false); });
+    });
+    var brand = document.querySelector(".nav__brand");
+    if (brand) brand.addEventListener("click", function () {
+      if (menu.classList.contains("is-open")) setMenu(false);
     });
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && menu.classList.contains("is-open")) {
@@ -361,7 +380,11 @@
       var target = document.querySelector(id);
       if (!target) return;
       e.preventDefault();
-      target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+      var behavior = reduceMotion ? "auto" : "smooth";
+      // #top is the bar itself, which is fixed and never scrolls into view: "Back to top" and
+      // the name go to the top of the page
+      if (getComputedStyle(target).position === "fixed") window.scrollTo({ top: 0, behavior: behavior });
+      else target.scrollIntoView({ behavior: behavior, block: "start" });
       history.replaceState(null, "", id);
     });
   });

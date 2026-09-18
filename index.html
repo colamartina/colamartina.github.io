@@ -15,6 +15,7 @@
 <link rel="preload" href="assets/fonts/bebas-neue-400-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="fonts.css" />
 <link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="projects.css" />
 
 <script src="data/hero.js"></script>
 <script>
@@ -110,14 +111,15 @@
 
   <!-- ============================ BIO ============================ -->
   <!-- the statement is the design: it holds still while the photo scrolls up under it,
-       seen through the sheet the words are printed on (styles.css, no script) -->
+       seen through the sheet the words are printed on (styles.css, no script).
+       Martina's two drawn flowers, in the ink, sit at the end of the last line -->
   <section class="about" id="about" data-navtheme="dark">
     <div class="about__stage">
       <div class="about__canvas">
         <div class="section-head">
           <span class="eyebrow" data-reveal>( About )</span>
         </div>
-        <p class="about__statement">I’m Martina, a <mark>creative marketing professional</mark> with experience in <span class="serif">creative direction</span>, <span class="serif">social media</span>, <span class="serif">content &amp;&nbsp;campaign management</span>, <span class="serif">influencer marketing</span>, and <span class="serif">paid&nbsp;media</span>.</p>
+        <p class="about__statement">I’m Martina, a <mark>creative marketing professional</mark> with experience in <span class="serif">creative direction</span>, <span class="serif">social media</span>, <span class="serif">content &amp;&nbsp;campaign management</span>, <span class="serif">influencer marketing</span>, and <span class="serif">paid&nbsp;media</span>.<img class="about__flowers" src="assets/about/flowers-ink.webp" width="421" height="480" alt="" loading="lazy" decoding="async" /></p>
       </div>
     </div>
 
@@ -132,30 +134,22 @@
     </div>
   </section>
 
-  <!-- ============================ WORK — filled from data/ in the next phases ============================ -->
+  <!-- ============================ WORK — ( Projects ): Campaign · Events · Brand Collabs ============================ -->
+  <!-- Campaign and Events: three project cards each, the others behind "See more" / "See less"; a card opens the
+       project's own page, project.html?p=<slug> (data/selection.js, js/projects.js, projects.css) -->
   <div id="work">
-    <section class="sec sec--paper" id="campaigns" aria-labelledby="campaigns-title" data-navtheme="dark">
-      <header class="sec-head">
-        <div class="sec-head__bar" data-reveal>
-          <span>(01)</span>
-          <span class="file file--folder">work / campaigns</span>
-          <span class="sec-head__count"></span>
-        </div>
-        <h2 class="sec-head__title" id="campaigns-title" data-reveal>Campaigns</h2>
-      </header>
-      <div class="sec__body"><!-- cards rendered from data/campaigns.js by js/work.js --></div>
+    <section class="sec sec--paper" id="campaigns" aria-labelledby="projects-title" data-navtheme="dark">
+      <div class="section-head">
+        <span class="eyebrow" id="projects-title" data-reveal>( Projects )</span>
+      </div>
+      <div class="sec__body"><!-- cards rendered from data/selection.js by js/projects.js --></div>
     </section>
 
     <section class="sec sec--stage" id="events" aria-labelledby="events-title" data-navtheme="light">
-      <header class="sec-head">
-        <div class="sec-head__bar" data-reveal>
-          <span>(02)</span>
-          <span class="file file--folder">work / events</span>
-          <span class="sec-head__count"></span>
-        </div>
-        <h2 class="sec-head__title" id="events-title" data-reveal>Events</h2>
-      </header>
-      <div class="sec__body"><!-- slides rendered from data/events.js by js/work.js --></div>
+      <div class="section-head">
+        <span class="eyebrow" id="events-title" data-reveal>( Events )</span>
+      </div>
+      <div class="sec__body"><!-- cards rendered from data/selection.js by js/projects.js --></div>
     </section>
 
     <section class="sec sec--paper" id="collabs" aria-labelledby="collabs-title" data-navtheme="dark">
@@ -192,10 +186,9 @@
 
   <!-- ============================ CONTACT ============================ -->
   <section class="contact" id="contact" data-navtheme="light">
-    <span class="contact__word" aria-hidden="true">Cola</span>
     <div class="contact__inner">
       <span class="eyebrow" data-reveal>( Contact )</span>
-      <h2 class="contact__title" data-reveal>Let's work<br />together.</h2>
+      <h2 class="contact__title" data-reveal>let’s work<br />together&nbsp;:)</h2>
       <a class="contact__mail" href="mailto:colamartina@gmail.com" data-reveal>colamartina@gmail.com</a>
 
       <div class="contact__row">
@@ -220,7 +213,10 @@
 <script src="data/collabs.js"></script>
 <script src="data/hobbies.js"></script>
 <script src="data/cv.js"></script>
+<script src="work/projects.js"></script>
+<script src="data/selection.js"></script>
 <script src="js/media.js"></script>
+<script src="js/projects.js"></script>
 <script src="js/work.js"></script>
 <script src="js/cv.js"></script>
 <script src="js/intro.js"></script>

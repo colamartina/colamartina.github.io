@@ -98,6 +98,10 @@
       if (!to) folders.push(to = { id: moved[name], label: FOLDERS[moved[name]] || moved[name], items: [] });
       to.items.push(it);
     });
+    // files added in projects.js (add) can open a folder the project does not have, too ("bts")
+    Object.keys(e.add || {}).forEach(function (id) {
+      if (!folders.some(function (s) { return s.id === id; })) folders.push({ id: id, label: FOLDERS[id] || id, items: [] });
+    });
     var rest = folders
       .map(function (s) {
         // the files added in projects.js (add), in the order given there (order); the others follow in their own
@@ -168,16 +172,17 @@
     return node;
   }
 
-  // photos cut to 4:5, three a row (four when there are exactly four); landscape photos in a 5:4 row of their own
+  // photos cut to 4:5, three a row (four when there are exactly four); landscape photos in a 5:4 row of their own.
+  // When threes would leave one photo alone at the end (seven, ten…), the last four share a row on a computer
   function gallery(list, alt, eager) {
     var groups = [
       { cls: "", items: list.filter(function (m) { return m.upright; }) },
       { cls: ".gallery--wide", items: list.filter(function (m) { return !m.upright; }) }
     ];
     return groups.filter(function (g) { return g.items.length; }).map(function (g) {
-      var four = g.items.length === 4;
-      return el("div.gallery" + g.cls + (four ? ".gallery--four" : ""), {}, g.items.map(function (m, i) {
-        var node = img(m, four ? "(max-width: 700px) 50vw, 25vw" : "(max-width: 700px) 50vw, 33vw", eager && i < 3);
+      var n = g.items.length, four = n === 4, lastFour = n > 4 && n % 3 === 1;
+      return el("div.gallery" + g.cls + (four ? ".gallery--four" : "") + (lastFour ? ".gallery--last-four" : ""), {}, g.items.map(function (m, i) {
+        var node = img(m, four || (lastFour && i >= n - 4) ? "(max-width: 700px) 50vw, 25vw" : "(max-width: 700px) 50vw, 33vw", eager && i < 3);
         node.alt = alt;
         return el("figure", {}, [node]);
       }));
@@ -194,6 +199,13 @@
       node.alt = alt;
       return el("figure", { style: "--r: " + r }, [node]);
     }));
+  }
+
+  // videos side by side at one height; on a computer a line never breaks, it gets lower when they don't all fit
+  // (four, or wide ones): --n is how many, --fit their shapes added up (.reels in index.html)
+  function reels(cls, list) {
+    var fit = list.reduce(function (sum, m) { return sum + m.it.ratio; }, 0);
+    return el("div" + cls, { style: "--n: " + list.length + "; --fit: " + fit.toFixed(4) }, list.map(video));
   }
 
   // muted and in loop, played while on screen; a pill turns the sound on when the file has it
@@ -293,7 +305,7 @@
     var banners = p.images.filter(function (m) { return (!m.upright && m.it.ratio >= 2) || p.formats[m.it.name]; });
     var nodes = gallery(p.images.filter(function (m) { return banners.indexOf(m) < 0; }), p.title, true);
     if (banners.length) nodes.push(el("div.run.run--wide", {}, banners.map(function (m) { return natural(m, "(max-width: 1400px) 100vw, 1400px", p.title); })));
-    if (p.videos.length) nodes.push(el("div.reels", {}, p.videos.map(video)));
+    if (p.videos.length) nodes.push(reels(".reels", p.videos));
     return nodes;
   }
 
@@ -337,7 +349,7 @@
     runs.forEach(function (r) {
       var single = r.items.length === 1;
       if (r.shape === "reels") {
-        nodes.push(el("div.run.reels", {}, r.items.map(video)));
+        nodes.push(reels(".run.reels", r.items));
       } else if (r.shape === "photos") {
         gallery(r.items, alt, false).forEach(function (g) { g.classList.add("run"); nodes.push(g); });
       } else if (r.shape === "wide") {
@@ -419,9 +431,9 @@
     // first: "videos": the videos open the page, three a row, and the photos follow the text
     var videosFirst = p.first === "videos" && p.videos.length > 0;
     var rows = [];
-    if (videosFirst) p.videos.forEach(function (m, k) { if (k % 3 === 0) rows.push([]); rows[rows.length - 1].push(video(m)); });
+    if (videosFirst) p.videos.forEach(function (m, k) { if (k % 3 === 0) rows.push([]); rows[rows.length - 1].push(m); });
     var pictures = el("div.visuals", {}, videosFirst
-      ? rows.map(function (row) { return el("div.reels.reels--first", {}, row); })
+      ? rows.map(function (row) { return reels(".reels.reels--first", row); })
       : visuals(p));
     formatsIn(pictures, p.formats);
     var photos = videosFirst && p.images.length ? mosaic(p.images, p.title) : null;
@@ -600,6 +612,8 @@
       node.style.zIndex = 1000;                           // the one in hand above everything else
       node.classList.add("is-held");
       document.documentElement.classList.add("is-grabbing");
+      layer.classList.add("is-known");                     // picked up once: the word by the first badge goes, for the whole visit
+      keep("dragged", "1");
     });
     layer.addEventListener("pointermove", function (e) {
       if (!held || e.pointerId !== held.id) return;
@@ -633,6 +647,12 @@
     else window.addEventListener("resize", later);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(later);
     place();
+
+    // a word by the badge seen first (the highest on the page), until one is picked up on any page of the visit
+    if (keep("dragged") !== "1") {
+      var first = badges.slice().sort(function (a, b) { return a.top - b.top || a.left - b.left; })[0];
+      first.node.appendChild(el("span.badge__hint", { text: "drag them around" }));
+    }
   }
 
   var slug = new URLSearchParams(location.search).get("p");

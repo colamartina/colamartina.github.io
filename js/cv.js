@@ -31,7 +31,7 @@
     photo = el("div.cv-photo", {}, [
       cv.clip ? el("img.cv-clip", { src: cv.clip.src, width: String(cv.clip.width), height: String(cv.clip.height), alt: "", decoding: "async" }) : null,
       el("figure.cv-photo__print", {}, [
-        M.img(Object.assign({ type: "image" }, cv.photo), "(max-width: 640px) 104px, 168px", { alt: cv.name }),
+        M.img(Object.assign({ type: "image" }, cv.photo), "(max-width: 640px) 104px, (min-width: 901px) 104px, 168px", { alt: cv.name }),
         cv.photo.caption ? el("figcaption.cv-photo__cap", { text: cv.photo.caption }) : null
       ])
     ]);
@@ -123,4 +123,22 @@
     : null;
 
   host.replaceChildren.apply(host, [sheet, cta, devNotes].filter(Boolean));
+
+  /* ---------- on a desktop the whole sheet fits the screen ----------
+     the section opens on the note and the sheet (styles.css); on a screen too short for
+     them the sheet is scaled down (zoom) just enough to fit — never below 80%, never up */
+  var desk = window.matchMedia("(min-width: 901px)");
+  var section = host.closest("section");
+  function fit() {
+    sheet.style.zoom = "";
+    if (!desk.matches) return;
+    var top = host.getBoundingClientRect().top - section.getBoundingClientRect().top;
+    var room = window.innerHeight - top - 14;                // a little blue under the sheet
+    var z = room / sheet.getBoundingClientRect().height;    // the tilt included
+    if (z < 1) sheet.style.zoom = Math.max(z, 0.8).toFixed(3);
+  }
+  fit();
+  window.addEventListener("resize", fit, { passive: true });
+  window.addEventListener("load", fit);                      // the bar's height is known by then
+  if (document.fonts) document.fonts.ready.then(fit);
 })();

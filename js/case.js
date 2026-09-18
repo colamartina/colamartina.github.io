@@ -96,7 +96,7 @@
   var tabs = el("nav.case__tabs", { "aria-label": "Project sections" }, [
     el("a.tab", { href: "#overview" }, ["Overview"])
   ].concat(c.sections.map(function (s) {
-    return el("a.tab", { href: "#" + s.id }, [s.label, el("span", { text: String(s.items.length) })]);
+    return el("a.tab", { href: "#" + s.id }, [s.label]);
   })));
 
   /* ---------- overview ---------- */
@@ -144,8 +144,7 @@
       el("header.case__sec-head", {}, [
         el("h2.case__sec-title", { id: s.id + "-title", text: s.label }),
         el("span.file.file--folder", { text: s.path }),
-        s.note ? el("span.case__sec-note", { text: s.note }) : null,
-        el("span.case__sec-count", { text: s.items.length + (s.items.length === 1 ? " file" : " files") })
+        s.note ? el("span.case__sec-note", { text: s.note }) : null
       ]),
       grid
     ]);

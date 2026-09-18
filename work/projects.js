@@ -7,15 +7,17 @@
      cover   the image on the page, cut to 3:4
              focus: the part that stays in the cut, e.g. "50% 30%" = centre, upper part
              zoom: a closer cut around the focus, e.g. 1.1
-     images  the photos at the top of the project page: upright ones cut to 4:5, landscape ones to 5:4
+     images  the photos at the top of the project page: upright ones cut to 4:5, landscape ones to 5:4, three a row
+             (with seven, the last four share a row)
              (a name, { name: "…", focus: "…", upright: true } to cut a landscape image to 4:5 as well,
              or one of the PHOTOS below)
-     videos  played muted and in loop while on screen
+     videos  played muted and in loop while on screen, side by side (a name, or one of the VIDEOS below)
      first   "videos": the videos open the project page, three a row, then the text, then the photos side by side
              in the order given, each row one height ({ name: "…", whole: true } keeps a photo uncut)
      hide    files of the project's folders to leave out; every other file (banners, ads, social,
              behind the scenes) is shown under the text, whole
-     add     files that are not in data/, added to one of those folders: { social: [PHOTOS.x] }
+     add     files that are not in data/, added to one of those folders: { social: [PHOTOS.x] }; a folder the
+             project lacks ("bts") is added
      order   the order of a folder's files: { ecom: ["b.webp", "a.webp"] }; the files not listed follow
      move    a file shown in another folder: { "file.webp": "social" }; a folder the project lacks ("ecom") is added
      labels  a folder's heading, renamed: { "key-visuals": "Assets" }
@@ -54,7 +56,21 @@
     madAmerica: { src: "content/campaigns/ooh-italy/spain-us-2022/photos/madrid-america", widths: [640, 718], ratio: 0.8487, name: "madrid-america.webp" },
     madPlazaEspana: { src: "content/campaigns/ooh-italy/spain-us-2022/photos/madrid-plaza-espana", widths: [576], ratio: 0.6809, name: "madrid-plaza-espana.webp" },
     usTruck1: { src: "content/campaigns/ooh-italy/spain-us-2022/photos/us-truck-1", widths: [594], ratio: 1.5, name: "us-truck-1.webp" },
-    usTruck2: { src: "content/campaigns/ooh-italy/spain-us-2022/photos/us-truck-2", widths: [594], ratio: 1.5, name: "us-truck-2.webp" }
+    usTruck2: { src: "content/campaigns/ooh-italy/spain-us-2022/photos/us-truck-2", widths: [594], ratio: 1.5, name: "us-truck-2.webp" },
+    // Fazit: more photos of the shoot (NEWPORTFOLIO/BRAND COLLABS/LMM X FAZIT - 2025/asset)
+    fazitBlueEra: { src: "content/collabs/fazit-2025/assets/model-my-blue-era-dream-drip", widths: [640, 1280, 1920], ratio: 0.6669, name: "model-my-blue-era-dream-drip.webp" },
+    fazitStyledModels: { src: "content/collabs/fazit-2025/assets/collection-styled-models", widths: [640, 1280, 1920], ratio: 0.7143, name: "collection-styled-models.webp" },
+    fazitStyledCloseUp: { src: "content/collabs/fazit-2025/assets/collection-styled-close-up", widths: [640, 1280, 1920], ratio: 0.6667, name: "collection-styled-close-up.webp" },
+    fazitStyledFloor: { src: "content/collabs/fazit-2025/assets/collection-styled-floor", widths: [640, 1280, 1920], ratio: 0.8, name: "collection-styled-floor.webp" }
+  };
+
+  // videos that are not in data/, the same way: 720 px wide mp4s with a poster
+  var VIDEOS = {
+    // Fazit: the split-screen reel (asset) and the behind the scenes of the shoot (BTS)
+    fazitSplitscreen: { type: "video", src: "content/collabs/fazit-2025/social/splitscreen.mp4", poster: "content/collabs/fazit-2025/social/splitscreen-poster.webp", ratio: 0.5625, audio: true, name: "splitscreen.mp4" },
+    fazitBtsSofa: { type: "video", src: "content/collabs/fazit-2025/bts/shoot-sofa.mp4", poster: "content/collabs/fazit-2025/bts/shoot-sofa-poster.webp", ratio: 0.8, audio: false, name: "shoot-sofa.mp4" },
+    fazitBtsCamera: { type: "video", src: "content/collabs/fazit-2025/bts/shoot-camera.mp4", poster: "content/collabs/fazit-2025/bts/shoot-camera-poster.webp", ratio: 0.8, audio: false, name: "shoot-camera.mp4" },
+    fazitBtsLaptop: { type: "video", src: "content/collabs/fazit-2025/bts/shoot-laptop.mp4", poster: "content/collabs/fazit-2025/bts/shoot-laptop-poster.webp", ratio: 0.8, audio: false, name: "shoot-laptop.mp4" }
   };
 
   window.SELECTED = [
@@ -83,9 +99,14 @@
       slug: "fazit-2025",
       title: "Le Mini Macaron x Fazit",
       text: "All Dolled Up! is the first collection by Le Mini Macaron and Fazit, made for getting ready together before a night out: four exclusive shades, 3D nail stickers and freckles, all in a lunch box.",
-      cover: "model-dollhouse-bottles.webp",
-      images: ["model-dollhouse-bottles.webp", "model-bottle-confetti-crush.webp", "bundle-lifestyle-models.webp"],
-      videos: ["out-in-2-days.mp4", "i-dont-think-we-should-be-together.mp4", "video-collage-all-models.mp4"],
+      cover: PHOTOS.fazitBlueEra,
+      // on a computer: the three portraits in a row, then the four others
+      images: [
+        PHOTOS.fazitBlueEra, "model-dollhouse-bottles.webp", "model-bottle-confetti-crush.webp",
+        "bundle-lifestyle-models.webp", PHOTOS.fazitStyledModels, PHOTOS.fazitStyledCloseUp, PHOTOS.fazitStyledFloor
+      ],
+      videos: ["out-in-2-days.mp4", VIDEOS.fazitSplitscreen, "i-dont-think-we-should-be-together.mp4", "video-collage-all-models.mp4"],
+      add: { bts: [VIDEOS.fazitBtsSofa, VIDEOS.fazitBtsCamera, VIDEOS.fazitBtsLaptop] },
       move: { "moodboard-grid.webp": "social", "banner-desktop.webp": "ecom", "landing-page-models-desktop.webp": "ecom", "asset-moodboard.webp": "ecom" },
       labels: { "key-visuals": "Influencer flyer" }
     },

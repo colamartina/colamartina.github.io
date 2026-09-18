@@ -1,0 +1,190 @@
+/* =========================================================
+   PROJECTS — Campaign and Events (js/projects.js, data/selection.js).
+   Home page: the site's own cards (styles.css, CAMPAIGN CARDS) with the
+   covers of work/, three on show, the others behind "See more".
+   A card opens the project's page, project.html: told like a project page of
+   work/ — the pictures for the vibe, the title and the short text, then the
+   folders — in the site's type and inks: cream paper for a campaign, the
+   burgundy stage for an event. Every file keeps its own shape, side by side
+   in rows of one height. Brand Collabs keeps its rows and its case pages.
+   ========================================================= */
+
+/* ---------- home: the cards three a row, bigger than the four of before ---------- */
+.c-grid--three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.c-grid--three .c-card__t { font-size: clamp(1.3rem, 2.1vw, 2rem); }
+.c-grid--three .c-card__k { font-size: clamp(0.72rem, 0.85vw, 0.84rem); }
+/* Events: the same cards on the burgundy stage, under ( Events ) set like ( Projects ) */
+#events .eyebrow { opacity: 1; color: var(--voice); }
+.sec--stage .c-card__media { background: var(--burgundy-deep); }
+.sec--stage .c-card__y, .sec--stage .c-card__m { color: var(--cream-65); }
+.sec--stage .c-card__k { color: var(--electric); }
+
+/* under the cards, the site's button: "See more" / "See less" (js/projects.js). While the grid opens or
+   closes, what lies past its moving edge is cut off */
+.c-grid.is-folding { overflow: hidden; overflow: clip; }
+
+@media (max-width: 640px) {
+  .c-grid--three { grid-template-columns: minmax(0, 1fr); row-gap: 2.4rem; }   /* one under the other, whole */
+  .c-more__wrap .c-more { padding: 1.05em 1.9em; }                              /* a fingertip's size */
+}
+
+/* ---------- the project page: cream for a campaign, the stage for an event ---------- */
+.project-page { background: var(--cream); color: var(--ink); --voice: var(--electric-ink); --focus: var(--electric-ink); }
+.project-page.is-stage { background: var(--burgundy); color: var(--cream); --voice: var(--electric); --focus: var(--electric); }
+.project {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: clamp(6.5rem, 14vh, 9rem) var(--pad) var(--section-y);
+}
+.is-stage .crumbs { color: var(--cream-65); }
+.is-stage .crumbs [aria-current] { color: var(--cream); }
+.is-stage .pager { border-top-color: var(--cream); }
+.is-stage .pager__label { color: var(--cream-65); }
+.is-stage .pager__all { text-decoration-color: var(--electric); }
+@media (hover: hover) {
+  .is-stage .pager a:hover .pager__title { color: var(--electric); }
+}
+
+/* ---------- the project ---------- */
+/* rows of files, each row one height, each file in its own shape; a row that can't fill the width stays on the left */
+.study__media { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gap, 14px); }
+.study__row { display: flex; gap: var(--gap, 14px); max-width: 100%; }
+.study__fig { position: relative; flex: none; margin: 0; overflow: hidden; background: var(--cream-2); }
+.is-stage .study__fig { background: var(--burgundy-deep); }
+.study__fig img, .study__fig video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.study__vibe { margin-top: clamp(1.4rem, 3vw, 2.4rem); }
+
+/* a video with sound: a small pill turns it on, one at a time */
+.study__sound {
+  position: absolute;
+  left: 0.55rem;
+  bottom: 0.55rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.45em 0.8em 0.45em 0.65em;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--cream) 94%, transparent);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.study__sound::before { content: ""; width: 0.5em; height: 0.5em; border-radius: 50%; background: var(--orange); }
+.study__sound[aria-pressed="true"] { background: var(--electric-ink); color: var(--cream); }
+.study__sound[aria-pressed="true"]::before { background: var(--acid); }
+@media (hover: hover) {
+  .study__sound:hover { background: var(--acid); color: var(--ink); }
+}
+.study__sound:focus-visible { border-radius: var(--r-pill); }
+
+/* the text: the kicker in the serif, the name big, the short text; the facts beside it */
+.study__about {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  align-items: end;
+  gap: clamp(1.8rem, 5vw, 5rem);
+  margin-top: clamp(2.2rem, 5vw, 4rem);
+}
+.study__kicker {
+  width: fit-content;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.4rem, 2.6vw, 2.3rem);
+  line-height: 1.1;
+  color: var(--voice);
+}
+.study__title {
+  margin-top: 0.06em;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(3.4rem, 9vw, 8.5rem);
+  line-height: 0.84;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+}
+.study__text {
+  margin-top: var(--s-5);
+  max-width: 52ch;
+  font-size: clamp(1.05rem, 1.35vw, 1.25rem);
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+.is-stage .study__text { color: var(--cream-90); }
+.is-stage .info { border-top-color: var(--cream); }
+.is-stage .info > div { border-bottom-color: var(--line-light); }
+.is-stage .info dt { color: var(--cream-65); }
+/* the project's accent, as on its case page: yellow as a highlighter, orange as ink */
+.study[data-accent="yellow"] .study__kicker {
+  padding: 0 0.12em;
+  color: var(--ink);
+  background: linear-gradient(transparent 52%, var(--acid) 52%, var(--acid) 92%, transparent 92%);
+}
+.study[data-accent="orange"] .study__kicker,
+.study[data-accent="orange"] .result__value { color: var(--orange); }
+.study .results { grid-column: 1 / -1; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: var(--s-3); }
+.study .result__value { font-size: clamp(2.6rem, 5vw, 4.6rem); }
+
+/* each folder: its name small, and a note */
+.study__folder { margin-top: clamp(3rem, 6.5vw, 5rem); }
+.study__label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.3rem 1rem;
+  margin-bottom: var(--s-4);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--line);
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  line-height: 1.55;
+  text-transform: uppercase;
+  color: var(--voice);
+}
+.study__note { font-family: var(--font-mono); font-weight: 400; letter-spacing: 0.02em; text-transform: none; color: var(--ink-3); }
+.is-stage .study__label { border-top-color: var(--line-light); }
+.is-stage .study__note { color: var(--cream-65); }
+
+/* two small folders on one line on a wide screen (js/projects.js decides when they fit) */
+.study__pair.is-beside { display: flex; align-items: flex-start; gap: var(--between, 56px); margin-top: clamp(3rem, 6.5vw, 5rem); }
+.study__pair.is-beside > .study__folder { flex: none; margin-top: 0; }
+
+/* ---------- an event: its photo and its video beside the text ---------- */
+.study__spread {
+  --text-w: 27rem;
+  --spread-gap: clamp(2.5rem, 5vw, 5rem);
+  container-type: inline-size;        /* 100cqw below: the width of the page */
+  display: grid;
+  grid-template-columns: auto minmax(0, var(--text-w));
+  align-items: center;
+  justify-content: center;
+  column-gap: var(--spread-gap);
+}
+.study--event .study__vibe { flex-direction: row; gap: 12px; }
+/* one height for the photo and the video, as tall as the screen allows and never wider than the room the text
+   leaves (--sum: their shapes added up, --gaps: the space between them) */
+.study--event .study__fig {
+  height: min(72svh, 640px, calc((100cqw - var(--text-w) - var(--spread-gap) - var(--gaps, 0px)) / var(--sum, 0.5625)));
+  width: auto;
+  aspect-ratio: var(--r);
+}
+.study--event .study__about { display: block; margin-top: clamp(1.4rem, 3vw, 2.4rem); }
+.study--event .study__title { font-size: clamp(3rem, 6vw, 5.5rem); }
+
+@media (max-width: 1100px) {
+  .study__spread { grid-template-columns: minmax(0, 1fr); justify-content: stretch; }
+  .study--event .study__fig { height: min(62svh, 560px, calc((100cqw - var(--gaps, 0px)) / var(--sum, 0.5625))); }
+  .study--event .study__about { max-width: 56ch; }
+}
+
+@media (max-width: 900px) {
+  .study__about { grid-template-columns: minmax(0, 1fr); align-items: start; }
+}
+
+@media (max-width: 640px) {
+  .study .results { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

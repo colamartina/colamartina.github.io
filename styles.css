@@ -225,21 +225,25 @@ img, video { max-width: 100%; }
   cursor: pointer;
   transition: transform var(--dur) var(--ease), background-color var(--dur-fast), color var(--dur-fast), border-color var(--dur-fast);
 }
-.btn:hover { transform: translateY(-2px); }
 .btn--solid { background: var(--burgundy); color: var(--cream); }
 .btn--light { background: var(--cream); color: var(--burgundy); }
 .btn--blue { background: var(--electric-ink); color: var(--cream); }
 .btn--ghost { border: 1.5px solid currentColor; background: transparent; }
 .sec--paper .btn--ghost, .about .btn--ghost, .case-page .btn--ghost { color: var(--electric-ink); }
-/* blue marks what you can press; under the pointer every button turns acid yellow */
-.btn--solid:hover, .btn--light:hover, .btn--blue:hover, .btn--ghost:hover {
-  background: var(--acid);
-  border-color: var(--burgundy);
-  color: var(--burgundy);
+.btn__ic { transition: transform var(--dur) var(--ease); }
+/* blue marks what you can press; under the pointer every button lifts and turns acid yellow.
+   Every hover effect on the site waits for a pointer that can hover: on a touch screen the
+   tap would leave it on, yellow, until the next tap somewhere else */
+@media (hover: hover) {
+  .btn:hover { transform: translateY(-2px); }
+  .btn--solid:hover, .btn--light:hover, .btn--blue:hover, .btn--ghost:hover {
+    background: var(--acid);
+    border-color: var(--burgundy);
+    color: var(--burgundy);
+  }
+  .btn:hover .btn__ic { transform: translate(3px, -3px); }
 }
 .btn:active { transform: translateY(0); background: var(--electric-ink); border-color: var(--electric-ink); color: var(--cream); }
-.btn__ic { transition: transform var(--dur) var(--ease); }
-.btn:hover .btn__ic { transform: translate(3px, -3px); }
 
 /* pills — channels, categories */
 .pill {
@@ -294,7 +298,9 @@ img, video { max-width: 100%; }
   object-fit: cover;
   transition: transform var(--dur-slow) var(--ease);
 }
-.card:hover .card__media img { transform: scale(1.035); }
+@media (hover: hover) {
+  .card:hover .card__media img { transform: scale(1.035); }
+}
 .card__title {
   margin-top: var(--s-4);
   font-family: var(--font-display);
@@ -351,9 +357,11 @@ img, video { max-width: 100%; }
   justify-content: space-between;
   padding: clamp(1rem, 2.2vw, 1.6rem) var(--pad);
   color: var(--cream);
-  transition: transform 0.5s var(--ease), color 0.45s var(--ease);
+  --nav-ground: var(--burgundy);   /* the surface under the bar: its veil on small screens (RESPONSIVE) */
+  transition: transform 0.5s var(--ease), color 0.45s var(--ease), background-color 0.45s var(--ease);
 }
-.nav[data-theme="dark"] { color: var(--ink); }
+.nav[data-theme="dark"] { color: var(--ink); --nav-ground: var(--cream); }
+.nav[data-theme="blue"] { --nav-ground: var(--electric-ink); }
 .nav.is-hidden { transform: translateY(-102%); }
 /* hairline rule under the nav — adapts to whichever section is behind it */
 .nav::after {
@@ -415,8 +423,10 @@ img, video { max-width: 100%; }
   transition: transform 0.4s var(--ease);
 }
 /* under the pointer a link becomes a small yellow label; the blue rule marks where you are */
-.nav__links a:hover { color: var(--burgundy); background: var(--acid); box-shadow: 0 0 0 0.3em var(--acid); }
-.nav__links a:hover::after { opacity: 0; }
+@media (hover: hover) {
+  .nav__links a:hover { color: var(--burgundy); background: var(--acid); box-shadow: 0 0 0 0.3em var(--acid); }
+  .nav__links a:hover::after { opacity: 0; }
+}
 .nav__links a.is-active::after,
 .nav__links a[aria-current="page"]::after {
   transform: scaleX(1);
@@ -427,13 +437,17 @@ img, video { max-width: 100%; }
 .nav__toggle {
   display: none;
   flex-direction: column;
+  justify-content: center;
   gap: 6px;
   background: none;
   border: 0;
   color: inherit;
   cursor: pointer;
-  padding: 6px 0;
-  width: 30px;
+  /* a target the size of a fingertip; the negative margin keeps the two 30px lines where they were */
+  width: 44px;
+  height: 44px;
+  padding: 0 7px;
+  margin: -11px -7px;
 }
 .nav__toggle span {
   display: block; height: 2px; width: 100%;
@@ -474,7 +488,9 @@ img, video { max-width: 100%; }
   letter-spacing: 0.01em;
   transition: color var(--dur-fast);
 }
-.menu a:hover { color: var(--acid); }
+@media (hover: hover) {
+  .menu a:hover { color: var(--acid); }
+}
 .menu__mail {
   font-family: var(--font-text) !important;
   font-size: 0.95rem !important;
@@ -571,7 +587,9 @@ img, video { max-width: 100%; }
   animation-delay: calc(0.6s + var(--i) * 0.12s), calc(var(--i) * -0.7s);
   transition: transform var(--dur) var(--ease);
 }
-.hero__sticker:hover { transform: translateY(-2px) scale(1.05); }   /* the tilt lets go, as in the CV */
+@media (hover: hover) {
+  .hero__sticker:hover { transform: translateY(-2px) scale(1.05); }   /* the tilt lets go, as in the CV */
+}
 @keyframes stickerPop {
   from { opacity: 0; scale: 0.6; }
   to   { opacity: 1; scale: 1; }
@@ -630,7 +648,9 @@ img, video { max-width: 100%; }
   padding: 0.7em 1.2em;
   transition: background-color var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast), opacity 0.4s;
 }
-.hero__scroll:hover { background: var(--acid); border-color: var(--acid); color: var(--burgundy); opacity: 1; }
+@media (hover: hover) {
+  .hero__scroll:hover { background: var(--acid); border-color: var(--acid); color: var(--burgundy); opacity: 1; }
+}
 .hero__scroll svg { animation: bob 1.8s var(--ease) infinite; }
 @keyframes bob { 0%,100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
 
@@ -834,6 +854,17 @@ img, video { max-width: 100%; }
   background: var(--cream);
   opacity: 0.58;
 }
+/* Martina's two drawn flowers (the cursor's pair, in the ink) in the room the last
+   line leaves, under "marketing,": right edge on the text's, top at the last line's
+   cap height, sized with the type. Out of the flow, so the breaks don't move */
+.about__flowers {
+  position: absolute;
+  right: 0;
+  top: calc(100% - 0.87em);
+  width: auto;
+  height: 1.6em;
+  pointer-events: none;
+}
 
 /* the photo's lane, on the words' grid. It starts right under the stage, so it
    comes in as the words settle; the screen of room after it keeps the stage
@@ -864,6 +895,9 @@ img, video { max-width: 100%; }
 }
 @media (min-width: 641px) and (max-aspect-ratio: 4 / 5) {
   .about__photo { width: 44%; margin-left: 46%; }
+  /* the photo's lane reaches under the flowers here: the sheet runs down past
+     them, so they stay on paper (as on phones) */
+  .about__statement::before { bottom: -0.95em; }
 }
 
 /* reduced motion: nothing held — one still composition, the photo tucked under
@@ -886,6 +920,7 @@ img, video { max-width: 100%; }
     word-spacing: normal;
     text-align: left;
   }
+  .about__statement::before { bottom: -0.95em; }   /* past the flowers: the photo passes under them */
   .about__photo { width: 58%; margin-left: 34%; }
 }
 
@@ -896,6 +931,7 @@ img, video { max-width: 100%; }
 .sec { padding: var(--section-y) 0; }
 .sec--paper { background: var(--cream); color: var(--ink); }
 .sec--stage { background: var(--burgundy); color: var(--cream); }
+.sec--paper .eyebrow { opacity: 1; color: var(--voice); }   /* ( Projects ), set like ( About ) */
 
 .sec-head {
   max-width: var(--maxw);
@@ -948,7 +984,7 @@ img, video { max-width: 100%; }
   gap: clamp(1.6rem, 3vw, 2.6rem) clamp(0.8rem, 1.8vw, 1.6rem);
   align-items: start;
 }
-.c-card__link { display: block; color: inherit; }
+.c-card__link { display: block; color: inherit; container: card / inline-size; }
 .c-card__media {
   position: relative;
   aspect-ratio: 3 / 4;
@@ -977,8 +1013,10 @@ img, video { max-width: 100%; }
   transform: translate(-6px, 6px);
   transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
-.c-card__link:hover .c-card__media img { transform: scale(calc(var(--zoom, 1) * 1.04)); }
-.c-card__link:hover .c-card__go,
+@media (hover: hover) {
+  .c-card__link:hover .c-card__media img { transform: scale(calc(var(--zoom, 1) * 1.04)); }
+  .c-card__link:hover .c-card__go { opacity: 1; transform: none; }
+}
 .c-card__link:focus-visible .c-card__go { opacity: 1; transform: none; }
 
 /* caption: name and year on one line, the rest underneath, small and quiet */
@@ -1012,6 +1050,11 @@ img, video { max-width: 100%; }
   color: var(--electric-ink);
 }
 .c-card__m { grid-column: 2; align-self: center; justify-self: end; text-align: right; }
+/* a narrow card (two a row on a phone, four a row just past 900px): the type steps down under the
+   kicker. On the right it widened its column and ran over the name and the kicker */
+@container card (max-width: 15rem) {
+  .c-card__m { grid-column: 1 / -1; justify-self: start; text-align: left; }
+}
 
 .c-more__wrap { display: flex; justify-content: center; margin-top: clamp(2.4rem, 5vw, 4rem); }
 .c-more, .cv-cta { font-family: var(--font-mono); letter-spacing: 0.12em; text-transform: uppercase; }
@@ -1035,7 +1078,9 @@ img, video { max-width: 100%; }
 }
 .fun__card:nth-child(2n) { --tilt: 1.8deg; margin-top: clamp(1rem, 3vw, 2.5rem); }
 .fun__card:nth-child(3n) { --tilt: -2.4deg; }
-.fun__card:hover { transform: rotate(0deg) translateY(-4px); } /* straightens when you look at it */
+@media (hover: hover) {
+  .fun__card:hover { transform: rotate(0deg) translateY(-4px); } /* straightens when you look at it */
+}
 /* pink for the christening, clay orange for ceramics (lilac is not in the palette), acid for Hey Gigi */
 .fun__card[data-colour="pink"] { background: color-mix(in srgb, var(--pink) 26%, var(--cream)); }
 .fun__card[data-colour="lilac"] { background: color-mix(in srgb, var(--orange) 17%, var(--cream)); }
@@ -1105,7 +1150,9 @@ img, video { max-width: 100%; }
   transition: transform var(--dur-slow) var(--ease);
 }
 .collab__pair img:last-child { margin-top: clamp(1.5rem, 4vw, 3.5rem); }
-.collab__link:hover .collab__pair img { transform: scale(1.025); }
+@media (hover: hover) {
+  .collab__link:hover .collab__pair img { transform: scale(1.025); }
+}
 
 .collab__idx { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-3); }
 .collab__lockup {
@@ -1149,8 +1196,10 @@ img, video { max-width: 100%; }
   transition: background-color var(--dur-fast), box-shadow var(--dur-fast), border-color var(--dur-fast);
 }
 .collab__go span { transition: transform var(--dur) var(--ease); }
-.collab__link:hover .collab__go { background: var(--acid); box-shadow: 0 0 0 0.3em var(--acid); border-bottom-color: transparent; }
-.collab__link:hover .collab__go span { transform: translate(3px, -3px); }
+@media (hover: hover) {
+  .collab__link:hover .collab__go { background: var(--acid); box-shadow: 0 0 0 0.3em var(--acid); border-bottom-color: transparent; }
+  .collab__link:hover .collab__go span { transform: translate(3px, -3px); }
+}
 
 /* =========================================================
    EVENTS — a slide per event: vertical video, text beside it.
@@ -1232,7 +1281,9 @@ img, video { max-width: 100%; }
   border-radius: 50%;
   transition: background var(--dur-fast), transform var(--dur-fast), border-color var(--dur-fast);
 }
-.events__rail a:hover { border-color: var(--acid); background: var(--acid); }
+@media (hover: hover) {
+  .events__rail a:hover { border-color: var(--acid); background: var(--acid); }
+}
 .events__rail a.is-active { background: var(--electric); border-color: var(--electric); transform: scale(1.2); }
 
 /* =========================================================
@@ -1255,7 +1306,9 @@ img, video { max-width: 100%; }
   font-size: 0.76rem;
   color: var(--ink-3);
 }
-.crumbs a:hover { color: var(--ink); background: var(--acid); box-shadow: 0 0 0 0.22em var(--acid); }
+@media (hover: hover) {
+  .crumbs a:hover { color: var(--ink); background: var(--acid); box-shadow: 0 0 0 0.22em var(--acid); }
+}
 .crumbs [aria-current] { color: var(--ink); }
 
 .case__head {
@@ -1325,8 +1378,11 @@ img, video { max-width: 100%; }
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
+  transition: top 0.5s var(--ease);   /* in step with the bar sliding in and out */
 }
 .case__tabs::-webkit-scrollbar { display: none; }
+/* while the bar is shown (scrolling back up) the tabs stay just under it, not behind it */
+.nav:not(.is-hidden) ~ .case-page .case__tabs { top: var(--nav-h, 0px); }
 .tab {
   flex: none;
   display: inline-flex;
@@ -1339,11 +1395,10 @@ img, video { max-width: 100%; }
   white-space: nowrap;
   transition: background var(--dur-fast), color var(--dur-fast), border-color var(--dur-fast);
 }
-.tab span { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-3); }
-.tab:hover { background: var(--acid); border-color: var(--acid); color: var(--ink); }
-.tab:hover span { color: var(--ink); }
+@media (hover: hover) {
+  .tab:hover { background: var(--acid); border-color: var(--acid); color: var(--ink); }
+}
 .tab.is-active { background: var(--electric-ink); border-color: var(--electric-ink); color: var(--cream); }
-.tab.is-active span { color: color-mix(in srgb, var(--cream) 78%, var(--electric-ink)); }
 
 /* overview */
 .case__overview {
@@ -1442,7 +1497,6 @@ img, video { max-width: 100%; }
 }
 .case__sec-head .file { color: var(--ink-3); }
 .case__sec-note { font-size: 0.82rem; color: var(--ink-3); }
-.case__sec-count { margin-left: auto; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-3); }
 
 /* gallery: photos and videos keep their own shape (masonry columns) */
 .gallery { list-style: none; columns: 3 260px; column-gap: clamp(0.8rem, 1.6vw, 1.4rem); }
@@ -1476,7 +1530,9 @@ img, video { max-width: 100%; }
   height: auto;
   transition: transform var(--dur-slow) var(--ease);
 }
-.tile:hover .tile__thumb img { transform: scale(1.025); }
+@media (hover: hover) {
+  .tile:hover .tile__thumb img { transform: scale(1.025); }
+}
 .files .tile__thumb {
   display: grid;
   place-items: center;
@@ -1544,10 +1600,14 @@ img, video { max-width: 100%; }
   text-transform: uppercase;
   transition: color var(--dur-fast);
 }
-.pager a:hover .pager__title { color: var(--electric-ink); }
+@media (hover: hover) {
+  .pager a:hover .pager__title { color: var(--electric-ink); }
+}
 .pager__next { text-align: right; }
 .pager__all { font-family: var(--font-mono); font-size: 0.74rem; text-decoration: underline 1.5px var(--electric-ink); text-underline-offset: 3px; }
-.pager__all:hover { background: var(--acid); box-shadow: 0 0 0 0.22em var(--acid); text-decoration: none; }
+@media (hover: hover) {
+  .pager__all:hover { background: var(--acid); box-shadow: 0 0 0 0.22em var(--acid); text-decoration: none; }
+}
 
 /* viewer (native <dialog>) */
 .viewer {
@@ -1561,7 +1621,9 @@ img, video { max-width: 100%; }
   background: color-mix(in srgb, var(--cream) 98.5%, transparent);
   color: var(--ink);
 }
-.viewer[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; }
+/* one column, never wider than the screen: a long file name is cut short in the bar instead of
+   pushing the × off the edge of a phone */
+.viewer[open] { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto; }
 .viewer::backdrop { background: rgba(47, 18, 21, 0.45); }
 .viewer button { cursor: pointer; }
 .viewer__bar {
@@ -1603,7 +1665,9 @@ img, video { max-width: 100%; }
   font-size: 1rem;
   transition: background var(--dur-fast), color var(--dur-fast), border-color var(--dur-fast);
 }
-.viewer__btn:hover { background: var(--acid); border-color: var(--ink); color: var(--ink); }
+@media (hover: hover) {
+  .viewer__btn:hover { background: var(--acid); border-color: var(--ink); color: var(--ink); }
+}
 
 /* =========================================================
    CV — a printed resume on the blue desk (the site's one blue ground), set small
@@ -1618,13 +1682,15 @@ img, video { max-width: 100%; }
     radial-gradient(ellipse 58% 46% at 50% 56%, color-mix(in srgb, var(--electric) 85%, transparent), transparent 72%),
     var(--electric-ink);
 }
-/* no big section title here: just a painted note above the sheet */
+/* no big section title here: just a note above the sheet, set like the hero's
+   "welcome to my portfolio!!" */
 .cv-hello {
   padding: 0 var(--pad);
-  font-family: var(--font-hand);
+  font-family: var(--font-serif);
+  font-style: italic;
   font-weight: 400;
-  font-size: clamp(1rem, 1.9vw, 1.4rem);
-  line-height: 1.6;
+  font-size: clamp(1.35rem, 2.5vw, 2.4rem);
+  line-height: 1.1;
   text-align: center;
   rotate: -2deg;
 }
@@ -1690,7 +1756,9 @@ img, video { max-width: 100%; }
   font-size: 0.7rem;
   color: var(--ink-2);
 }
-.cv-sheet__contacts a:hover { color: var(--ink); background: var(--acid); box-shadow: 0 0 0 0.22em var(--acid); }
+@media (hover: hover) {
+  .cv-sheet__contacts a:hover { color: var(--ink); background: var(--acid); box-shadow: 0 0 0 0.22em var(--acid); }
+}
 .cv-sheet__who { margin-top: auto; padding-top: 1.2rem; }
 .cv-sheet__name {
   font-weight: 500;
@@ -1753,7 +1821,9 @@ img, video { max-width: 100%; }
 }
 .cv-badge:nth-child(3n + 2) { animation-duration: 4.1s; }
 .cv-badge:nth-child(3n) { animation-duration: 2.9s; animation-direction: reverse; }
-.cv-badge:hover { transform: translateY(-2px) scale(1.05); }   /* the tilt lets go */
+@media (hover: hover) {
+  .cv-badge:hover { transform: translateY(-2px) scale(1.05); }   /* the tilt lets go */
+}
 @keyframes cvSway {
   0%, 100% { rotate: -2deg; translate: 0 0; }
   50% { rotate: 2deg; translate: 0 -2px; }
@@ -1798,7 +1868,9 @@ img, video { max-width: 100%; }
   transform-origin: 58% 0;        /* hangs from the clip */
   transition: rotate 0.8s var(--ease);
 }
-.cv-photo:hover { rotate: 1deg; }
+@media (hover: hover) {
+  .cv-photo:hover { rotate: 1deg; }
+}
 .cv-photo__print {
   margin: 0;
   padding: 5% 5% 0;
@@ -1832,10 +1904,40 @@ img, video { max-width: 100%; }
 /* "Download full CV" — a burgundy pill on the blue desk, set like "Check out more" */
 .cv-cta__wrap { display: flex; justify-content: center; margin-top: clamp(3rem, 7vw, 5rem); }
 .cv-cta { background: var(--burgundy); color: var(--cream); }
-.cv-cta:hover { background: var(--acid); border-color: var(--acid); color: var(--burgundy); }
+@media (hover: hover) {
+  .cv-cta:hover { background: var(--acid); border-color: var(--acid); color: var(--burgundy); }
+  .cv-cta:hover .btn__ic { transform: translateY(3px); }   /* a download arrow drops */
+}
 .cv-cta:active { background: var(--burgundy-deep); border-color: var(--burgundy-deep); color: var(--cream); }
-.cv-cta:hover .btn__ic { transform: translateY(3px); }   /* a download arrow drops */
 .cv-todo { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; margin-top: var(--s-5); }
+
+/* on a desktop the whole CV fits one screen (js/cv.js scales the sheet down on a short
+   one): the note sits under the bar and its rule when the bar shows, and the sheet turns
+   landscape — wider, only as tall as its content, the gaps closed up, education |
+   languages | skills side by side, the languages a small table */
+@media (min-width: 901px) {
+  .sec--cv { padding-top: calc(var(--nav-h, 4.7rem) + 0.9rem); }
+  .sec--cv .sec__body { margin-top: clamp(1.1rem, 2vh, 2rem); }   /* the clip rises beside the note */
+  .cv-sheet { --photo-w: 6.4rem; width: min(100%, 58rem); }
+  .cv-sheet__paper { aspect-ratio: auto; padding-top: 1rem; padding-bottom: 0.7rem; }
+  .cv-sheet__paper > .cv-sheet__sec,
+  .cv-sheet__cols { padding-top: 0.85rem; }
+  .cv-sheet__name { font-size: 1.85rem; }
+  .cv-sheet__h { margin-bottom: 0.45rem; }
+  .cv-entry + .cv-entry { margin-top: 0.7rem; }
+  .cv-entry__points li { line-height: 1.45; }
+  .cv-sheet__cols {
+    grid-template-columns: minmax(0, 17.5rem) minmax(0, 6.5rem) minmax(0, 1fr);
+    column-gap: 1.6rem;
+    padding-bottom: 0.85rem;
+  }
+  .cv-sheet__col { display: contents; }   /* its sections become the grid's columns */
+  .cv-sheet__col > .cv-sheet__sec + .cv-sheet__sec { margin-top: 0; }
+  .cv-langs { flex-direction: column; gap: 0.1rem; }
+  .cv-langs li { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; }
+  .cv-sheet__label { margin: 0.6rem 0 0.35rem; }
+  .cv-sheet__foot { padding-top: 0.45rem; }
+}
 
 /* a narrow sheet (phones): one column, contacts stacked, the page as tall as its content */
 @container (max-width: 34rem) {
@@ -1859,18 +1961,6 @@ img, video { max-width: 100%; }
   overflow: hidden;
 }
 .contact .eyebrow { opacity: 1; color: var(--cream-65); }
-.contact__word {
-  position: absolute;
-  left: 50%; top: 44%;
-  transform: translate(-50%, -50%);
-  font-family: var(--font-display);
-  font-size: 40vw;
-  line-height: 1;
-  color: color-mix(in srgb, var(--electric) 10%, transparent);
-  text-transform: uppercase;
-  pointer-events: none;
-  user-select: none;
-}
 .contact__inner {
   position: relative;
   max-width: var(--maxw);
@@ -1880,13 +1970,13 @@ img, video { max-width: 100%; }
   flex-direction: column;
   align-items: center;
 }
+/* lowercase like the hero's name: heavy, tight Inter (Bebas has no lowercase) */
 .contact__title {
-  font-family: var(--font-display);
-  font-weight: 400;
-  text-transform: uppercase;
-  font-size: clamp(3.6rem, 13vw, 12rem);
-  line-height: 0.85;
-  letter-spacing: 0.01em;
+  font-family: var(--font-text);
+  font-weight: 700;
+  font-size: clamp(3rem, 11vw, 10.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.065em;
   margin: 1rem 0 1.5rem;
   color: var(--electric);
 }
@@ -1909,10 +1999,12 @@ img, video { max-width: 100%; }
   transform-origin: right;
   transition: transform 0.5s var(--ease);
 }
-.contact__mail:hover::after { transform: scaleX(0); transform-origin: left; }
-.contact__mail:hover,
-.contact__link:hover,
-.foot__top:hover { color: var(--acid); }
+@media (hover: hover) {
+  .contact__mail:hover::after { transform: scaleX(0); transform-origin: left; }
+  .contact__mail:hover,
+  .contact__link:hover,
+  .foot__top:hover { color: var(--acid); }
+}
 
 .contact__row {
   display: flex;
@@ -1926,7 +2018,9 @@ img, video { max-width: 100%; }
 }
 .contact__link { transition: color var(--dur-fast); }
 .contact__link span { display: inline-block; transition: transform 0.4s var(--ease); }
-.contact__link:hover span { transform: translate(3px, -3px); }
+@media (hover: hover) {
+  .contact__link:hover span { transform: translate(3px, -3px); }
+}
 .contact__loc { color: var(--cream-65); }
 
 .foot {
@@ -1944,7 +2038,9 @@ img, video { max-width: 100%; }
   color: var(--cream-65);
   flex-wrap: wrap;
 }
-.foot__top:hover { opacity: 1; text-decoration: underline; }
+@media (hover: hover) {
+  .foot__top:hover { opacity: 1; text-decoration: underline; }
+}
 
 /* =========================================================
    UX LAYER — progress, grain, cursor, focus
@@ -2050,7 +2146,14 @@ body {
   .nav__links { display: none; }
   .nav__toggle { display: flex; }
 
-
+  /* scrolling back up, the bar comes in over photos and text: on small screens it carries a
+     veil of the ground it is on (frosted like the case tabs), so the name and the menu button
+     never sit on a picture. Over its own ground it doesn't show */
+  .nav {
+    background: color-mix(in srgb, var(--nav-ground) 92%, transparent);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
 }
 
 @media (max-width: 1100px) {
