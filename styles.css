@@ -371,7 +371,10 @@ img, video { max-width: 100%; }
   height: 1px;
   background: currentColor;
   opacity: 0.2;
+  transition: opacity 0.45s var(--ease);
 }
+/* over the CV's blue ground the "here's my cv!" note sits just under the bar: no rule through it */
+.nav[data-theme="blue"]::after { opacity: 0; }
 
 .nav__brand {
   display: inline-flex;
@@ -1670,9 +1673,11 @@ img, video { max-width: 100%; }
 }
 
 /* =========================================================
-   CV — a printed resume on the blue desk (the site's one blue ground), set small
-   and tight: the portrait held on it by an acid-yellow binder clip, the skills as
-   coloured stickers, the full PDF one burgundy button below
+   CV — a printed resume on the blue desk (the site's one blue ground), the top sheet
+   of a small stack, set small and tight: the portrait tucked under an acid-yellow
+   binder clip on its top edge, the skills as coloured stickers, the full PDF one
+   burgundy button below. Daylight comes from the top left: every shadow (paper, clip,
+   print) falls down and to the right
    ========================================================= */
 .sec--cv {
   overflow-x: clip;               /* the tilted sheet never widens the page */
@@ -1697,27 +1702,76 @@ img, video { max-width: 100%; }
 .sec--cv .sec__body { margin-top: clamp(3.1rem, 5vw, 3.4rem); }   /* room for the clip under the title */
 @media (max-width: 640px) { .sec--cv .sec__body { margin-top: 4.1rem; } }   /* on a phone the clip sits right under the note */
 
+/* the CV's type is set in em, so the sheet's font size scales all of it (a desktop
+   screen sets it a little larger, below) */
 .cv-sheet {
   --photo-w: clamp(6.4rem, 23cqw, 10.5rem);   /* cqw: a share of the sheet's own width */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9 0.4' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.3 0 0 0 0 0.2 0 0 0 0.1 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23p)'/%3E%3C/svg%3E");
   position: relative;
   container-type: inline-size;
   width: min(100%, 46rem);
   margin: 0 auto;
   rotate: -0.8deg;                /* its own property: the reveal transform leaves it alone */
 }
-/* lifted lower corners: two soft shadows tucked behind the paper */
+/* the top sheet's lower corners lift a hair off the page below: two soft shadows
+   tucked under them, the right one (the corner that curls, away from the light) a
+   little darker */
 .cv-sheet::before,
 .cv-sheet::after {
   content: "";
   position: absolute;
   z-index: -1;
-  bottom: 1rem;
-  width: 46%;
-  height: 20%;
-  box-shadow: 0 1.3rem 1.5rem rgba(10, 28, 96, 0.5);
+  bottom: 0.8rem;
+  width: 40%;
+  height: 16%;
+  box-shadow: 0.2rem 0.45rem 0.7rem rgba(10, 28, 96, 0.2);
 }
-.cv-sheet::before { left: 0.9rem; transform: skewY(-2.5deg) rotate(-2.5deg); }
-.cv-sheet::after { right: 0.9rem; transform: skewY(2.5deg) rotate(2.5deg); }
+.cv-sheet::before { left: 1.2rem; transform: skewY(-2deg) rotate(-2deg); }
+.cv-sheet::after {
+  right: 0.5rem;
+  bottom: 0.6rem;
+  width: 30%;
+  height: 12%;
+  transform: skewY(2.5deg) rotate(2.5deg);
+  box-shadow: 0.35rem 0.5rem 0.6rem rgba(10, 28, 96, 0.4);
+}
+
+/* the pages under it: the same paper in the shade of the ones above (a neutral grey,
+   deeper the lower the page), lit unevenly, fanned out so their edges show at the top
+   and the sides — a lit top-left edge, a fine outline, a soft shade where each one goes
+   under the next; the lowest carries the soft shadow of the whole stack on the desk */
+.cv-sheet__under {
+  --edge:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.65),
+    0 0 0 0.5px rgba(60, 40, 30, 0.1),
+    0 0 3px rgba(40, 30, 25, 0.1),
+    1.5px 3px 7px -2px rgba(40, 30, 25, 0.22);
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background-color: color-mix(in srgb, var(--cream) 94%, #b7b2a8);
+  background-image:
+    radial-gradient(120% 90% at 18% 10%, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0) 60%),
+    linear-gradient(135deg, rgba(0, 0, 0, 0) 55%, rgba(50, 40, 30, 0.06)),
+    var(--grain);
+  box-shadow: var(--edge);
+}
+.cv-sheet__under:nth-child(1) {
+  translate: -1.3rem -0.38rem;
+  rotate: -1.8deg;
+  background-color: color-mix(in srgb, var(--cream) 88%, #b7b2a8);
+  box-shadow:
+    var(--edge),
+    0.5rem 1rem 1.8rem -0.3rem rgba(8, 22, 80, 0.42),
+    1rem 2.2rem 3.6rem -1rem rgba(8, 22, 80, 0.38);
+}
+.cv-sheet__under:nth-child(2) {
+  translate: 1.2rem -0.3rem;
+  rotate: 1.4deg;
+  background-color: color-mix(in srgb, var(--cream) 91%, #b7b2a8);
+  box-shadow: var(--edge), 0.4rem 0.8rem 1.4rem -0.4rem rgba(8, 22, 80, 0.3);
+}
+.cv-sheet__under:nth-child(3) { translate: -0.4rem -0.45rem; rotate: -0.6deg; }
 
 .cv-sheet__paper {
   position: relative;
@@ -1726,48 +1780,44 @@ img, video { max-width: 100%; }
   aspect-ratio: 8.5 / 11;         /* a letter page; taller only if the content needs it */
   padding: clamp(1.1rem, 5cqw, 2.4rem) clamp(1.1rem, 6cqw, 2.8rem) clamp(0.8rem, 2.2cqw, 1.1rem);
   color: var(--ink);
+  /* matte cream with a faint grain, never quite flat: soft daylight from the top left, a
+     slow wave across it, a little shade toward the far corner, and the bottom-right corner
+     curling up a hair (its bent edge) and catching the light */
+  border-bottom-right-radius: 1.6rem 0.35rem;
   background-color: var(--cream);
   background-image:
-    linear-gradient(115deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0) 40%, rgba(0, 0, 0, 0) 68%, rgba(60, 45, 10, 0.05)),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9 0.4' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.3 0 0 0 0 0.2 0 0 0 0.1 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23p)'/%3E%3C/svg%3E");
+    radial-gradient(130% 100% at 15% 0%, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0) 55%),
+    linear-gradient(97deg, rgba(0, 0, 0, 0) 18%, rgba(90, 70, 40, 0.03) 34%, rgba(0, 0, 0, 0) 48%, rgba(255, 255, 255, 0.2) 62%, rgba(0, 0, 0, 0) 78%),
+    linear-gradient(140deg, rgba(0, 0, 0, 0) 62%, rgba(50, 40, 30, 0.05)),
+    radial-gradient(3.2rem 3.2rem at 100% 100%, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0) 75%),
+    var(--grain);
+  /* it lies on the stack: a lit top-left edge, the edges falling off a touch, a fine
+     outline, and a soft shade on the pages below, deeper down and to the right */
   box-shadow:
-    0 0 0 1px rgba(69, 29, 32, 0.04),
-    0 1px 2px rgba(10, 28, 96, 0.28),
-    0 18px 36px -18px rgba(10, 28, 96, 0.55),
-    0 46px 80px -42px rgba(8, 22, 80, 0.6);
+    inset 1px 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 0 1.4rem rgba(60, 45, 25, 0.045),
+    0 0 0 0.5px rgba(60, 40, 30, 0.09),
+    0 0 4px rgba(40, 30, 25, 0.12),
+    0.5px 1px 1.5px rgba(40, 30, 25, 0.2),
+    3px 6px 14px -4px rgba(40, 30, 25, 0.26);
 }
 
-/* header, like a printed resume: contacts on a ruled line, the name small at the
-   foot of the photo; the right side is left to the photo */
+/* header, like a printed resume: the name small at the foot of the photo, the photo
+   held by the clip on the top edge (the contacts have their own section) */
 .cv-sheet__id {
   display: flex;
   flex-direction: column;
-  min-height: calc(var(--photo-w) * 1.3 - 1rem);
+  min-height: calc(var(--photo-w) * 1.1);
   padding-right: calc(var(--photo-w) + clamp(0.8rem, 3cqw, 1.5rem));
-}
-.cv-sheet__contacts {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.1rem 1rem;
-  padding-bottom: 0.4rem;
-  border-bottom: 1px solid var(--line-strong);
-  font-size: 0.7rem;
-  color: var(--ink-2);
-}
-@media (hover: hover) {
-  .cv-sheet__contacts a:hover { color: var(--ink); background: var(--acid); box-shadow: 0 0 0 0.22em var(--acid); }
 }
 .cv-sheet__who { margin-top: auto; padding-top: 1.2rem; }
 .cv-sheet__name {
   font-weight: 500;
-  font-size: clamp(1.5rem, 4.6cqw, 2.1rem);
+  font-size: clamp(1.5em, 4.6cqw, 2.1em);
   line-height: 1.05;
   letter-spacing: -0.03em;
 }
-.cv-sheet__role { margin-top: 0.25rem; font-size: 0.84rem; color: var(--ink-2); }
-.cv-sheet__sub { font-size: 0.72rem; color: var(--ink-3); }
+.cv-sheet__role { margin-top: 0.25rem; font-size: 0.84em; color: var(--ink-2); }
 
 /* sections: a hairline, a small grey label, the content — the page's spare height
    is shared by the gaps between them */
@@ -1778,7 +1828,7 @@ img, video { max-width: 100%; }
   margin-bottom: 0.55rem;
   padding-top: 0.35rem;
   border-top: 1px solid var(--line-strong);
-  font-size: 0.7rem;
+  font-size: 0.7em;
   font-weight: 500;
   color: var(--ink-3);
 }
@@ -1786,15 +1836,15 @@ img, video { max-width: 100%; }
 .cv-entry + .cv-entry { margin-top: 0.85rem; }
 .cv-entry__meta,
 .cv-entry__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 1rem; }
-.cv-entry__meta { font-size: 0.68rem; color: var(--ink-3); }
-.cv-entry__role { font-size: 0.9rem; font-weight: 600; line-height: 1.3; letter-spacing: -0.01em; }
-.cv-entry__org { font-size: 0.8rem; font-weight: 500; }
-.cv-entry__note { font-size: 0.72rem; line-height: 1.4; color: var(--ink-3); }
+.cv-entry__meta { font-size: 0.68em; color: var(--ink-3); }
+.cv-entry__role { font-size: 0.9em; font-weight: 600; line-height: 1.3; letter-spacing: -0.01em; }
+.cv-entry__org { font-size: 0.8em; font-weight: 500; }
+.cv-entry__note { font-size: 0.72em; line-height: 1.4; color: var(--ink-3); }
 .cv-entry__points { list-style: none; margin-top: 0.35rem; }
-.cv-entry__points li { position: relative; padding-left: 0.9rem; font-size: 0.78rem; line-height: 1.5; color: var(--ink-2); }
+.cv-entry__points li { position: relative; padding-left: 0.9rem; font-size: 0.78em; line-height: 1.5; color: var(--ink-2); }
 .cv-entry__points li::before { content: "–"; position: absolute; left: 0; color: var(--orange); }   /* orange, like every list dash */
 .cv-entry__points b { font-weight: 700; color: var(--ink); }   /* the figures: bold, nothing louder */
-.cv-entry--edu .cv-entry__role { font-size: 0.82rem; }
+.cv-entry--edu .cv-entry__role { font-size: 0.82em; }
 
 /* education + languages | skills */
 .cv-sheet__cols {
@@ -1803,8 +1853,8 @@ img, video { max-width: 100%; }
   gap: 0 clamp(1.2rem, 4cqw, 2rem);
   padding-bottom: clamp(1rem, 3cqw, 1.4rem);
 }
-.cv-langs { list-style: none; display: flex; flex-wrap: wrap; gap: 0.1rem 0.85rem; font-size: 0.78rem; }
-.cv-langs span { font-size: 0.66rem; color: var(--ink-3); }
+.cv-langs { list-style: none; display: flex; flex-wrap: wrap; gap: 0.1rem 0.85rem; font-size: 0.78em; }
+.cv-langs span { font-size: calc(0.66em / 0.78); color: var(--ink-3); }   /* 0.66 of the paper's size */
 
 /* skills: coloured stickers that are never quite still — each sways a couple of
    degrees and floats a hair, out of step with the others (--i comes from js/cv.js);
@@ -1813,7 +1863,7 @@ img, video { max-width: 100%; }
 .cv-badge {
   padding: 0.38em 0.72em;
   border-radius: var(--r-xs);
-  font-size: 0.68rem;
+  font-size: 0.68em;
   box-shadow: 0 1px 0 rgba(47, 18, 21, 0.08), 0 6px 10px -7px rgba(47, 18, 21, 0.45);
   animation: cvSway 3.4s ease-in-out infinite;
   animation-delay: calc(var(--i, 0) * -0.7s);
@@ -1832,73 +1882,68 @@ img, video { max-width: 100%; }
   .cv-badge { animation: none; }
 }
 .cv-badge.sticker--white { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--electric-ink) 30%, transparent), 0 1px 0 rgba(47, 18, 21, 0.06), 0 6px 10px -7px rgba(47, 18, 21, 0.35); }
-.cv-sheet__label { margin: 0.8rem 0 0.4rem; font-size: 0.66rem; color: var(--ink-3); }
+.cv-sheet__label { margin: 0.8rem 0 0.4rem; font-size: 0.66em; color: var(--ink-3); }
 .cv-badges--tools { gap: 0.28rem 0.24rem; }
 .cv-tool {
   padding: 0.22em 0.62em;
   border-radius: var(--r-pill);
   background: var(--print);
   box-shadow: inset 0 0 0 1px var(--line-strong);
-  font-size: 0.64rem;
+  font-size: 0.64em;
   font-weight: 500;
   white-space: nowrap;
   color: var(--ink-2);
 }
 
-.cv-sheet__foot {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: auto;
-  padding-top: 0.55rem;
-  border-top: 1px solid var(--line);
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  color: var(--ink-3);
-}
-
-/* the portrait: a small print held by the clip, swinging a little on hover */
+/* the portrait: a small print tucked under the clip by the sheet's top edge, lying flat
+   on the paper a little crooked (a thin shadow along its bottom and right edges);
+   it swings a little on hover */
 .cv-photo {
   position: absolute;
   z-index: 2;
-  top: clamp(0.5rem, 2cqw, 0.9rem);
+  top: 0.3rem;
   right: clamp(1rem, 6cqw, 2.8rem);
   width: var(--photo-w);
-  rotate: 3deg;
+  rotate: 1.5deg;
   transform-origin: 58% 0;        /* hangs from the clip */
   transition: rotate 0.8s var(--ease);
 }
 @media (hover: hover) {
-  .cv-photo:hover { rotate: 1deg; }
+  .cv-photo:hover { rotate: 0.3deg; }
 }
 .cv-photo__print {
   margin: 0;
-  padding: 5% 5% 0;
+  padding: 5%;                    /* the same white border all round */
   background: var(--print);
-  box-shadow: 0 1px 1px rgba(47, 18, 21, 0.2), 0 12px 22px -10px rgba(10, 28, 96, 0.5);
+  box-shadow: 0.5px 1px 1px rgba(40, 24, 18, 0.28), 2px 3.5px 5px -1px rgba(40, 24, 18, 0.32);
 }
 .cv-photo__print img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
-.cv-photo__cap {
-  padding: 0.35em 0 0.55em;
-  font-family: var(--font-hand);
-  font-size: clamp(0.48rem, 1.4cqw, 0.62rem);
-  line-height: 1.5;
-  text-align: center;
-  color: var(--electric-ink);
-}
 /* Martina's binder clip (assets/binder-clip.webp, relit in acid yellow from redpin.jpg):
-   the jaws bite the top of the print, the body and the wire rise above it */
+   it grips the sheet's top edge — the fold just above it, the jaws over the top of the
+   print, the wire standing up — lit like the paper: a soft highlight on its upper left
+   (masked to its shape by --clip, js/cv.js), a short shadow down and to the right */
 .cv-clip {
   position: absolute;
   z-index: 1;
   top: 0;
   left: 58%;
   width: 56%;
-  height: auto;
-  translate: -50% -72%;
-  rotate: -4deg;
-  filter: drop-shadow(0 1.5px 1px rgba(35, 10, 13, 0.3)) drop-shadow(0 6px 7px rgba(10, 28, 96, 0.25));
+  translate: -50% -60%;
+  rotate: -3deg;
+  filter: drop-shadow(1px 2px 1.5px rgba(35, 20, 10, 0.4)) drop-shadow(3px 6px 5px rgba(10, 28, 96, 0.26));
   pointer-events: none;
+}
+.cv-clip img { display: block; width: 100%; height: auto; }
+.cv-clip::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(30% 15% at 28% 60%, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)),
+    radial-gradient(18% 10% at 30% 8%, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0));
+  -webkit-mask: var(--clip) center / 100% 100% no-repeat;
+  mask: var(--clip) center / 100% 100% no-repeat;
+  mix-blend-mode: screen;
 }
 
 /* "Download full CV" — a burgundy pill on the blue desk, set like "Check out more" */
@@ -1912,22 +1957,27 @@ img, video { max-width: 100%; }
 .cv-todo { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; margin-top: var(--s-5); }
 
 /* on a desktop the whole CV fits one screen (js/cv.js scales the sheet down on a short
-   one): the note sits under the bar and its rule when the bar shows, and the sheet turns
-   landscape — wider, only as tall as its content, the gaps closed up, education |
-   languages | skills side by side, the languages a small table */
+   one): the note sits just under the bar when the bar shows (over this blue the bar has
+   no rule, see NAV), with room between it and the stack; the sheet turns landscape —
+   wider, only as tall as its content, its type a little larger, the photo bigger and
+   further in, education | languages | skills side by side, the languages a small table */
 @media (min-width: 901px) {
-  .sec--cv { padding-top: calc(var(--nav-h, 4.7rem) + 0.9rem); }
-  .sec--cv .sec__body { margin-top: clamp(1.1rem, 2vh, 2rem); }   /* the clip rises beside the note */
-  .cv-sheet { --photo-w: 6.4rem; width: min(100%, 58rem); }
-  .cv-sheet__paper { aspect-ratio: auto; padding-top: 1rem; padding-bottom: 0.7rem; }
+  .sec--cv { padding-top: calc(var(--nav-h, 4.7rem) - 0.25rem); }
+  .sec--cv .sec__body { margin-top: clamp(2rem, 4.2vh, 3rem); }   /* the clip rises beside the note */
+  .cv-sheet { --photo-w: 7.5rem; width: min(100%, 58em); font-size: 1.06rem; }   /* wider with its type: the lines break as before */
+  .cv-sheet__paper { aspect-ratio: auto; padding-top: 1rem; padding-bottom: 1.1rem; }
+  /* the print comes in from the edge, nearer the name, and runs a little past the header
+     (the name's column stops short of it) */
+  .cv-photo { right: 21%; }
+  .cv-sheet__id { min-height: calc(var(--photo-w) * 0.92); padding-right: calc(21% + var(--photo-w)); }
   .cv-sheet__paper > .cv-sheet__sec,
   .cv-sheet__cols { padding-top: 0.85rem; }
-  .cv-sheet__name { font-size: 1.85rem; }
+  .cv-sheet__name { font-size: 1.85em; }
   .cv-sheet__h { margin-bottom: 0.45rem; }
   .cv-entry + .cv-entry { margin-top: 0.7rem; }
   .cv-entry__points li { line-height: 1.45; }
   .cv-sheet__cols {
-    grid-template-columns: minmax(0, 17.5rem) minmax(0, 6.5rem) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 17.5em) minmax(0, 6.5em) minmax(0, 1fr);
     column-gap: 1.6rem;
     padding-bottom: 0.85rem;
   }
@@ -1936,18 +1986,20 @@ img, video { max-width: 100%; }
   .cv-langs { flex-direction: column; gap: 0.1rem; }
   .cv-langs li { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; }
   .cv-sheet__label { margin: 0.6rem 0 0.35rem; }
-  .cv-sheet__foot { padding-top: 0.45rem; }
 }
 
-/* a narrow sheet (phones): one column, contacts stacked, the page as tall as its content */
+/* a narrow sheet (phones): one column, the page as tall as its content, and a tighter
+   fan (turned, a page this tall swings far out at its ends) */
 @container (max-width: 34rem) {
   .cv-sheet__paper { aspect-ratio: auto; }
-  .cv-sheet__contacts { flex-direction: column; justify-content: flex-start; padding-bottom: 0; border-bottom: 0; }
+  .cv-sheet__under:nth-child(1) { translate: -0.35rem -0.3rem; rotate: -0.8deg; }
+  .cv-sheet__under:nth-child(2) { translate: 0.35rem -0.25rem; rotate: 0.7deg; }
+  .cv-sheet__under:nth-child(3) { translate: -0.15rem -0.3rem; rotate: -0.35deg; }
   .cv-sheet__cols { grid-template-columns: minmax(0, 1fr); }
   .cv-sheet__col + .cv-sheet__col { margin-top: 1.1rem; }
   .cv-entry__points li,
-  .cv-langs { font-size: 0.8rem; }
-  .cv-sheet__foot span:nth-child(2) { display: none; }
+  .cv-langs { font-size: 0.8em; }
+  .cv-langs span { font-size: calc(0.66em / 0.8); }
 }
 
 /* =========================================================

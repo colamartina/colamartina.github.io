@@ -1,8 +1,8 @@
 /* =========================================================
-   CV — the Curriculum section of the home page: a printed resume lying on the
-   blue desk, set small and tight, the portrait held on it by a yellow binder clip,
-   the skills as coloured stickers, and "Download full CV" underneath.
-   A snapshot only — the PDF has the rest.
+   CV — the Curriculum section of the home page: a printed resume, the top sheet of
+   a small stack of pages on the blue desk, the portrait tucked under a yellow binder
+   clip on its top edge, the skills as coloured stickers, and "Download full CV"
+   underneath. A snapshot only — the PDF has the rest.
    ========================================================= */
 (function () {
   "use strict";
@@ -25,32 +25,25 @@
     }).filter(function (part) { return part !== ""; });
   }
 
-  /* ---------- portrait: a small print, held on the sheet by the binder clip ---------- */
+  /* ---------- portrait: a small print tucked under the binder clip ---------- */
   var photo = null;
   if (cv.photo) {
     photo = el("div.cv-photo", {}, [
-      cv.clip ? el("img.cv-clip", { src: cv.clip.src, width: String(cv.clip.width), height: String(cv.clip.height), alt: "", decoding: "async" }) : null,
+      // --clip: the clip's own shape, which masks its highlight (styles.css)
+      cv.clip ? el("span.cv-clip", { style: "--clip: url(" + cv.clip.src + ")" }, [
+        el("img", { src: cv.clip.src, width: String(cv.clip.width), height: String(cv.clip.height), alt: "", decoding: "async" })
+      ]) : null,
       el("figure.cv-photo__print", {}, [
-        M.img(Object.assign({ type: "image" }, cv.photo), "(max-width: 640px) 104px, (min-width: 901px) 104px, 168px", { alt: cv.name }),
-        cv.photo.caption ? el("figcaption.cv-photo__cap", { text: cv.photo.caption }) : null
+        M.img(Object.assign({ type: "image" }, cv.photo), "(max-width: 640px) 104px, (min-width: 901px) 120px, 168px", { alt: cv.name })
       ])
     ]);
   }
 
   /* ---------- the sheet ---------- */
-  var contacts = list("ul.cv-sheet__contacts", [
-    el("a", { href: "mailto:" + cv.email, text: cv.email }),
-    cv.linkedin ? el("a", { href: cv.linkedin.url, target: "_blank", rel: "noopener" }, [cv.linkedin.label, el("span", { "aria-hidden": "true", text: " ↗" })]) : null,
-    cv.site ? el("a", { href: "https://" + cv.site, text: cv.site }) : M.todo("sito (dominio in arrivo)"),
-    el("span", { text: cv.location })
-  ].filter(Boolean), function (c) { return el("li", {}, [c]); });
-
   var id = el("header.cv-sheet__id", {}, [
-    contacts,
     el("div.cv-sheet__who", {}, [
       el("h3.cv-sheet__name", { text: cv.name }),
-      el("p.cv-sheet__role", { text: cv.role }),
-      el("p.cv-sheet__sub", { text: cv.sub })
+      el("p.cv-sheet__role", { text: cv.role })
     ])
   ]);
 
@@ -93,25 +86,21 @@
     })
   ]);
 
-  var foot = el("footer.cv-sheet__foot", {}, [
-    el("span", { text: "martina-cola-cv.pdf" }),
-    el("span", { text: "Snapshot — full version below" }),
-    el("span", { text: "1 / 1" })
-  ]);
+  // the pages under the top sheet: only their edges peek out (styles.css)
+  var under = [1, 2, 3].map(function () { return el("div.cv-sheet__under", { "aria-hidden": "true" }); });
 
   // the sheet is a paper surface inside the blue section: the nav reads it as "dark"
-  var sheet = el("div.cv-sheet", { "data-reveal": "" }, [
+  var sheet = el("div.cv-sheet", { "data-reveal": "" }, under.concat([
     el("article.cv-sheet__paper", { "data-navtheme": "dark", "aria-label": "CV snapshot" }, [
       id,
       block("Experience", cv.experience.map(job)),
       el("div.cv-sheet__cols", {}, [
         el("div.cv-sheet__col", {}, [block("Education", cv.education.map(school)), languages]),
         el("div.cv-sheet__col", {}, [skills])
-      ]),
-      foot
+      ])
     ]),
     photo
-  ]);
+  ]));
 
   var cta = el("div.cv-cta__wrap", {}, [
     el("a.btn.btn--light.cv-cta", { href: cv.pdf, download: "Martina-Cola-CV.pdf" },
@@ -125,17 +114,21 @@
   host.replaceChildren.apply(host, [sheet, cta, devNotes].filter(Boolean));
 
   /* ---------- on a desktop the whole sheet fits the screen ----------
-     the section opens on the note and the sheet (styles.css); on a screen too short for
-     them the sheet is scaled down (zoom) just enough to fit — never below 80%, never up */
+     the section opens on the note and the stack (styles.css); on a screen too short for
+     them the sheet is scaled down (zoom) just enough to fit — never up, and never below
+     75% (its type, set 6% larger on a desktop, then no smaller than 10px) */
   var desk = window.matchMedia("(min-width: 901px)");
   var section = host.closest("section");
   function fit() {
     sheet.style.zoom = "";
     if (!desk.matches) return;
     var top = host.getBoundingClientRect().top - section.getBoundingClientRect().top;
-    var room = window.innerHeight - top - 14;                // a little blue under the sheet
-    var z = room / sheet.getBoundingClientRect().height;    // the tilt included
-    if (z < 1) sheet.style.zoom = Math.max(z, 0.8).toFixed(3);
+    var room = window.innerHeight - top - 14;                // a little blue under the stack
+    var box = sheet.getBoundingClientRect();                 // the tilt included
+    var low = box.bottom;                                    // the lowest page edge peeking out
+    under.forEach(function (u) { low = Math.max(low, u.getBoundingClientRect().bottom); });
+    var z = room / (box.height + low - box.bottom);
+    if (z < 1) sheet.style.zoom = Math.max(z, 0.75).toFixed(3);
   }
   fit();
   window.addEventListener("resize", fit, { passive: true });

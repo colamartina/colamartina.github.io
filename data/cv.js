@@ -10,16 +10,11 @@ window.PORTFOLIO = window.PORTFOLIO || {};
 window.PORTFOLIO.cv = {
   name: "Martina Cola",
   role: "Global Brand & Creative Marketing Manager",
-  sub: "Multimarket EU & US · Paid media & content strategy",
-  location: "Barcelona, Spain",
-  email: "colamartina@gmail.com",
-  linkedin: { label: "LinkedIn", url: "https://www.linkedin.com/in/martina-cola-/" },
-  site: null, // [TODO] waiting for Martina's own domain
   pdf: "assets/Martina-Cola-CV.pdf",
 
   /* on the sheet: the portrait (content/cv/portrait-<width>.webp, from IMG_8414, 4:5 crop)
      held by Martina's binder clip (redpin.jpg, cut out of its background and relit in acid yellow) */
-  photo: { src: "content/cv/portrait", widths: [480, 960], ratio: 4 / 5, caption: "hi, it’s me!" },
+  photo: { src: "content/cv/portrait", widths: [480, 960], ratio: 4 / 5 },
   clip: { src: "assets/binder-clip.webp", width: 320, height: 411 },
 
   experience: [
@@ -73,16 +68,13 @@ window.PORTFOLIO.cv = {
     { label: "Paid media", colour: "white" },
     { label: "Performance marketing", colour: "burgundy" },
     { label: "Content production", colour: "electric" },
-    { label: "E‑commerce", colour: "acid" },
-    { label: "Go‑to‑market", colour: "cobalt" },
+    { label: "Go‑to‑market strategy", colour: "cobalt" },
     { label: "Short‑form content", colour: "orange" },
     { label: "AI workflows", colour: "white" }
   ],
-  tools: ["Meta", "Google Ads", "TikTok Shop", "Shopify", "GA4", "Figma", "InDesign", "Photoshop", "Canva", "Notion"],
+  tools: ["Meta", "Google Ads", "TikTok Shop", "Shopify", "GA4", "Figma", "InDesign", "Photoshop", "Canva", "Notion", "AI"],
 
   todo: [
-    "Indirizzo del sito nei contatti: aspetto il tuo dominio, poi lo metto qui.",
-    "Telefono: per ora lasciato fuori, come mi hai detto.",
     "Il PDF scaricabile è quello vecchio: non contiene ancora le 3 nuove skill (short-form content, go-to-market, AI workflow)."
   ]
 };
