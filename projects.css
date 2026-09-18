@@ -1,12 +1,12 @@
 /* =========================================================
-   PROJECTS — Campaign and Events (js/projects.js, data/selection.js).
+   PROJECTS (campaigns and brand collabs) and EVENTS (js/projects.js, data/selection.js).
    Home page: the site's own cards (styles.css, CAMPAIGN CARDS) with the
-   covers of work/, three on show, the others behind "See more".
-   A card opens the project's page, project.html: told like a project page of
-   work/ — the pictures for the vibe, the title and the short text, then the
-   folders — in the site's type and inks: cream paper for a campaign, the
-   burgundy stage for an event. Every file keeps its own shape, side by side
-   in rows of one height. Brand Collabs keeps its rows and its case pages.
+   covers of work/, six Projects and three Events on show, the others behind
+   "See more". A card opens the project's page, project.html: told like a
+   project page of work/ — the pictures for the vibe, the title and the short
+   text, then a folder for each kind of work — in the site's type and inks:
+   cream paper for a project, the burgundy stage for an event. Every file
+   keeps its own shape, side by side in rows of one height.
    ========================================================= */
 
 /* ---------- home: the cards three a row, bigger than the four of before ---------- */
@@ -28,7 +28,7 @@
   .c-more__wrap .c-more { padding: 1.05em 1.9em; }                              /* a fingertip's size */
 }
 
-/* ---------- the project page: cream for a campaign, the stage for an event ---------- */
+/* ---------- the project page: cream for a project, the stage for an event ---------- */
 .project-page { background: var(--cream); color: var(--ink); --voice: var(--electric-ink); --focus: var(--electric-ink); }
 .project-page.is-stage { background: var(--burgundy); color: var(--cream); --voice: var(--electric); --focus: var(--electric); }
 .project {
@@ -123,6 +123,8 @@
   color: var(--ink);
   background: linear-gradient(transparent 52%, var(--acid) 52%, var(--acid) 92%, transparent 92%);
 }
+/* on the stage the ink would sink into the burgundy above the stroke: the highlighter takes the whole line */
+.is-stage .study[data-accent="yellow"] .study__kicker { background: linear-gradient(transparent 6%, var(--acid) 6%, var(--acid) 96%, transparent 96%); }
 .study[data-accent="orange"] .study__kicker,
 .study[data-accent="orange"] .result__value { color: var(--orange); }
 .study .results { grid-column: 1 / -1; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: var(--s-3); }
@@ -148,6 +150,78 @@
 .study__note { font-family: var(--font-mono); font-weight: 400; letter-spacing: 0.02em; text-transform: none; color: var(--ink-3); }
 .is-stage .study__label { border-top-color: var(--line-light); }
 .is-stage .study__note { color: var(--cream-65); }
+
+/* the stickers: a project's badges, loose around it, on no word, on a picture's edge at most (js/projects.js, stickers()).
+   Their layer is the whole page (main), not the project's column; while one is in hand it rises over the bar. Each
+   sways a little, out of step, like the CV's badges; under the pointer it lifts, in hand it tilts and lifts more */
+.has-stickers { position: relative; --sticker: clamp(96px, 8vw + 56px, 210px); }
+.study__stickers { position: absolute; inset: 0; z-index: 4; overflow: hidden; overflow: clip; pointer-events: none; }
+.study__stickers.is-lifted { z-index: 150; }
+.study__sticker {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(var(--sticker) * var(--k, 1) * var(--wide, 1));
+  aspect-ratio: var(--ratio, 1);
+  pointer-events: auto;
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  will-change: transform;
+}
+.study__sticker img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  transform: rotate(var(--tilt, 0deg));
+  filter: drop-shadow(0 2px 2px rgba(47, 18, 21, 0.12));
+  transition: transform var(--dur) var(--ease), filter var(--dur) var(--ease);
+  animation: cvSway var(--sway, 3.4s) ease-in-out var(--sway-delay, 0s) infinite;
+}
+@media (hover: hover) {
+  .study__sticker:hover img { transform: rotate(var(--tilt, 0deg)) scale(1.05); filter: drop-shadow(0 6px 8px rgba(47, 18, 21, 0.16)); animation-play-state: paused; }
+}
+.study__sticker.is-held img { transform: rotate(calc(var(--tilt, 0deg) + 3deg)) scale(1.08); filter: drop-shadow(0 14px 16px rgba(47, 18, 21, 0.22)); animation-play-state: paused; }
+.is-grabbing, .is-grabbing * { cursor: grabbing !important; user-select: none !important; -webkit-user-select: none !important; }
+/* around the first one, once: its words written by hand on a ring that turns slowly; gone when a sticker is picked up */
+.study__ring {
+  position: absolute;
+  pointer-events: none;
+  font-family: var(--font-hand);
+  font-size: 0.6rem;
+  color: var(--voice);
+  transition: opacity 0.5s var(--ease);
+  animation: stickerRing 28s linear infinite;
+}
+.study__ring svg { display: block; overflow: visible; }
+.study__ring text { fill: currentColor; font-family: var(--font-hand); }
+@keyframes stickerRing { to { rotate: 360deg; } }
+.study__stickers.is-known .study__ring { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .study__sticker img, .study__ring { animation: none; transition: none; }
+}
+
+/* the project in its own words: the lines its files say, side by side, in the serif */
+.study__quotes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: var(--s-5) clamp(1.5rem, 3.5vw, 3.5rem);
+}
+.study__quote { margin: 0; }
+.study__quote blockquote {
+  max-width: 34ch;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.15rem, 1.6vw, 1.45rem);
+  line-height: 1.3;
+}
+.study__quote figcaption { margin-top: 0.6rem; font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-3); }
+.is-stage .study__quote figcaption { color: var(--cream-65); }
 
 /* two small folders on one line on a wide screen (js/projects.js decides when they fit) */
 .study__pair.is-beside { display: flex; align-items: flex-start; gap: var(--between, 56px); margin-top: clamp(3rem, 6.5vw, 5rem); }
