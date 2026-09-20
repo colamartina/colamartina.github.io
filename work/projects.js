@@ -44,7 +44,7 @@
     collanine: { src: "content/events/retail-milan/bead-table-photo", widths: [640, 1159], ratio: 0.75, name: "bead-table-photo.webp" },
     presentation: { src: "content/events/pr-brand-presentation/window-display", widths: [640, 1280, 1920], ratio: 0.75, name: "window-display.webp" },
     selfie: { src: "content/events/retail-torino/mirror-selfie", widths: [640, 1280, 1920], ratio: 0.75, name: "mirror-selfie.webp" },
-    hotpoint: { src: "content/events/fuorisalone-beko/hotpoint-truck", widths: [640, 1280, 1920], ratio: 0.75, name: "hotpoint-truck.webp" },
+    hotpoint: { src: "content/events/fuorisalone-hotpoint/hotpoint-truck", widths: [640, 1280, 1920], ratio: 0.75, name: "hotpoint-truck.webp" },
     lampPost: { src: "content/campaigns/rebranding-2026/social/new-rechargeable-lamp", widths: [640, 1080], ratio: 0.8, name: "new-rechargeable-lamp.webp" },
     // DAISE's banner.webp holds the computer and the phone version side by side: here each one on its own
     daiseBannerDesktop: { src: "content/collabs/daise-2025/banner-desktop", widths: [640, 1280, 1920], ratio: 2.6713, name: "banner-desktop.webp" },
@@ -255,12 +255,12 @@
       labels: { "key-visuals": "Assets" }
     },
     {
-      slug: "fuorisalone-beko",
-      title: "Beko | Fuorisalone",
+      slug: "fuorisalone-hotpoint",
+      title: "Hotpoint | Fuorisalone",
       text: "At Fuorisalone, during Milan Design Week: an open-air Hotpoint kitchen among the skyscrapers, with live cooking and a pizza workshop for kids.",
       cover: PHOTOS.hotpoint,
       images: [PHOTOS.hotpoint],
-      videos: ["fuorisalone-beko.mp4"]
+      videos: ["fuorisalone-hotpoint.mp4"]
     }
   ];
 })();

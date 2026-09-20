@@ -23,7 +23,8 @@
      focus, zoom   its cover on its card: the part that stays, e.g. "50% 40%", and a closer cut
               around it, e.g. 1.15 (without: as on work/)
      card     the picture on its card instead of its cover, { src, widths, ratio } (files
-              <src>-<width>.webp): the events' covers with their midtones lifted
+              <src>-<width>.webp): the events' covers with their midtones lifted, or a photo
+              the card alone holds, kept off the project page
      place    where it took place (an event: on its card, beside the name)
      by       the brand under the name on an event card, when brand is too long for it
      results  big numbers under the text: { value, label }
@@ -119,7 +120,8 @@ window.PORTFOLIO.selection = {
   ],
   // the event cards show their covers a little brighter, like the project covers (asked 2026-09-18): a copy of each with
   // its midtones lifted (one gamma curve per photo, 0.8–0.92, black and white kept, so nothing clips), made from the
-  // largest copy with ffmpeg (lutrgb gammaval, lanczos) and cwebp -q 90; the project pages keep the photos as they are
+  // largest copy with ffmpeg (lutrgb gammaval, lanczos) and cwebp -q 90; the project pages keep the photos as they are.
+  // A card may hold a photo of its own instead (Fuorisalone): already as bright as the lifted ones, so it is untouched
   events: [
     {
       slug: "retail-milan",
@@ -131,10 +133,11 @@ window.PORTFOLIO.selection = {
       card: { src: "content/events/retail-milan/bead-table-photo-bright", widths: [640, 1159], ratio: 0.75 }
     },
     {
-      slug: "fuorisalone-beko",
+      // its card holds a photo of its own, the pizza workshop (it is not on the project page)
+      slug: "fuorisalone-hotpoint",
       kicker: "Milan Design Week",
       place: "Milan",
-      card: { src: "content/events/fuorisalone-beko/hotpoint-truck-bright", widths: [640, 1280, 1920], ratio: 0.75 }
+      card: { src: "content/events/fuorisalone-hotpoint/card-pizza-workshop", widths: [640, 1280, 1920], ratio: 0.8 }
     },
     {
       // the Manis & Coffee pop-up in Barcelona (its text on work/), from data/collabs.js. On the stage the white "good

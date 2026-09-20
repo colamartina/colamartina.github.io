@@ -85,23 +85,22 @@ window.PORTFOLIO.events = [
     todo: ["In quale negozio?", "Cosa hai fatto (2–3 righe)?", "Metadati del video: 12/12/2023, da confermare."]
   },
   {
-    slug: "fuorisalone-beko",
+    slug: "fuorisalone-hotpoint",
     title: "Fuorisalone",
-    kicker: "Beko",
-    brand: "Beko",
+    kicker: "Hotpoint",
+    brand: "Hotpoint",
     place: null,
     date: null,
     text: null,
     video: {
       type: "video",
-      src: "content/events/fuorisalone-beko/video.mp4",
-      poster: "content/events/fuorisalone-beko/video-poster.webp",
+      src: "content/events/fuorisalone-hotpoint/video.mp4",
+      poster: "content/events/fuorisalone-hotpoint/video-poster.webp",
       ratio: 0.5625,
       duration: 32.1,
-      name: "fuorisalone-beko.mp4"
+      name: "fuorisalone-hotpoint.mp4"
     },
-    todo: ["Non è un evento Le Mini Macaron: nel video compare il marchio Hotpoint.",
-           "Qual è stato il tuo ruolo, e in che anno? Freelance con TandEM?",
+    todo: ["Qual è stato il tuo ruolo, e in che anno? Freelance con TandEM?",
            "Metadati del video: 30/04/2026, da confermare."]
   }
 ];
