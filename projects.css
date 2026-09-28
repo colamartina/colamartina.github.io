@@ -54,33 +54,6 @@
 .study__fig img, .study__fig video { display: block; width: 100%; height: 100%; object-fit: cover; }
 .study__vibe { margin-top: clamp(1.4rem, 3vw, 2.4rem); }
 
-/* a video with sound: a small pill turns it on, one at a time */
-.study__sound {
-  position: absolute;
-  left: 0.55rem;
-  bottom: 0.55rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5em;
-  padding: 0.45em 0.8em 0.45em 0.65em;
-  border: 0;
-  border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--cream) 94%, transparent);
-  color: var(--ink);
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  line-height: 1;
-  cursor: pointer;
-  transition: background var(--dur-fast), color var(--dur-fast);
-}
-.study__sound::before { content: ""; width: 0.5em; height: 0.5em; border-radius: 50%; background: var(--orange); }
-.study__sound[aria-pressed="true"] { background: var(--electric-ink); color: var(--cream); }
-.study__sound[aria-pressed="true"]::before { background: var(--acid); }
-@media (hover: hover) {
-  .study__sound:hover { background: var(--acid); color: var(--ink); }
-}
-.study__sound:focus-visible { border-radius: var(--r-pill); }
-
 /* the text: the kicker in the serif, the name big, the short text; the facts beside it */
 .study__about {
   display: grid;

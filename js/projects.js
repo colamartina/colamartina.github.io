@@ -401,7 +401,6 @@
   }
 
   /* ---------- a project page: media ---------- */
-  var sounds = [];                                         // one sound at a time on the whole page
   function video(it, label) {
     var v = el("video", {
       loop: "", muted: "", playsinline: "", preload: "none",
@@ -409,21 +408,7 @@
     });
     v.muted = true;                                        // the property, not just the attribute: needed for autoplay
     if (reduceMotion) v.setAttribute("controls", "");      // nothing moves by itself: the visitor presses play
-    var kids = [v];
-    if (it.audio && !reduceMotion) {
-      var btn = el("button.study__sound", { type: "button", "aria-pressed": "false" }, ["Sound off"]);
-      btn.addEventListener("click", function () {
-        var on = v.muted;
-        sounds.forEach(function (s) { s.v.muted = true; s.btn.setAttribute("aria-pressed", "false"); s.btn.textContent = "Sound off"; });
-        v.muted = !on;
-        if (on && v.paused) v.play().catch(function () {});
-        btn.setAttribute("aria-pressed", String(on));
-        btn.textContent = on ? "Sound on" : "Sound off";
-      });
-      sounds.push({ v: v, btn: btn });
-      kids.push(btn);
-    }
-    return kids;
+    return [v];
   }
 
   function figure(m, alt, formats) {
