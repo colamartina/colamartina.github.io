@@ -653,7 +653,7 @@
     var TILT = [-7, 5, -3, 8, -5, 3];
     var WORDS = ".crumbs, .study__kicker, .study__title, .study__text, .info, .results, .study__label, .pager";
     var SAID = ".study__quote blockquote, .study__quote figcaption";   // the note is never written on these either
-    var SAY = "you can move these around :)";
+    var SAY = "drag them around :)";
     var host = root.closest("main") || root;             // the page: the stickers can go anywhere on it
     var layer = el("div.study__stickers", { "aria-hidden": "true" });
     host.classList.add("has-stickers");
