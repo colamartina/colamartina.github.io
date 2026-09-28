@@ -612,18 +612,9 @@
     });
     flow.forEach(function (i) { if (!i.pair) boxes.push(i.box); });
 
-    // the project in its own words: the lines its files say (data/*.js quotes: taglines, the flyer, the newsletter…)
-    var said = r.p.quotes || [], label = event ? "From the event" : "From the campaign";
-    var words = said.length ? el("section.study__folder.study__words", { "aria-label": label, "data-reveal": "" }, [
-      el("h2.study__label", {}, [el("span", { text: label })]),
-      el("div.study__quotes", {}, said.map(function (q) {
-        return el("figure.study__quote", {}, [el("blockquote", { text: "“" + q.text + "”" }), q.source ? el("figcaption", { text: q.source }) : null]);
-      }))
-    ]) : null;
-
     var body = event ? [el("div.study__spread", {}, [vibe, about])] : [vibe, about];
     var node = el("div.study" + (event ? ".study--event" : ""), { "data-accent": r.p.accent || null },
-      body.concat([words], flow.map(function (i) { return i.node; })));
+      body.concat(flow.map(function (i) { return i.node; })));
     node._boxes = boxes;
     node._pairs = pairs;
     node._stickers = parts.stickers;
