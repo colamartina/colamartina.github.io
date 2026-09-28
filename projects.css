@@ -188,22 +188,49 @@
 }
 .study__sticker.is-held img { transform: rotate(calc(var(--tilt, 0deg) + 3deg)) scale(1.08); filter: drop-shadow(0 14px 16px rgba(47, 18, 21, 0.22)); animation-play-state: paused; }
 .is-grabbing, .is-grabbing * { cursor: grabbing !important; user-select: none !important; -webkit-user-select: none !important; }
-/* around the first one, once: its words written by hand on a ring that turns slowly; gone when a sticker is picked up */
-.study__ring {
+/* beside the first one, once: a note in her hand with a little arrow drawn at the sticker; gone when one is picked up.
+   It hangs on the sticker it points at (js/projects.js sets the side and the offsets), so it goes wherever that goes */
+.study__hint {
   position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.45em;                         /* air between the arrow and the words: it points at the sticker, not at them */
+  width: max-content;
   pointer-events: none;
   font-family: var(--font-hand);
-  font-size: 0.6rem;
+  font-size: clamp(0.84rem, 0.7rem + 0.45vw, 1.02rem);
+  line-height: 1.75;
   color: var(--voice);
-  transition: opacity 0.5s var(--ease);
-  animation: stickerRing 28s linear infinite;
+  opacity: 0;
+  visibility: hidden;                  /* measured before it is placed, seen only once it is */
+  transition: opacity 0.6s var(--ease);
 }
-.study__ring svg { display: block; overflow: visible; }
-.study__ring text { fill: currentColor; font-family: var(--font-hand); }
-@keyframes stickerRing { to { rotate: 360deg; } }
-.study__stickers.is-known .study__ring { opacity: 0; }
+.study__hint.is-set { opacity: 1; visibility: visible; }
+/* the note keeps its shape wherever it is; the arrow moves to the end nearest the sticker and turns at it */
+.study__hint[data-side="right"], .study__hint[data-side="below"], .study__hint[data-side="above"] { flex-direction: row-reverse; }
+.study__hint-words { max-width: 13.5em; rotate: -3deg; }   /* her hand runs a little uphill */
+.study__hint-arrow { position: relative; flex: none; width: 3.1em; height: 2em; margin-top: 0.7em; }
+.study__hint[data-side="below"] .study__hint-arrow, .study__hint[data-side="above"] .study__hint-arrow { width: 2em; height: 2.6em; margin: 0; }
+.study__hint-arrow svg {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3.1em;
+  height: 2em;
+  margin: -1em 0 0 -1.55em;
+  stroke: currentColor;
+  stroke-width: 2.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transform: rotate(var(--aim, 0deg));   /* js/projects.js turns it at the sticker it belongs to */
+}
+.is-stage .study__hint { color: var(--cream); }   /* on the burgundy stage her pen is cream, as the rest of it is */
+.study__stickers.is-known .study__hint { opacity: 0; }
 @media (prefers-reduced-motion: reduce) {
-  .study__sticker img, .study__ring { animation: none; transition: none; }
+  .study__sticker img { animation: none; transition: none; }
+  .study__hint { transition: none; }
 }
 
 /* the project in its own words: the lines its files say, side by side, in the serif */

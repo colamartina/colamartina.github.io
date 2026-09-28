@@ -651,9 +651,15 @@
   // word, spread down the page. Each sways a little, out of step with the others (the CV's cvSway). Picked up with a
   // mouse or a finger (pointer events) one follows the pointer anywhere on the page, above everything while in hand,
   // and stays where it is let go (no link under it opens): from then on it keeps its place in the part of the page
-  // under it when the width changes. Their layer is the whole page, not the project's column. Around the first one a
-  // ring of handwriting turns slowly and says they can be moved: once, then never again in this browser.
+  // under it when the width changes. Their layer is the whole page, not the project's column. Beside the first one
+  // with room for it, a note in her hand says they can be moved, a little arrow drawn at the sticker: written once,
+  // then never again in this browser.
   var HINT = "portfolio:stickers-hint";
+  var ARROW = '<svg viewBox="0 0 58 34" fill="none" aria-hidden="true" focusable="false">' +
+    '<path d="M2.5 7.5c9.5-4.6 20.3-3.9 29.2 2.2 5 3.4 8.7 7.7 12.3 11.8 2 2.3 4.2 4.3 7 5.8"/>' +
+    '<path d="M50.8 27.4c-4-.2-7.8-1.1-11.4-2.7"/>' +
+    '<path d="M50.8 27.4c-.9-3.8-1-7.6-.4-11.3"/></svg>';
+  var LEAN = 22.4;   // the drawn arrow runs this many degrees below the horizontal: turned by it, it points where told
   function hinted(yes) {
     try {
       if (yes) localStorage.setItem(HINT, "1");
@@ -663,9 +669,13 @@
 
   function stickers(root, list) {
     var EDGE = 6, GAP = 14, NEAR = 64, CELL = 8, STEP = 16;   // px: from the edges, from the words, "beside" something
-    var COVER = 0.45, RING_COVER = 0.2;                      // the most of a sticker (of the ring around one) on pictures
+    // the most of a sticker, of the note beside one, of that note's own words and of the two together, on pictures
+    var COVER = 0.45, NOTE_COVER = 0.25, SAY_COVER = 0.02, NOTE_ROOM = 0.25;
+    var NOTE_GAP = 12, NOTE_REACH = 56;   // px to the sticker, and how far from it the arrow may start and still reach
+    var SIDES = ["right", "left", "below", "above"];                  // where its note may be written
     var TILT = [-7, 5, -3, 8, -5, 3];
     var WORDS = ".crumbs, .study__kicker, .study__title, .study__text, .info, .results, .study__label, .pager";
+    var SAID = ".study__quote blockquote, .study__quote figcaption";   // the note is never written on these either
     var SAY = "you can move these around :)";
     var host = root.closest("main") || root;             // the page: the stickers can go anywhere on it
     var layer = el("div.study__stickers", { "aria-hidden": "true" });
@@ -683,8 +693,13 @@
       layer.appendChild(node);
       return { node: node, moved: false, left: 0, top: 0, part: 0, x: 0, y: 0 };
     });
-    var ring = hinted() ? null : el("div.study__ring", { hidden: "" });
-    if (ring) layer.appendChild(ring);                   // in the page from the start: its type can be measured
+    var note = hinted() ? null : el("div.study__hint", { hidden: "", "data-side": "right" }, [
+      el("span.study__hint-words", { text: SAY }), el("span.study__hint-arrow", {})
+    ]);
+    if (note) {                                          // in the page from the start: its hand can be measured
+      note.querySelector(".study__hint-arrow").innerHTML = ARROW;
+      layer.appendChild(note);
+    }
 
     function within(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
     function put(s, l, t) {
@@ -727,49 +742,52 @@
       };
     }
 
-    // the ring around a sticker: the words on a circle, as many times as go round it
-    var measure = document.createElement("canvas").getContext("2d");
-    function ringSize(w, h) { return Math.ceil(Math.max(w, h) + 2 * (10 + ring.font * 1.9)); }
-    function draw(s) {
-      var w = s.node.offsetWidth, h = s.node.offsetHeight, size = ringSize(w, h), c = size / 2;
-      var r = Math.max(w, h) / 2 + 10, round = 2 * Math.PI * r;
-      measure.font = ring.font + "px " + getComputedStyle(ring).fontFamily;
-      var say = SAY + "  ·  ", times = Math.max(1, Math.round(round / Math.max(1, measure.measureText(say).width)));
-      ring.style.width = ring.style.height = size + "px";
-      ring.style.left = (w / 2 - c).toFixed(1) + "px";
-      ring.style.top = (h / 2 - c).toFixed(1) + "px";
-      ring.innerHTML = '<svg viewBox="0 0 ' + size + " " + size + '" width="' + size + '" height="' + size + '">' +
-        '<path id="study-ring" fill="none" d="M ' + (c - r) + " " + c + " a " + r + " " + r + " 0 1 1 " + 2 * r + " 0 a " + r + " " + r + " 0 1 1 " + -2 * r + ' 0"/>' +
-        '<text font-size="' + ring.font + '"><textPath href="#study-ring" textLength="' + round.toFixed(1) + '" lengthAdjust="spacing"></textPath></text></svg>';
-      ring.querySelector("textPath").textContent = new Array(times + 1).join(say);
-      if (ring.parentNode !== s.node) s.node.appendChild(ring);
+    // the note: its own size, with the arrow on the side the sticker is (the words never turn, only the arrow)
+    function noteSize(side) {
+      note.setAttribute("data-side", side);
+      var a = note.querySelector(".study__hint-arrow"), q = note.querySelector(".study__hint-words");
+      return { w: note.offsetWidth, h: note.offsetHeight, ax: a.offsetLeft + a.offsetWidth / 2, ay: a.offsetTop + a.offsetHeight / 2,
+        sl: q.offsetLeft, st: q.offsetTop, sw: q.offsetWidth, sh: q.offsetHeight };   // and where its words sit in it
+    }
+    function write(s, fit) {
+      note.setAttribute("data-side", fit.side);
+      note.style.left = (fit.l - s.left).toFixed(1) + "px";
+      note.style.top = (fit.t - s.top).toFixed(1) + "px";
+      // the arrow turns at the middle of the sticker, wherever the note ended up beside it
+      var aim = Math.atan2(s.top + s.node.offsetHeight / 2 - (fit.t + fit.ay), s.left + s.node.offsetWidth / 2 - (fit.l + fit.ax));
+      note.style.setProperty("--aim", (aim * 180 / Math.PI - LEAN).toFixed(1) + "deg");
+      if (note.parentNode !== s.node) s.node.appendChild(note);   // it travels with the sticker it points at
+      note.hidden = false;
+      note.classList.add("is-set");
     }
 
     // each one not moved goes to the place closest to its share of the page (one after the other, top to bottom):
     // on no word and no other sticker, its middle on no picture, at most a part of it on pictures (stuck on their
     // edge or corner, which it likes) or else beside something rather than out in the open, and not near the others.
     // With no room at its size it tries smaller, and with none at all it waits out of sight until the page has some.
-    // The ring, while it is still to be read, goes round the highest one with room for it; when none has, the first
-    // one is placed again with the room of its ring
+    // The note, while it is still to be read, is written beside the highest one with room for it; when none has, the
+    // first one is placed again with the room its note asks for
     function place() {
-      if (!settle(null) && ring && !layer.classList.contains("is-known")) settle(all.filter(function (s) { return !s.moved; })[0]);
+      if (!settle(null) && note && !layer.classList.contains("is-known")) settle(all.filter(function (s) { return !s.moved; })[0]);
     }
-    function settle(ringed) {
+    function settle(noted) {
       var W = layer.clientWidth, H = layer.clientHeight;
       if (!W || !H) return true;
       var p = parts(), hard = cells(W, H), pics = cells(W, H), near = cells(W, H), words = cells(W, H), rects = [];
       [].slice.call(root.querySelectorAll(WORDS)).map(box).forEach(function (q) { hard.mark(q, GAP); words.mark(q, 6); near.mark(q, GAP + NEAR); });
+      [].slice.call(root.querySelectorAll(SAID)).map(box).forEach(function (q) { words.mark(q, 6); });
       [].slice.call(root.querySelectorAll(".study__fig")).map(box).forEach(function (q) { pics.mark(q, 0); near.mark(q, NEAR); });
       // not above the crumbs (the bar lies there when the page opens), not under the pager
       var crumbs = root.querySelector(".crumbs"), pager = root.querySelector(".pager");
-      if (crumbs) hard.mark({ l: 0, t: 0, r: W, b: box(crumbs).b }, GAP);
-      if (pager) hard.mark({ l: 0, t: box(pager).b, r: W, b: H }, 0);
+      if (crumbs) { hard.mark({ l: 0, t: 0, r: W, b: box(crumbs).b }, GAP); words.mark({ l: 0, t: 0, r: W, b: box(crumbs).b }, GAP); }
+      if (pager) { hard.mark({ l: 0, t: box(pager).b, r: W, b: H }, 0); words.mark({ l: 0, t: box(pager).b, r: W, b: H }, 0); }
       var from = p.length ? p[0].t : 0, to = p.length > 1 ? p[p.length - 1].t : H;
       var free = all.filter(function (s) { return !s.moved; }), band = (to - from) / Math.max(free.length, 1), kept = [];
-      if (ring) ring.font = parseFloat(getComputedStyle(ring).fontSize) || 10;
+      var telling = note && !layer.classList.contains("is-known");
+      if (telling) note.hidden = false;                  // out of sight until it is placed, but measurable
 
       all.forEach(function (s) {                         // the moved ones stay where they were put
-        if (!s.moved || (held && held.s === s)) return;
+        if (!s.moved || held === s) return;
         var q = p[Math.min(s.part, p.length - 1)], w = s.node.offsetWidth, h = s.node.offsetHeight;
         put(s, within(s.x * W - w / 2, EDGE, W - w - EDGE), within(q.t + s.y * (q.b - q.t) - h / 2, EDGE, H - h - EDGE));
         hard.mark({ l: s.left, t: s.top, r: s.left + w, b: s.top + h }, 8);
@@ -777,14 +795,15 @@
         kept.push({ x: s.left + w / 2, y: s.top + h / 2 });
       });
       free.forEach(function (s, i) {
-        if (held && held.s === s) return;
+        if (held === s) return;
         var aim = from + band * (i + 0.5), spot = null;
         s.node.hidden = false;                           // measured at its size, even when it had no room before
         [1, 0.8, 0.64].some(function (k) {
           s.node.style.setProperty("--k", k);
           var w = s.node.offsetWidth, h = s.node.offsetHeight, reach = 3.4 * Math.max(w, h);
-          var fw = s === ringed ? ringSize(w, h) : w, fh = s === ringed ? ringSize(w, h) : h;   // its room
-          var most = s === ringed ? RING_COVER : COVER;
+          var n = s === noted ? noteSize("right") : null;                      // the one being told holds room for its note
+          var fw = n ? w + NOTE_GAP + n.w : w, fh = n ? Math.max(h, n.h) : h;   // its room
+          var most = n ? NOTE_ROOM : COVER;
           for (var t = EDGE; t + fh <= H - EDGE; t += STEP) {
             for (var l = EDGE; l + fw <= W - EDGE; l += STEP) {
               if (hard.any(l, t, l + fw, t + fh)) continue;
@@ -801,25 +820,47 @@
         });
         s.node.hidden = !spot;
         if (!spot) return;
-        put(s, spot.l + (spot.fw - spot.w) / 2, spot.t + (spot.fh - spot.h) / 2);
+        put(s, s === noted ? spot.l : spot.l + (spot.fw - spot.w) / 2, spot.t + (spot.fh - spot.h) / 2);
         hard.mark({ l: spot.l, t: spot.t, r: spot.l + spot.fw, b: spot.t + spot.fh }, 8);
         rects.push({ s: s, l: spot.l, t: spot.t, r: spot.l + spot.fw, b: spot.t + spot.fh });
         kept.push({ x: spot.l + spot.fw / 2, y: spot.t + spot.fh / 2 });
       });
 
-      if (!ring || layer.classList.contains("is-known")) return true;
-      if (!ringed) {                                     // the highest one with room round it: on no word, no other sticker
-        ringed = rects.slice().sort(function (a, b) { return a.t - b.t; }).map(function (q) {
-          var w = q.s.node.offsetWidth, h = q.s.node.offsetHeight, size = ringSize(w, h);
-          var l = q.s.left + w / 2 - size / 2, t = q.s.top + h / 2 - size / 2, r = l + size, b = t + size;
-          var clear = l >= 0 && t >= 0 && r <= W && b <= H && !words.any(l, t, r, b) && pics.share(l, t, r, b) <= RING_COVER &&
-            !rects.some(function (o) { return o.s !== q.s && o.l < r && o.r > l && o.t < b && o.b > t; });
-          return clear ? q.s : null;
-        }).filter(Boolean)[0] || null;
+      if (!telling) return true;
+      // room for the note at a sticker: beside it, under it or over it, on no word, on no other sticker, its words
+      // off the pictures (only the arrow may clip one). It is where it is written from: the arrow points back at it
+      function fits(s) {
+        var w = s.node.offsetWidth, h = s.node.offsetHeight, found = null;
+        SIDES.some(function (side) {
+          var n = noteSize(side), across = side === "right" || side === "left";
+          var l = side === "right" ? s.left + w + NOTE_GAP : side === "left" ? s.left - NOTE_GAP - n.w : s.left + w / 2 - n.ax;
+          var t = across ? s.top + h / 2 - n.ay : side === "below" ? s.top + h + NOTE_GAP : s.top - NOTE_GAP - n.h;
+          if (across) t = within(t, EDGE, H - EDGE - n.h);  // it slides along the sticker to stay on the page,
+          else l = within(l, EDGE, W - EDGE - n.w);         // the arrow still drawn at it
+          var r = l + n.w, b = t + n.h;
+          if (l < EDGE || t < EDGE || r > W - EDGE || b > H - EDGE) return false;
+          if (words.any(l - 6, t - 6, r + 6, b + 6)) return false;
+          if (pics.share(l + n.sl, t + n.st, l + n.sl + n.sw, t + n.st + n.sh) > SAY_COVER) return false;   // her words on the page,
+          if (pics.share(l, t, r, b) > NOTE_COVER) return false;                                             // the arrow may clip a picture
+          if (rects.some(function (o) { return o.s !== s && o.l < r + 6 && o.r > l - 6 && o.t < b + 6 && o.b > t - 6; })) return false;
+          // and near enough that the arrow lands on the sticker rather than pointing off across the page
+          var ax = l + n.ax, ay = t + n.ay;
+          var gx = Math.max(s.left - ax, 0, ax - s.left - w), gy = Math.max(s.top - ay, 0, ay - s.top - h);
+          if (Math.sqrt(gx * gx + gy * gy) > NOTE_REACH) return false;
+          found = { side: side, l: l, t: t, ax: n.ax, ay: n.ay };
+          return true;
+        });
+        return found;
       }
-      ring.hidden = !ringed || ringed.node.hidden;
-      if (ring.hidden) return false;
-      draw(ringed);
+      var on = null, fit = null;                         // the highest one it can be written beside
+      (noted ? [noted] : rects.slice().sort(function (a, b) { return a.t - b.t; }).map(function (q) { return q.s; }))
+        .some(function (s) { return !s.node.hidden && (fit = fits(s)) ? !!(on = s) : false; });
+      if (!on) {
+        note.hidden = true;
+        note.classList.remove("is-set");
+        return false;
+      }
+      write(on, fit);
       return true;
     }
 
@@ -832,83 +873,41 @@
       s.y = (cy - p[best].t) / Math.max(p[best].b - p[best].t, 1);
     }
 
-    var held = null, stack = 0, rolling = 0, dragged = false;
-    function follow() {
-      put(held.s, within(held.x + window.scrollX - held.ox, EDGE, held.maxL), within(held.y + window.scrollY - held.oy, EDGE, held.maxT));
-    }
-    // held close to the top or the bottom of the window (after a first move), the page scrolls along, gently
-    function roll() {
-      rolling = 0;
-      if (!held || !held.far) return;
-      var zone = Math.min(80, window.innerHeight / 8), vh = window.innerHeight, speed = 0;
-      if (held.y < zone) speed = (held.y - zone) / zone;
-      else if (held.y > vh - zone) speed = (held.y - vh + zone) / zone;
-      if (!speed) return;
-      var before = window.scrollY;
-      window.scrollBy(0, Math.round(within(speed, -1, 1) * 14));
-      if (window.scrollY === before) return;
-      follow();
-      rolling = requestAnimationFrame(roll);
-    }
+    // the note is read the moment one is picked up, here and on every later page
     function known() {
       layer.classList.add("is-known");
       hinted(true);
     }
-    layer.addEventListener("pointerdown", function (e) {
-      var node = e.target.closest && e.target.closest(".study__sticker");
-      if (!node || held || (e.pointerType === "mouse" && e.button !== 0)) return;
-      e.preventDefault();                                 // no text selected, no picture dragged away
-      var s = all.filter(function (q) { return q.node === node; })[0];
-      held = {
-        s: s, id: e.pointerId, x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY, far: false,
-        ox: e.clientX + window.scrollX - s.left, oy: e.clientY + window.scrollY - s.top,   // keeps the grip: no jump
-        maxL: layer.clientWidth - node.offsetWidth - EDGE, maxT: layer.clientHeight - node.offsetHeight - EDGE
-      };
-      try { node.setPointerCapture(e.pointerId); } catch (err) {}
-      node.style.zIndex = 1000;                           // the one in hand above the others,
-      layer.classList.add("is-lifted");                   // and the layer above the bar while it is held
-      node.classList.add("is-held");
-      document.documentElement.classList.add("is-grabbing");
-      known();
-    });
-    layer.addEventListener("pointermove", function (e) {
-      if (!held || e.pointerId !== held.id) return;
-      held.x = e.clientX;
-      held.y = e.clientY;
-      if (Math.abs(held.x - held.sx) + Math.abs(held.y - held.sy) > 10) held.far = true;
-      follow();
-      if (!rolling) roll();
-    });
-    function letGo(e) {
-      if (!held || e.pointerId !== held.id) return;
-      var s = held.s;
-      held = null;
-      cancelAnimationFrame(rolling);
-      rolling = 0;
-      s.node.classList.remove("is-held");
-      s.node.style.zIndex = ++stack;                      // put down on top of the others
-      layer.classList.remove("is-lifted");
-      document.documentElement.classList.remove("is-grabbing");
-      s.moved = true;
-      pin(s);
-      if (e.type === "pointerup") { dragged = true; setTimeout(function () { dragged = false; }, 0); }
-    }
-    layer.addEventListener("pointerup", letGo);
-    layer.addEventListener("pointercancel", letGo);
-    layer.addEventListener("lostpointercapture", letGo);
-    window.addEventListener("scroll", function () { if (held) follow(); }, { passive: true });
-    // the click that follows a sticker let go goes nowhere: no link under it opens
-    window.addEventListener("click", function (e) { if (dragged) { dragged = false; e.preventDefault(); e.stopPropagation(); } }, true);
 
-    // the ring counts as read once it has been on screen for a moment: it won't come back on the next pages
-    if (ring && "IntersectionObserver" in window) {
+    // picked up and carried by js/drag.js — the same hands the hobby objects are moved with.
+    // The one in hand is left alone when the page is laid out again under it.
+    var held = null;
+    Drag.attach(layer, {
+      find: function (t) { return t.closest && t.closest(".study__sticker"); },
+      at: function (node) { var s = of(node); return { x: s.left, y: s.top }; },
+      limits: function (node) {
+        return {
+          minX: EDGE, minY: EDGE,
+          maxX: layer.clientWidth - node.offsetWidth - EDGE,
+          maxY: layer.clientHeight - node.offsetHeight - EDGE
+        };
+      },
+      move: function (node, l, t) { put(of(node), l, t); },
+      lift: function (on) { layer.classList.toggle("is-lifted", on); },
+      grab: function (node) { held = of(node); known(); },
+      drop: function (node) { held = null; var s = of(node); s.moved = true; pin(s); }
+    });
+    function of(node) { return all.filter(function (q) { return q.node === node; })[0]; }
+
+    // the note counts as read once it has been on screen for a moment: it won't come back on the next pages
+    if (note && "IntersectionObserver" in window) {
       var timer = 0, io = new IntersectionObserver(function (list) {
         list.forEach(function (e) {
-          clearTimeout(timer);
-          if (e.isIntersecting) timer = setTimeout(function () { hinted(true); io.disconnect(); }, 1500);
+          clearTimeout(timer);                         // a note with no room has no box at all: it counts as unread
+          if (e.isIntersecting && e.boundingClientRect.width) timer = setTimeout(function () { hinted(true); io.disconnect(); }, 1500);
         });
       }, { threshold: 0.9 });
-      io.observe(ring);
+      io.observe(note);
     }
     return { place: place };
   }
