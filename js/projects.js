@@ -639,7 +639,7 @@
   // under it when the width changes. Their layer is the whole page, not the project's column. Beside the first one
   // with room for it, a note in her hand says they can be moved, a little arrow drawn at the sticker: written once,
   // then never again in this browser.
-  var HINT = "portfolio:stickers-hint";
+  var HINT = "portfolio:stickers-note";   // not the ring's old key: a browser that saw that would never see this
   var ARROW = '<svg viewBox="0 0 58 34" fill="none" aria-hidden="true" focusable="false">' +
     '<path d="M2.5 7.5c9.5-4.6 20.3-3.9 29.2 2.2 5 3.4 8.7 7.7 12.3 11.8 2 2.3 4.2 4.3 7 5.8"/>' +
     '<path d="M50.8 27.4c-4-.2-7.8-1.1-11.4-2.7"/>' +
@@ -884,16 +884,8 @@
     });
     function of(node) { return all.filter(function (q) { return q.node === node; })[0]; }
 
-    // the note counts as read once it has been on screen for a moment: it won't come back on the next pages
-    if (note && "IntersectionObserver" in window) {
-      var timer = 0, io = new IntersectionObserver(function (list) {
-        list.forEach(function (e) {
-          clearTimeout(timer);                         // a note with no room has no box at all: it counts as unread
-          if (e.isIntersecting && e.boundingClientRect.width) timer = setTimeout(function () { hinted(true); io.disconnect(); }, 1500);
-        });
-      }, { threshold: 0.9 });
-      io.observe(note);
-    }
+    // the note is done when a badge has actually been picked up (known(), above), not when it has merely been on
+    // screen: a visitor who scrolls past it is shown it again on the next project, until they have tried one
     return { place: place };
   }
 
