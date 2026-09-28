@@ -169,7 +169,7 @@
   top: 0;
   display: flex;
   align-items: center;
-  gap: 0.45em;                         /* air between the arrow and the words: it points at the sticker, not at them */
+  gap: 0.7em;                          /* air between the arrow and the words: it never touches her writing */
   width: max-content;
   pointer-events: none;
   font-family: var(--font-hand);
@@ -185,8 +185,8 @@
    of the line; over or under it, it goes under her writing rather than out to the side, where it would read as if it
    came out of whatever the note lies next to */
 .study__hint[data-side="right"] { flex-direction: row-reverse; }
-.study__hint[data-side="above"] { flex-direction: column; align-items: center; gap: 0.1em; }
-.study__hint[data-side="below"] { flex-direction: column-reverse; align-items: center; gap: 0.1em; }
+.study__hint[data-side="above"] { flex-direction: column; align-items: center; gap: 1.9em; }
+.study__hint[data-side="below"] { flex-direction: column-reverse; align-items: center; gap: 1.9em; }
 .study__hint-words { max-width: 13.5em; rotate: -3deg; }   /* her hand runs a little uphill */
 @media (max-width: 900px) {
   .study__hint-words { max-width: 8.6em; }   /* three short lines: a narrow note finds room a wide one cannot */
