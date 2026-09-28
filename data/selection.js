@@ -70,12 +70,11 @@ window.PORTFOLIO.selection = {
       slug: "ooh-italy",
       title: "OOH",
       kicker: "Italy, Spain & the US",
-      // the six videos open the project, three a row, as on work/; the photos follow the text, Italy, Spain and the US mixed
+      // the six videos open the project, in one row on a wide screen; the photos follow the text, Italy, Spain and the US mixed
       vibe: [
         "milan-duomo-metro-3.mp4", "bologna-2.mp4", "milan-duomo-metro-2.mp4",
         "bologna-1.mp4", "street-screens-dec-2023.mp4", "bologna-5.mp4"
       ],
-      row: 3,
       results: [
         { value: "€60K", label: "media value, secured at no media cost" },
         { value: "450+", label: "placements" },
