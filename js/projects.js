@@ -645,8 +645,8 @@
 
   function stickers(root, list) {
     var EDGE = 6, GAP = 14, NEAR = 64, CELL = 8, STEP = 16;   // px: from the edges, from the words, "beside" something
-    // the most of a sticker, of the note beside one, of that note's own words and of the two together, on pictures
-    var COVER = 0.45, NOTE_COVER = 0.25, SAY_COVER = 0.02, NOTE_ROOM = 0.25;
+    // the most of a sticker, of the note beside one and of that note's own words, on pictures
+    var COVER = 0.45, NOTE_COVER = 0.25, SAY_COVER = 0.02;
     var NOTE_GAP = 12, NOTE_REACH = 56;   // px to the sticker, and how far from it the arrow may start and still reach
     var SIDES = ["right", "left", "below", "above"];                  // where its note may be written
     var TILT = [-7, 5, -3, 8, -5, 3];
@@ -741,12 +741,17 @@
     // on no word and no other sticker, its middle on no picture, at most a part of it on pictures (stuck on their
     // edge or corner, which it likes) or else beside something rather than out in the open, and not near the others.
     // With no room at its size it tries smaller, and with none at all it waits out of sight until the page has some.
-    // The note, while it is still to be read, is written beside the highest one with room for it; when none has, the
-    // first one is placed again with the room its note asks for
+    // The note goes beside the first badge of the set, the one a visitor meets first: where it already lies if there
+    // is room for the note there, else the badge is placed again with that room kept beside it. Only if the first
+    // badge can have it neither way does the note go to another one
     function place() {
-      if (!settle(null) && note && !layer.classList.contains("is-known")) settle(all.filter(function (s) { return !s.moved; })[0]);
+      if (settle(null)) return;
+      if (!note || layer.classList.contains("is-known")) return;
+      var free = all.filter(function (s) { return !s.moved; });
+      if (free.length && settle(free[0])) return;
+      settle(null, true);
     }
-    function settle(noted) {
+    function settle(noted, any) {
       var W = layer.clientWidth, H = layer.clientHeight;
       if (!W || !H) return true;
       var p = parts(), hard = cells(W, H), pics = cells(W, H), near = cells(W, H), words = cells(W, H), rects = [];
@@ -777,26 +782,35 @@
         [1, 0.8, 0.64].some(function (k) {
           s.node.style.setProperty("--k", k);
           var w = s.node.offsetWidth, h = s.node.offsetHeight, reach = 3.4 * Math.max(w, h);
-          var n = s === noted ? noteSize("right") : null;                      // the one being told holds room for its note
-          var fw = n ? w + NOTE_GAP + n.w : w, fh = n ? Math.max(h, n.h) : h;   // its room
-          var most = n ? NOTE_ROOM : COVER;
-          for (var t = EDGE; t + fh <= H - EDGE; t += STEP) {
-            for (var l = EDGE; l + fw <= W - EDGE; l += STEP) {
-              if (hard.any(l, t, l + fw, t + fh)) continue;
-              var cx = l + fw / 2, cy = t + fh / 2;
-              if (pics.any(cx - 4, cy - 4, cx + 4, cy + 4)) continue;
-              var on = pics.share(l, t, l + fw, t + fh);
-              if (on > most) continue;
-              var score = Math.abs(cy - aim) / band + (on > 0.08 ? -0.25 : near.any(l, t, l + fw, t + fh) ? 0 : 0.5);
-              kept.forEach(function (o) { var d = Math.sqrt((o.x - cx) * (o.x - cx) + (o.y - cy) * (o.y - cy)); if (d < reach) score += 1.5 * (1 - d / reach); });
-              if (!spot || score < spot.score) spot = { l: l, t: t, fw: fw, fh: fh, w: w, h: h, score: score };
+          var n = s === noted ? noteSize("right") : null;   // the one being told keeps room for its note as well
+          var g0 = { h: h };
+          // where to look, and where the badge and its note sit in that room: the note beside it, or under it
+          var shapes = n ? [
+            { fw: w + NOTE_GAP + n.w, fh: Math.max(h, n.h), bx: 0, by: (Math.max(h, n.h) - h) / 2, nx: w + NOTE_GAP, ny: (Math.max(h, n.h) - n.h) / 2 },
+            { fw: Math.max(w, n.w), fh: h + NOTE_GAP + n.h, bx: (Math.max(w, n.w) - w) / 2, by: 0, nx: (Math.max(w, n.w) - n.w) / 2, ny: h + NOTE_GAP }
+          ] : [{ fw: w, fh: h, bx: 0, by: 0 }];
+          var last = n ? Math.min(H - EDGE, from + 1.2 * band + g0.h) : H - EDGE;   // the told one keeps to its own share
+          shapes.some(function (g) {
+            for (var t = EDGE; t + g.fh <= last; t += STEP) {
+              for (var l = EDGE; l + g.fw <= W - EDGE; l += STEP) {
+                if (hard.any(l, t, l + g.fw, t + g.fh)) continue;
+                var cx = l + g.bx + w / 2, cy = t + g.by + h / 2;               // the badge's own middle
+                if (pics.any(cx - 4, cy - 4, cx + 4, cy + 4)) continue;
+                var on = pics.share(l + g.bx, t + g.by, l + g.bx + w, t + g.by + h);
+                if (on > COVER) continue;                                       // the badge may lie on a picture's edge,
+                if (n && pics.share(l + g.nx, t + g.ny, l + g.nx + n.w, t + g.ny + n.h) > SAY_COVER) continue;   // its note may not
+                var score = Math.abs(cy - aim) / band + (on > 0.08 ? -0.25 : near.any(l, t, l + g.fw, t + g.fh) ? 0 : 0.5);
+                kept.forEach(function (o) { var d = Math.sqrt((o.x - cx) * (o.x - cx) + (o.y - cy) * (o.y - cy)); if (d < reach) score += 1.5 * (1 - d / reach); });
+                if (!spot || score < spot.score) spot = { l: l, t: t, fw: g.fw, fh: g.fh, w: w, h: h, bx: g.bx, by: g.by, score: score };
+              }
             }
-          }
+            return !!spot;
+          });
           return !!spot;
         });
         s.node.hidden = !spot;
         if (!spot) return;
-        put(s, s === noted ? spot.l : spot.l + (spot.fw - spot.w) / 2, spot.t + (spot.fh - spot.h) / 2);
+        put(s, spot.l + spot.bx, spot.t + spot.by);
         hard.mark({ l: spot.l, t: spot.t, r: spot.l + spot.fw, b: spot.t + spot.fh }, 8);
         rects.push({ s: s, l: spot.l, t: spot.t, r: spot.l + spot.fw, b: spot.t + spot.fh });
         kept.push({ x: spot.l + spot.fw / 2, y: spot.t + spot.fh / 2 });
@@ -828,9 +842,10 @@
         });
         return found;
       }
-      var on = null, fit = null;                         // the highest one it can be written beside
-      (noted ? [noted] : rects.slice().sort(function (a, b) { return a.t - b.t; }).map(function (q) { return q.s; }))
-        .some(function (s) { return !s.node.hidden && (fit = fits(s)) ? !!(on = s) : false; });
+      var here = all.filter(function (s) { return !s.node.hidden; });   // the first badge, or, at the last, the highest
+      var on = null, fit = null;
+      (noted ? [noted] : any ? here.slice().sort(function (a, b) { return a.top - b.top; }) : here.slice(0, 1))
+        .some(function (s) { return (fit = fits(s)) ? !!(on = s) : false; });
       if (!on) {
         note.hidden = true;
         note.classList.remove("is-set");
