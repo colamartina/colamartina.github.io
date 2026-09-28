@@ -648,6 +648,7 @@
     // the most of a sticker, of the note beside one and of that note's own words, on pictures
     var COVER = 0.45, NOTE_COVER = 0.25, SAY_COVER = 0.02;
     var NOTE_GAP = 12, NOTE_REACH = 56;   // px to the sticker, and how far from it the arrow may start and still reach
+    var SLIDE = [0, -34, 34, -68, 68];    // px it may sit along the sticker's side, when level with it has no room
     var SIDES = ["right", "left", "below", "above"];                  // where its note may be written
     var TILT = [-7, 5, -3, 8, -5, 3];
     var WORDS = ".crumbs, .study__kicker, .study__title, .study__text, .info, .results, .study__label, .pager";
@@ -718,6 +719,17 @@
       };
     }
 
+    // the words hold a box as wide as their longest line, never the whole width they were allowed to wrap in: the
+    // arrow is drawn against her writing, not against the empty room beside it
+    function snug() {
+      var q = note.querySelector(".study__hint-words");
+      q.style.width = "";
+      var r = document.createRange(), wide = 0;
+      r.selectNodeContents(q);
+      [].forEach.call(r.getClientRects(), function (c) { wide = Math.max(wide, c.width); });
+      if (wide) q.style.width = Math.ceil(wide) + "px";
+    }
+
     // the note: its own size, with the arrow on the side the sticker is (the words never turn, only the arrow)
     function noteSize(side) {
       note.setAttribute("data-side", side);
@@ -765,7 +777,10 @@
       var from = p.length ? p[0].t : 0, to = p.length > 1 ? p[p.length - 1].t : H;
       var free = all.filter(function (s) { return !s.moved; }), band = (to - from) / Math.max(free.length, 1), kept = [];
       var telling = note && !layer.classList.contains("is-known");
-      if (telling) note.hidden = false;                  // out of sight until it is placed, but measurable
+      if (telling) {
+        note.hidden = false;                             // out of sight until it is placed, but measurable
+        snug();                                          // and no wider than the longest line she wrote
+      }
 
       all.forEach(function (s) {                         // the moved ones stay where they were put
         if (!s.moved || held === s) return;
@@ -782,12 +797,13 @@
         [1, 0.8, 0.64].some(function (k) {
           s.node.style.setProperty("--k", k);
           var w = s.node.offsetWidth, h = s.node.offsetHeight, reach = 3.4 * Math.max(w, h);
-          var n = s === noted ? noteSize("right") : null;   // the one being told keeps room for its note as well
+          // the one being told keeps room for its note as well — beside it, or under it, where the note is a
+          // different shape: its arrow moves under her writing there
+          var n = s === noted ? noteSize("right") : null, v = s === noted ? noteSize("below") : null;
           var g0 = { h: h };
-          // where to look, and where the badge and its note sit in that room: the note beside it, or under it
           var shapes = n ? [
-            { fw: w + NOTE_GAP + n.w, fh: Math.max(h, n.h), bx: 0, by: (Math.max(h, n.h) - h) / 2, nx: w + NOTE_GAP, ny: (Math.max(h, n.h) - n.h) / 2 },
-            { fw: Math.max(w, n.w), fh: h + NOTE_GAP + n.h, bx: (Math.max(w, n.w) - w) / 2, by: 0, nx: (Math.max(w, n.w) - n.w) / 2, ny: h + NOTE_GAP }
+            { fw: w + NOTE_GAP + n.w, fh: Math.max(h, n.h), bx: 0, by: (Math.max(h, n.h) - h) / 2, nx: w + NOTE_GAP, ny: (Math.max(h, n.h) - n.h) / 2, n: n },
+            { fw: Math.max(w, v.w), fh: h + NOTE_GAP + v.h, bx: (Math.max(w, v.w) - w) / 2, by: 0, nx: (Math.max(w, v.w) - v.w) / 2, ny: h + NOTE_GAP, n: v }
           ] : [{ fw: w, fh: h, bx: 0, by: 0 }];
           var last = n ? Math.min(H - EDGE, from + 1.2 * band + g0.h) : H - EDGE;   // the told one keeps to its own share
           shapes.some(function (g) {
@@ -798,7 +814,7 @@
                 if (pics.any(cx - 4, cy - 4, cx + 4, cy + 4)) continue;
                 var on = pics.share(l + g.bx, t + g.by, l + g.bx + w, t + g.by + h);
                 if (on > COVER) continue;                                       // the badge may lie on a picture's edge,
-                if (n && pics.share(l + g.nx, t + g.ny, l + g.nx + n.w, t + g.ny + n.h) > SAY_COVER) continue;   // its note may not
+                if (g.n && pics.share(l + g.nx, t + g.ny, l + g.nx + g.n.w, t + g.ny + g.n.h) > SAY_COVER) continue;   // its note may not
                 var score = Math.abs(cy - aim) / band + (on > 0.08 ? -0.25 : near.any(l, t, l + g.fw, t + g.fh) ? 0 : 0.5);
                 kept.forEach(function (o) { var d = Math.sqrt((o.x - cx) * (o.x - cx) + (o.y - cy) * (o.y - cy)); if (d < reach) score += 1.5 * (1 - d / reach); });
                 if (!spot || score < spot.score) spot = { l: l, t: t, fw: g.fw, fh: g.fh, w: w, h: h, bx: g.bx, by: g.by, score: score };
@@ -823,10 +839,11 @@
         var w = s.node.offsetWidth, h = s.node.offsetHeight, found = null;
         SIDES.some(function (side) {
           var n = noteSize(side), across = side === "right" || side === "left";
+          return SLIDE.some(function (by) {                 // it may sit a little along the sticker, not only level
           var l = side === "right" ? s.left + w + NOTE_GAP : side === "left" ? s.left - NOTE_GAP - n.w : s.left + w / 2 - n.ax;
           var t = across ? s.top + h / 2 - n.ay : side === "below" ? s.top + h + NOTE_GAP : s.top - NOTE_GAP - n.h;
-          if (across) t = within(t, EDGE, H - EDGE - n.h);  // it slides along the sticker to stay on the page,
-          else l = within(l, EDGE, W - EDGE - n.w);         // the arrow still drawn at it
+          if (across) t = within(t + by, EDGE, H - EDGE - n.h);  // and it slides to stay on the page,
+          else l = within(l + by, EDGE, W - EDGE - n.w);         // the arrow still drawn at it
           var r = l + n.w, b = t + n.h;
           if (l < EDGE || t < EDGE || r > W - EDGE || b > H - EDGE) return false;
           if (words.any(l - 6, t - 6, r + 6, b + 6)) return false;
@@ -839,6 +856,7 @@
           if (Math.sqrt(gx * gx + gy * gy) > NOTE_REACH) return false;
           found = { side: side, l: l, t: t, ax: n.ax, ay: n.ay };
           return true;
+          });
         });
         return found;
       }

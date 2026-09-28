@@ -23,7 +23,7 @@
    closes, what lies past its moving edge is cut off */
 .c-grid.is-folding { overflow: hidden; overflow: clip; }
 
-@media (max-width: 640px) {
+@media (max-width: 900px) {
   .c-grid--three { grid-template-columns: minmax(0, 1fr); row-gap: 2.4rem; }   /* one under the other, whole */
   .c-more__wrap .c-more { padding: 1.05em 1.9em; }                              /* a fingertip's size */
 }
@@ -181,14 +181,18 @@
   transition: opacity 0.6s var(--ease);
 }
 .study__hint.is-set { opacity: 1; visibility: visible; }
-/* the note keeps its shape wherever it is; the arrow moves to the end nearest the sticker and turns at it */
-.study__hint[data-side="right"], .study__hint[data-side="below"], .study__hint[data-side="above"] { flex-direction: row-reverse; }
+/* the arrow sits at the edge of the note nearest the sticker and turns at it. Beside the sticker it goes at one end
+   of the line; over or under it, it goes under her writing rather than out to the side, where it would read as if it
+   came out of whatever the note lies next to */
+.study__hint[data-side="right"] { flex-direction: row-reverse; }
+.study__hint[data-side="above"] { flex-direction: column; align-items: center; gap: 0.1em; }
+.study__hint[data-side="below"] { flex-direction: column-reverse; align-items: center; gap: 0.1em; }
 .study__hint-words { max-width: 13.5em; rotate: -3deg; }   /* her hand runs a little uphill */
 @media (max-width: 900px) {
   .study__hint-words { max-width: 8.6em; }   /* three short lines: a narrow note finds room a wide one cannot */
 }
 .study__hint-arrow { position: relative; flex: none; width: 3.1em; height: 2em; margin-top: 0.7em; }
-.study__hint[data-side="below"] .study__hint-arrow, .study__hint[data-side="above"] .study__hint-arrow { width: 2em; height: 2.6em; margin: 0; }
+.study__hint[data-side="below"] .study__hint-arrow, .study__hint[data-side="above"] .study__hint-arrow { width: 2.6em; height: 2.1em; margin: 0; }
 .study__hint-arrow svg {
   position: absolute;
   left: 50%;
@@ -262,6 +266,6 @@
   .study__about { grid-template-columns: minmax(0, 1fr); align-items: start; }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 900px) {
   .study .results { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
