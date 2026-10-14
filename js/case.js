@@ -230,15 +230,40 @@
     if (e.key === "ArrowRight") show(current + 1);
     if (e.key === "Escape") { e.preventDefault(); dialog.close(); }
   });
-  // swipe on touch screens; a tap on the empty area around the media closes the viewer
-  var sx = null, swiped = false;
-  stage.addEventListener("pointerdown", function (e) { sx = e.clientX; swiped = false; });
-  stage.addEventListener("pointerup", function (e) {
+  // swipe on touch screens: the picture follows the finger the whole way (after the first 10px, so a tap stays a
+  // tap), then goes on to the next one or springs back where it was. A tap on the empty area around it closes the viewer
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var sx = null, dx = 0, sliding = false, swiped = false;
+  function slide(m, x, ms) {
+    m.style.transition = ms ? "transform " + ms + "ms cubic-bezier(0.16, 1, 0.3, 1), opacity " + ms + "ms" : "none";
+    m.style.transform = x ? "translateX(" + x + "px)" : "";
+    m.style.opacity = x ? String(1 - Math.min(Math.abs(x) / stage.clientWidth, 0.5)) : "";
+  }
+  stage.addEventListener("pointerdown", function (e) { sx = e.clientX; dx = 0; sliding = false; swiped = false; });
+  stage.addEventListener("pointermove", function (e) {
     if (sx === null) return;
-    var dx = e.clientX - sx;
-    sx = null;
-    if (Math.abs(dx) > 60) { swiped = true; show(current + (dx < 0 ? 1 : -1)); }
+    dx = e.clientX - sx;
+    var m = stage.firstElementChild;
+    if (!sliding && Math.abs(dx) < 10) return;
+    if (!sliding) { sliding = true; try { stage.setPointerCapture(e.pointerId); } catch (err) {} }
+    if (m) slide(m, dx, 0);
   });
+  function release(e) {
+    if (sx === null) return;
+    sx = null;
+    var m = stage.firstElementChild;
+    if (!sliding) return;
+    sliding = false;
+    if (e.type === "pointerup" && Math.abs(dx) > 60) {
+      swiped = true;
+      show(current + (dx < 0 ? 1 : -1));
+      // the next one comes in from the side the finger was going towards
+      var n = stage.firstElementChild;
+      if (n && !reduce) { slide(n, dx < 0 ? 60 : -60, 0); n.getBoundingClientRect(); slide(n, 0, 350); }
+    } else if (m) slide(m, 0, reduce ? 0 : 300);
+  }
+  stage.addEventListener("pointerup", release);
+  stage.addEventListener("pointercancel", release);
   dialog.addEventListener("click", function (e) {
     if (swiped) { swiped = false; return; }
     if (e.target === dialog || e.target === stage) dialog.close();

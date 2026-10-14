@@ -243,7 +243,11 @@ img, video { max-width: 100%; }
   }
   .btn:hover .btn__ic { transform: translate(3px, -3px); }
 }
-.btn:active { transform: translateY(0); background: var(--electric-ink); border-color: var(--electric-ink); color: var(--cream); }
+/* the press shows the instant the finger or the button goes down, not on release */
+.btn:active { transform: translateY(0) scale(0.97); background: var(--electric-ink); border-color: var(--electric-ink); color: var(--cream); transition-duration: 0.1s; }
+a, button { -webkit-tap-highlight-color: transparent; }   /* the site draws its own press, below */
+.nav__brand:active, .nav__links a:active, .menu a:active, .hero__scroll:active, .contact__mail:active,
+.contact__link:active, .foot__top:active, .pager a:active, .crumbs a:active { opacity: 0.6; transition: opacity 0.1s; }
 
 /* pills — channels, categories */
 .pill {
@@ -488,7 +492,7 @@ img, video { max-width: 100%; }
   font-size: clamp(3rem, 14vw, 6rem);
   line-height: 0.95;
   text-transform: uppercase;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.005em;
   transition: color var(--dur-fast);
 }
 @media (hover: hover) {
@@ -586,7 +590,7 @@ img, video { max-width: 100%; }
   letter-spacing: 0.04em;
   text-transform: uppercase;
   box-shadow: 0 1px 0 rgba(47, 18, 21, 0.1), 0 12px 18px -10px rgba(35, 10, 13, 0.55);
-  animation: stickerPop 0.7s var(--ease) both, cvSway 3.4s ease-in-out infinite;
+  animation: stickerPop 0.7s var(--ease) both, cvSway 3.4s ease-in-out 3 forwards;   /* a few sways, then still */
   animation-delay: calc(0.6s + var(--i) * 0.12s), calc(var(--i) * -0.7s);
   transition: transform var(--dur) var(--ease);
 }
@@ -635,6 +639,7 @@ img, video { max-width: 100%; }
 }
 .hero.is-trail .hero__hint { display: inline-flex; }
 .hero.is-trail.hint-gone .hero__hint { opacity: 0; }
+.hero.hint-gone .hero__hint span { animation-play-state: paused; }
 .hero__hint span { display: inline-block; color: var(--acid); animation: spin 6s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .hero__scroll {
@@ -654,7 +659,7 @@ img, video { max-width: 100%; }
 @media (hover: hover) {
   .hero__scroll:hover { background: var(--acid); border-color: var(--acid); color: var(--burgundy); opacity: 1; }
 }
-.hero__scroll svg { animation: bob 1.8s var(--ease) infinite; }
+.hero__scroll svg { animation: bob 1.8s var(--ease) 4; }
 @keyframes bob { 0%,100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
 
 /* ---------- hero image trail (cursor) ---------- */
@@ -688,7 +693,9 @@ img, video { max-width: 100%; }
   z-index: 1;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  transition: scale 0.45s var(--ease);
 }
+.hero > .hero__stack:active { scale: 0.97; transition-duration: 0.1s; }
 .hero__stack img {
   position: absolute;
   inset: 0;
@@ -730,7 +737,7 @@ img, video { max-width: 100%; }
   font-size: clamp(3rem, min(19vw, 27vh), 17rem);
   line-height: 0.8;
   text-transform: uppercase;
-  letter-spacing: 0.005em;
+  letter-spacing: -0.01em;
 }
 .intro__word { display: block; overflow: hidden; padding: 0.04em 0.02em 0; }
 .intro__word--stroke {
@@ -993,7 +1000,9 @@ img, video { max-width: 100%; }
   aspect-ratio: 3 / 4;
   overflow: hidden;
   background: var(--cream-2);
+  transition: transform var(--dur) var(--ease);
 }
+.c-card__link:active .c-card__media { transform: scale(0.98); transition-duration: 0.1s; }   /* pressed in, at once */
 .c-card__media img {
   display: block;
   width: 100%;
@@ -1177,7 +1186,7 @@ img, video { max-width: 100%; }
   text-transform: none;
   color: var(--orange);          /* the × is an orange stamp between the two names */
 }
-.collab__partner { font-size: clamp(2.6rem, 6vw, 5rem); letter-spacing: 0.01em; }
+.collab__partner { font-size: clamp(2.6rem, 6vw, 5rem); letter-spacing: -0.005em; }
 .collab__kicker {
   margin-top: 0.4rem;
   font-family: var(--font-hand);
@@ -1384,6 +1393,12 @@ img, video { max-width: 100%; }
   transition: top 0.5s var(--ease);   /* in step with the bar sliding in and out */
 }
 .case__tabs::-webkit-scrollbar { display: none; }
+@media (prefers-reduced-transparency: reduce) {
+  .case__tabs { background: var(--cream); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+@media (prefers-contrast: more) {
+  .case__tabs { background: var(--cream); -webkit-backdrop-filter: none; backdrop-filter: none; border-bottom-color: var(--ink); }
+}
 /* while the bar is shown (scrolling back up) the tabs stay just under it, not behind it */
 .nav:not(.is-hidden) ~ .case-page .case__tabs { top: var(--nav-h, 0px); }
 .tab {
@@ -1865,7 +1880,7 @@ img, video { max-width: 100%; }
   border-radius: var(--r-xs);
   font-size: 0.68em;
   box-shadow: 0 1px 0 rgba(47, 18, 21, 0.08), 0 6px 10px -7px rgba(47, 18, 21, 0.45);
-  animation: cvSway 3.4s ease-in-out infinite;
+  animation: cvSway 3.4s ease-in-out 3 forwards;   /* a few sways, then still: nothing on the page keeps moving */
   animation-delay: calc(var(--i, 0) * -0.7s);
   transition: transform var(--dur) var(--ease);
 }
@@ -2036,7 +2051,7 @@ img, video { max-width: 100%; }
   font-family: var(--font-display);
   font-size: clamp(1.8rem, 5vw, 4rem);
   text-transform: none;
-  letter-spacing: 0.01em;
+  letter-spacing: 0;
   position: relative;
   display: inline-block;
   transition: color var(--dur-fast);
@@ -2206,6 +2221,10 @@ body {
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
   }
+  /* no frosted glass for who asked for less transparency or more contrast: the ground, solid */
+  @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+    .nav { background: var(--nav-ground); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  }
 }
 
 @media (max-width: 1100px) {
@@ -2256,13 +2275,19 @@ body {
 /* =========================================================
    REDUCED MOTION
    ========================================================= */
+/* less motion is not no feedback: nothing slides, turns or grows, but what changes colour or
+   comes and goes still fades, briefly */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
+    transition-property: opacity, color, background-color, border-color, box-shadow, filter, visibility !important;
+    transition-duration: 0.2s !important;
+    transition-delay: 0s !important;
   }
+  .menu { transform: none; opacity: 0; }   /* the menu fades in and out instead of dropping */
+  .menu.is-open { opacity: 1; }
   [data-reveal] { opacity: 1; transform: none; }
   .trail { display: none; }
   .hero__hello, .hero__name, .hero__welcome, .hero__sticker { animation: none; }

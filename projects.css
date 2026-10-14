@@ -76,7 +76,7 @@
   font-weight: 400;
   font-size: clamp(3.4rem, 9vw, 8.5rem);
   line-height: 0.84;
-  letter-spacing: 0.005em;
+  letter-spacing: -0.01em;
   text-transform: uppercase;
 }
 .study__text {
@@ -154,12 +154,12 @@
   transform: rotate(var(--tilt, 0deg));
   filter: drop-shadow(0 2px 2px rgba(47, 18, 21, 0.12));
   transition: transform var(--dur) var(--ease), filter var(--dur) var(--ease);
-  animation: cvSway var(--sway, 3.4s) ease-in-out var(--sway-delay, 0s) infinite;
+  animation: cvSway var(--sway, 3.4s) ease-in-out var(--sway-delay, 0s) 3 forwards;   /* a few sways, then still */
 }
 @media (hover: hover) {
   .study__sticker:hover img { transform: rotate(var(--tilt, 0deg)) scale(1.05); filter: drop-shadow(0 6px 8px rgba(47, 18, 21, 0.16)); animation-play-state: paused; }
 }
-.study__sticker.is-held img { transform: rotate(calc(var(--tilt, 0deg) + 3deg)) scale(1.08); filter: drop-shadow(0 14px 16px rgba(47, 18, 21, 0.22)); animation-play-state: paused; }
+.study__sticker.is-held img { transition-duration: 0.15s; transform: rotate(calc(var(--tilt, 0deg) + 3deg)) scale(1.08); filter: drop-shadow(0 14px 16px rgba(47, 18, 21, 0.22)); animation-play-state: paused; }
 .is-grabbing, .is-grabbing * { cursor: grabbing !important; user-select: none !important; -webkit-user-select: none !important; }
 /* beside the first one, once: a note in her hand with a little arrow drawn at the sticker; gone when one is picked up.
    It hangs on the sticker it points at (js/projects.js sets the side and the offsets), so it goes wherever that goes */

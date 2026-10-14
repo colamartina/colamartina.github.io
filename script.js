@@ -246,7 +246,7 @@
     // on every pass.
     var SIZES = [1, 0.8, 1.25, 0.9, 1.15];
     // an editorial scatter rather than a line glued to the pointer: each photo lands
-    // a little apart from it, a beat later, stays a moment, then fades. At most MAX
+    // a little apart from it, almost at once, stays a moment, then fades. At most MAX
     // at once; FADE matches .trail__img.is-out in styles.css
     var HOLD = 1300, FADE = 700, MAX = 6;
 
@@ -285,7 +285,7 @@
         setTimeout(function () { leave(img); }, HOLD);
         var shown = trail.querySelectorAll(".trail__img:not(.is-out)");
         for (var k = 0; k < shown.length - MAX; k++) leave(shown[k]);   // the oldest make room
-      }, 80 + Math.random() * 120);
+      }, Math.random() * 40);
     }
 
     function leave(img) {
