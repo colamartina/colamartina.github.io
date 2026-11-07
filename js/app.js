@@ -162,6 +162,48 @@
     name.classList.add("is-split");
   }
 
+  /* ---------- Contact: copy the address, and say so ---------- */
+  var copy = document.querySelector(".contact__copy");
+  if (copy) {
+    var label = copy.querySelector(".contact__copy-label");
+    var label0 = label.textContent;
+    var live = null, timer = 0;
+    copy.addEventListener("click", function () {
+      var mail = copy.getAttribute("data-copy");
+      if (!live) {                                         // what a screen reader is told
+        live = document.createElement("span");
+        live.className = "visually-hidden";
+        live.setAttribute("aria-live", "polite");
+        copy.parentNode.insertBefore(live, copy.nextSibling);
+      }
+      function said(ok) {
+        copy.classList.toggle("is-done", ok);
+        label.textContent = ok ? "Email copied" : mail;     // if the phone refuses, the address shows to copy by hand
+        live.textContent = ok ? "Email copied" : "";
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+          copy.classList.remove("is-done");
+          label.textContent = label0;
+          live.textContent = "";
+        }, 2400);
+      }
+      function byHand() {
+        var t = document.createElement("textarea");
+        t.value = mail;
+        t.setAttribute("readonly", "");
+        t.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+        document.body.appendChild(t);
+        t.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        t.remove();
+        said(ok);
+      }
+      if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(mail).then(function () { said(true); }, byHand);
+      else byHand();
+    });
+  }
+
   if (on()) { split(); start(); }
   else phone.addEventListener("change", function () { if (phone.matches) split(); });
   pageTransitions();
