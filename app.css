@@ -379,6 +379,51 @@ html.is-app .contact__loc {
 html.is-app .foot { margin-top: 2.25rem; justify-content: center; text-align: center; }
 
 /* =========================================================
+   A PROJECT PAGE — the same bar (Works lit), a back button at the top,
+   no contact block at the end (Contact has its tab)
+   ========================================================= */
+html.is-app .project-page > .contact { display: none; }
+html.is-app .project { padding-top: calc(var(--app-top) + 4.5rem); padding-bottom: var(--app-room); }
+html.is-app .app-back {
+  position: fixed;
+  z-index: 400;
+  top: calc(var(--app-top) + 0.75rem);
+  left: var(--pad);
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0 1rem 0 0.55rem;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--print) 74%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  backdrop-filter: blur(18px) saturate(1.5);
+  border: 1px solid color-mix(in srgb, var(--burgundy) 10%, transparent);
+  box-shadow: 0 10px 24px -12px rgba(35, 10, 13, 0.5);
+  color: var(--burgundy);
+  font-size: 0.9rem;
+  font-weight: 600;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease;
+  view-transition-name: back;
+}
+html.is-app .app-back:active { transform: scale(0.94); }
+html.is-app .app-back:focus-visible { outline: 2px solid var(--electric-ink); outline-offset: 2px; }
+html.is-app .app-back .app-ic { width: 22px; height: 22px; }
+
+/* from a card to its page and back: the page slides in, the bar stays where it is
+   (browsers that have cross-page view transitions; others simply load the page) */
+@media (max-width: 768px), (hover: none) and (pointer: coarse) and (max-height: 500px) {
+  @view-transition { navigation: auto; }
+}
+::view-transition-old(root) { animation: 0.2s ease both appPageOut; }
+::view-transition-new(root) { animation: 0.34s var(--ease) both appPageIn; }
+html:active-view-transition-type(back)::view-transition-new(root) { animation-name: appPageBack; }
+@keyframes appPageOut { to { opacity: 0; } }
+@keyframes appPageIn { from { opacity: 0; transform: translateX(28px); } }
+@keyframes appPageBack { from { opacity: 0; transform: translateX(-28px); } }
+
+/* =========================================================
    A PHONE ON ITS SIDE — four cards in one row, a lower title
    ========================================================= */
 @media (orientation: landscape) {
@@ -409,4 +454,5 @@ html.is-app .foot { margin-top: 2.25rem; justify-content: center; text-align: ce
   html.is-app .hero__ch { animation: none; }
   .tabbar__pill { transition: none; }
   .table__img.is-drop, .table__img.is-tap { animation: none; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }
