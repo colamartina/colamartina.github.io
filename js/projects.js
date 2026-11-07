@@ -9,8 +9,8 @@
    the short text, then a folder for each kind of work the project holds, as
    many as it has (paid media, social media, UGC, e-commerce… behind the scenes
    last); the previous and the next project at the bottom. The group sets the
-   look (a project on cream paper, an event on the burgundy stage, its first
-   photo and video beside the text); the files set what the page holds: every
+   look (cream paper for both; an event has its first photo and video
+   beside the text); the files set what the page holds: every
    one of them is on it, none is left out to make pages alike.
    What is shown: data/selection.js. The files, covers and texts: work/projects.js
    and data/*.js, read the same way work/work.js reads them.
@@ -935,14 +935,6 @@
     }
     var g = GROUPS[x.key];
     document.title = x.title + " — " + x.brand + " · Martina Cola";
-
-    // an event is on the burgundy stage, like Events on the home page; a project on cream paper
-    if (x.key === "events") {
-      var main = root.closest("main"), bar = document.querySelector(".nav"), tint = document.querySelector('meta[name="theme-color"]');
-      if (main) { main.classList.add("is-stage"); main.setAttribute("data-navtheme", "light"); }
-      if (bar) bar.setAttribute("data-theme", "light");
-      if (tint) tint.setAttribute("content", "#451d20");
-    }
 
     // the crumbs: its group (Projects or Events) / the project
     var crumbs = el("nav.crumbs", { "aria-label": "Breadcrumb", "data-reveal": "" }, [

@@ -5,7 +5,7 @@
    "See more". A card opens the project's page, project.html: told like a
    project page of work/ — the pictures for the vibe, the title and the short
    text, then a folder for each kind of work — in the site's type and inks:
-   cream paper for a project, the burgundy stage for an event. Every file
+   cream paper for projects and events alike. Every file
    keeps its own shape, side by side in rows of one height.
    ========================================================= */
 
@@ -13,11 +13,6 @@
 .c-grid--three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .c-grid--three .c-card__t { font-size: clamp(1.3rem, 2.1vw, 2rem); }
 .c-grid--three .c-card__k { font-size: clamp(0.72rem, 0.85vw, 0.84rem); }
-/* Events: the same cards on the burgundy stage, under ( Events ) set like ( Projects ) */
-#events .eyebrow { opacity: 1; color: var(--voice); }
-.sec--stage .c-card__media { background: var(--burgundy-deep); }
-.sec--stage .c-card__y, .sec--stage .c-card__m { color: var(--cream-65); }
-.sec--stage .c-card__k { color: var(--electric); }
 
 /* under the cards, the site's button: "See more" / "See less" (js/projects.js). While the grid opens or
    closes, what lies past its moving edge is cut off */
@@ -28,21 +23,12 @@
   .c-more__wrap .c-more { padding: 1.05em 1.9em; }                              /* a fingertip's size */
 }
 
-/* ---------- the project page: cream for a project, the stage for an event ---------- */
+/* ---------- the project page: cream paper, for a project and an event alike ---------- */
 .project-page { background: var(--cream); color: var(--ink); --voice: var(--electric-ink); --focus: var(--electric-ink); }
-.project-page.is-stage { background: var(--burgundy); color: var(--cream); --voice: var(--electric); --focus: var(--electric); }
 .project {
   max-width: var(--maxw);
   margin: 0 auto;
   padding: clamp(6.5rem, 14vh, 9rem) var(--pad) var(--section-y);
-}
-.is-stage .crumbs { color: var(--cream-65); }
-.is-stage .crumbs [aria-current] { color: var(--cream); }
-.is-stage .pager { border-top-color: var(--cream); }
-.is-stage .pager__label { color: var(--cream-65); }
-.is-stage .pager__all { text-decoration-color: var(--electric); }
-@media (hover: hover) {
-  .is-stage .pager a:hover .pager__title { color: var(--electric); }
 }
 
 /* ---------- the project ---------- */
@@ -50,7 +36,6 @@
 .study__media { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gap, 14px); }
 .study__row { display: flex; gap: var(--gap, 14px); max-width: 100%; }
 .study__fig { position: relative; flex: none; margin: 0; overflow: hidden; background: var(--cream-2); }
-.is-stage .study__fig { background: var(--burgundy-deep); }
 .study__fig img, .study__fig video { display: block; width: 100%; height: 100%; object-fit: cover; }
 .study__vibe { margin-top: clamp(1.4rem, 3vw, 2.4rem); }
 
@@ -86,10 +71,6 @@
   line-height: 1.5;
   color: var(--ink-2);
 }
-.is-stage .study__text { color: var(--cream-90); }
-.is-stage .info { border-top-color: var(--cream); }
-.is-stage .info > div { border-bottom-color: var(--line-light); }
-.is-stage .info dt { color: var(--cream-65); }
 .info__line { display: block; }
 .info__line + .info__line { margin-top: 0.3em; }
 /* the project's accent, as on its case page: yellow as a highlighter, orange as ink */
@@ -98,8 +79,6 @@
   color: var(--ink);
   background: linear-gradient(transparent 52%, var(--acid) 52%, var(--acid) 92%, transparent 92%);
 }
-/* on the stage the ink would sink into the burgundy above the stroke: the highlighter takes the whole line */
-.is-stage .study[data-accent="yellow"] .study__kicker { background: linear-gradient(transparent 6%, var(--acid) 6%, var(--acid) 96%, transparent 96%); }
 .study[data-accent="orange"] .study__kicker,
 .study[data-accent="orange"] .result__value { color: var(--orange); }
 .study .results { grid-column: 1 / -1; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: var(--s-3); }
@@ -123,8 +102,6 @@
   color: var(--voice);
 }
 .study__note { font-family: var(--font-mono); font-weight: 400; letter-spacing: 0.02em; text-transform: none; color: var(--ink-3); }
-.is-stage .study__label { border-top-color: var(--line-light); }
-.is-stage .study__note { color: var(--cream-65); }
 
 /* the stickers: a project's badges, loose around it, on no word, on a picture's edge at most (js/projects.js, stickers()).
    Their layer is the whole page (main), not the project's column; while one is in hand it rises over the bar. Each
@@ -208,7 +185,6 @@
   stroke-linejoin: round;
   transform: rotate(var(--aim, 0deg));   /* js/projects.js turns it at the sticker it belongs to */
 }
-.is-stage .study__hint { color: var(--cream); }   /* on the burgundy stage her pen is cream, as the rest of it is */
 .study__stickers.is-known .study__hint { opacity: 0; }
 @media (prefers-reduced-motion: reduce) {
   .study__sticker img { animation: none; transition: none; }
@@ -230,7 +206,6 @@
   line-height: 1.3;
 }
 .study__quote figcaption { margin-top: 0.6rem; font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-3); }
-.is-stage .study__quote figcaption { color: var(--cream-65); }
 
 /* two small folders on one line on a wide screen (js/projects.js decides when they fit) */
 .study__pair.is-beside { display: flex; align-items: flex-start; gap: var(--between, 56px); margin-top: clamp(3rem, 6.5vw, 5rem); }

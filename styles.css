@@ -10,7 +10,7 @@
    ========================================================= */
 :root {
   /* colour — cream is the white space, burgundy is the stage, electric blue is the voice */
-  --burgundy: #451d20;          /* the stage: intro, hero, events, contact, menu; the ink on cream */
+  --burgundy: #451d20;          /* the stage: intro, hero, contact, menu; the ink on cream */
   --burgundy-deep: #2f1215;     /* wells on the stage: video frames, the intro's photo window */
   --electric: #387cf8;          /* the poster blue: type and graphics on burgundy, fills */
   --electric-ink: #2a62e0;      /* the same blue tuned for cream: type, links, outlines */

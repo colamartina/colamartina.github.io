@@ -8,8 +8,8 @@
    projects, three events), the others open under them with "See more". A card
    opens the project's own page, project.html?p=<slug>, told like a project
    page of work/: the pictures for the vibe, the title and the short text, then
-   a folder for each kind of work it holds. Its group sets the look (projects
-   on cream paper, events on the burgundy stage).
+   a folder for each kind of work it holds. Projects and events are both on
+   cream paper.
 
    The files, covers and texts come from work/projects.js (the same picks as
    work/) and data/*.js; here only what the home page and the project pages
@@ -186,13 +186,12 @@ window.PORTFOLIO.selection = {
       card: { src: "content/events/fuorisalone-hotpoint/card-pizza-workshop", widths: [640, 1280, 1920], ratio: 0.8 }
     },
     {
-      // the Manis & Coffee pop-up in Barcelona (its text on work/), from data/collabs.js. On the stage the white "good
-      // coffee good nails" reads, so it is one of its stickers here (work/ hides it: its page is white); the note of
-      // the newsletter in data/collabs.js is a working note
+      // the Manis & Coffee pop-up in Barcelona (its text on work/), from data/collabs.js. The white "good coffee good
+      // nails" stays hidden, as on work/: events are on cream now and it would not read; the note of the newsletter
+      // in data/collabs.js is a working note
       slug: "goodnews-2023",
       place: "Barcelona",
       role: ["Project management", "Event management", "Support on art direction"],
-      show: ["good-coffee-good-nails.webp"],
       folders: [
         { id: "popup" },
         { id: "newsletter", note: null }
