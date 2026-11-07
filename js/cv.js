@@ -102,9 +102,12 @@
     photo
   ]));
 
+  // on a phone (app.css) the buttons come first, with one more that opens the PDF to read
   var cta = el("div.cv-cta__wrap", {}, [
     el("a.btn.btn--light.cv-cta", { href: cv.pdf, download: "Martina-Cola-CV.pdf" },
-      ["Download full CV ", el("span.btn__ic", { "aria-hidden": "true", text: "↓" })])
+      ["Download full CV ", el("span.btn__ic", { "aria-hidden": "true", text: "↓" })]),
+    el("a.btn.btn--light.cv-open", { href: cv.pdf, target: "_blank", rel: "noopener" },
+      ["Open PDF ", el("span.btn__ic", { "aria-hidden": "true", text: "↗" })])
   ]);
 
   var devNotes = M.isLocal && cv.todo && cv.todo.length

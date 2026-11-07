@@ -292,6 +292,26 @@ html.is-app .works {
 .w-card__link:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
 
 /* =========================================================
+   CV — the sheet as on a phone today, the PDF's buttons first
+   ========================================================= */
+html.is-app .sec--cv { min-height: 100svh; padding: calc(var(--app-top) + 1.75rem) 0 var(--app-room); }
+html.is-app .sec--cv .sec__body { display: flex; flex-direction: column; margin-top: 1.4rem; }
+html.is-app .cv-cta__wrap {
+  order: -1;                                /* above the sheet */
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0 0 4.4rem;                       /* the clip and the photo rise above the sheet */
+}
+html.is-app .cv-cta__wrap .btn { min-height: 48px; }
+html.is-app .cv-open {
+  display: inline-flex;
+  background: transparent;
+  color: var(--cream);
+  border-color: color-mix(in srgb, var(--cream) 70%, transparent);
+}
+html.is-app .cv-open:active { background: color-mix(in srgb, var(--cream) 16%, transparent); }
+
+/* =========================================================
    A PHONE ON ITS SIDE — four cards in one row, a lower title
    ========================================================= */
 @media (orientation: landscape) {
