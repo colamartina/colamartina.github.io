@@ -9,7 +9,7 @@
    ========================================================= */
 
 /* the app's own pieces, hidden everywhere else */
-.tabbar, .works, .contact__copy, .contact__loc, .cv-open, .app-back { display: none; }
+.tabbar, .works, .contact__copy, .cv-open, .app-back { display: none; }
 
 html.is-app {
   --app-top: env(safe-area-inset-top, 0px);
@@ -312,8 +312,7 @@ html.is-app .cv-open {
 html.is-app .cv-open:active { background: color-mix(in srgb, var(--cream) 16%, transparent); }
 
 /* =========================================================
-   CONTACT — the title, then big buttons: write, copy the address, LinkedIn;
-   the city under them
+   CONTACT — the title, then big buttons: write, copy the address, LinkedIn
    ========================================================= */
 html.is-app .contact {
   min-height: 100svh;
@@ -367,15 +366,6 @@ html.is-app .contact__link:active { transform: scale(0.97); }
 html.is-app .contact__copy.is-done { background: var(--cream); color: var(--burgundy); border-color: var(--cream); }
 .app-ic { display: none; }
 html.is-app .app-ic { display: block; width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-html.is-app .contact__loc {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45em;
-  margin-top: 0.4rem;
-  font-size: 0.9rem;
-  color: var(--cream-65);
-}
 html.is-app .foot { margin-top: 2.25rem; justify-content: center; text-align: center; }
 
 /* =========================================================
@@ -436,17 +426,16 @@ html:active-view-transition-type(back)::view-transition-new(root) { animation-na
   html.is-app .contact__inner {
     display: grid;
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-    grid-template-rows: auto auto auto auto;
+    grid-template-rows: auto auto auto;
     column-gap: 2.5rem;
     align-content: center;
     max-width: 54rem;
   }
   html.is-app .contact__inner > .eyebrow { grid-column: 1; grid-row: 1; align-self: end; }
-  html.is-app .contact__title { grid-column: 1; grid-row: 2 / span 3; align-self: start; font-size: min(5.6vw, 13svh); margin: 0.4rem 0 0; }
+  html.is-app .contact__title { grid-column: 1; grid-row: 2 / span 2; align-self: start; font-size: min(5.6vw, 13svh); margin: 0.4rem 0 0; }
   html.is-app .contact__mail { grid-column: 2; grid-row: 1; }
   html.is-app .contact__copy { grid-column: 2; grid-row: 2; }
   html.is-app .contact__link { grid-column: 2; grid-row: 3; }
-  html.is-app .contact__loc { grid-column: 2; grid-row: 4; }
 }
 
 @media (prefers-reduced-motion: reduce) {
