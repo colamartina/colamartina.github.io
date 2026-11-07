@@ -292,6 +292,28 @@
     fold(section, grid, extra, btn);
   }
 
+  /* ---------- the phone version's Works tab: every project and event in one grid ---------- */
+  // no "See more" there: the ones on show on a desktop come first (projects, then events), then the others in
+  // the same order; each card says whether it is a project or an event, since they are mixed (app.css)
+  function works() {
+    var host = document.querySelector("#works .works__grid");
+    if (!host) return;
+    var p = group("projects"), e = group("events"), sp = GROUPS.projects.shown, se = GROUPS.events.shown;
+    var list = p.slice(0, sp).concat(e.slice(0, se), p.slice(sp), e.slice(se));
+    host.replaceChildren.apply(host, list.map(function (x) {
+      var event = x.key === "events";
+      return el("li.w-card" + (event ? ".w-card--event" : ""), {}, [
+        el("a.w-card__link", { href: href(x) }, [
+          el("div.w-card__media", {}, [
+            cover(x, "(orientation: landscape) 24vw, 46vw", ""),
+            el("span.w-card__tag", { text: event ? "Event" : "Project" })
+          ]),
+          el("span.w-card__t", { text: x.title })
+        ])
+      ]);
+    }));
+  }
+
   /* ---------- home: "See more" / "See less" ---------- */
   // "See more" opens the grid down over the other cards, and they come up as the first ones did (script.js's
   // reveal: from 26px lower, faded in, a little one after the other, as they reach the screen). "See less" fades
@@ -979,5 +1001,5 @@
 
   var root = document.getElementById("project-root");
   if (root) page(root);
-  else { cards("projects"); cards("events"); }
+  else { cards("projects"); cards("events"); works(); }
 })();
