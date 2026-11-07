@@ -304,6 +304,8 @@
     var intro = heroEl && heroEl.querySelector(".hero__intro");
     var fine = window.matchMedia("(pointer: fine)").matches;
     if (!heroEl || !intro || (fine && !reduceMotion)) return;
+    // a phone in the app version has the table instead (js/touch-hero.js)
+    if (document.documentElement.classList.contains("has-table")) return;
 
     var pool = heroPool();
     var stack = document.createElement("div");

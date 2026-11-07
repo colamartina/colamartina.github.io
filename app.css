@@ -153,6 +153,53 @@ html.is-app .hero__welcome { animation-delay: calc(var(--t0) + 0.95s); }
   to   { opacity: 1; transform: none; }
 }
 
+/* the table (js/touch-hero.js): photos fall in and lie around the name, under it */
+.table__img {
+  position: absolute;
+  display: block;
+  width: calc(min(26vw, 21svh) * var(--s, 1));   /* --s: the desktop trail's close sizes */
+  height: auto;
+  margin: 0;
+  transform: translate(-50%, -50%);
+  box-shadow: var(--shadow-float);
+  will-change: transform, opacity;
+}
+.table__img.is-drop { animation: tableDrop 0.8s cubic-bezier(0.2, 0.8, 0.25, 1) both; }
+.table__img.is-tap { animation: tableTap 0.5s cubic-bezier(0.2, 0.8, 0.25, 1) both; }
+.table__img.is-out { animation: tableOut 0.7s ease-in-out forwards; }
+@keyframes tableDrop {
+  0%   { opacity: 0; transform: translate(-50%, -50%) translateY(-16vw) scale(1.16); }
+  45%  { opacity: 1; }
+  100% { opacity: 1; transform: translate(-50%, -50%); }
+}
+@keyframes tableTap {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(1.32); }
+  55%  { opacity: 1; }
+  100% { opacity: 1; transform: translate(-50%, -50%); }
+}
+@keyframes tableOut {
+  from { opacity: 1; transform: translate(-50%, -50%); }
+  to   { opacity: 0; transform: translate(-50%, -50%); }
+}
+html.is-app .hero.is-table { -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
+/* the hint, "Tap ✱", low in the hero, over the bar */
+html.is-app .hero.is-table .hero__hint {
+  display: inline-flex;
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--app-bar) + 1.1rem);
+  translate: -50% 0;
+  padding: 0.55em 1em;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--burgundy) 72%, transparent);   /* it stays readable over a photo */
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  white-space: nowrap;
+}
+html.is-app .hero.is-table.hint-on .hero__hint { opacity: 0.75; }
+html.is-app .hero.is-table.hint-gone .hero__hint { opacity: 0; }
+
 /* About: the words still hold while the photo passes under them, without the long
    empty screen after it */
 html.is-app .about__stage { padding-block: calc(var(--app-top) + 1.75rem) calc(var(--app-bar) + 1rem); }   /* the words end above the bar */
@@ -259,4 +306,5 @@ html.is-app .works {
   html.is-app main.is-entering { animation: none; }
   html.is-app .hero__ch { animation: none; }
   .tabbar__pill { transition: none; }
+  .table__img.is-drop, .table__img.is-tap { animation: none; }
 }
