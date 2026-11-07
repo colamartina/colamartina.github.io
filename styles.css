@@ -886,12 +886,10 @@ a, button { -webkit-tap-highlight-color: transparent; }   /* the site draws its 
   container-type: inline-size;
 }
 .about__photo { width: 31%; margin-left: 50%; }
-.about__photo img {                   /* square, like a print */
+.about__photo img {                   /* a cutout on the page, at its own proportions */
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 3 / 4;
-  object-fit: cover;
 }
 
 /* portrait tablets: a room taller than wide gets a left-aligned column, as on phones
