@@ -593,8 +593,7 @@
         event ? ["Place", x.place] : null,
         ["Year", x.year],
         ["Type", x.type],
-        ["Role", x.s.role || r.p.role],
-        ["Includes", folders.length > 1 ? folders.map(function (f) { return f.label; }).join(" · ") : null]
+        ["Role", x.s.role || r.p.role]
       ].filter(Boolean)),
       x.s.results ? el("div.results", {}, x.s.results.map(function (v) {
         return el("p.result", {}, [el("span.result__value", { text: v.value }), el("span.result__label", { text: v.label })]);

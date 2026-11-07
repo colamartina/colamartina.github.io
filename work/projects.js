@@ -212,8 +212,8 @@
     },
     {
       slug: "pr-brand-presentation",
-      title: "Le Mini Macaron | Brand presentation",
-      text: "A brand presentation inside a cake shop, with polishes on a tiered cake stand, manicure stations and guests getting their nails done.",
+      title: "Le Mini Macaron | Le Sweet Line presentation",
+      text: "Le Sweet Line, presented inside a cake shop: polishes on a tiered cake stand, manicure stations and guests getting their nails done.",
       cover: PHOTOS.presentation,
       videos: ["pr-brand-presentation.mp4"]
     },

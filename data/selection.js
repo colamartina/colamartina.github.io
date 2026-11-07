@@ -212,10 +212,13 @@ window.PORTFOLIO.selection = {
       slug: "tezenis-2026",
       kicker: "Retail promotion",
       place: "Spain",
+      role: ["Project management"],
       card: { src: "content/collabs/tezenis-2026/in-store/in-store-03-bright", widths: [640, 1280, 1920], ratio: 0.75 }
     },
     {
+      // the presentation of Le Sweet Line (she named it on 2026-11-07); the slug and the folder keep the old name
       slug: "pr-brand-presentation",
+      role: ["Event management"],
       card: { src: "content/events/pr-brand-presentation/window-display-bright", widths: [640, 1280, 1920], ratio: 0.75 }
     },
     {
@@ -223,6 +226,7 @@ window.PORTFOLIO.selection = {
       slug: "retail-torino",
       kicker: "Holiday pop-up",
       place: "Turin",
+      role: ["Event management"],
       card: { src: "content/events/retail-torino/mirror-selfie-bright", widths: [640, 1280, 1920], ratio: 0.75 }
     }
   ]

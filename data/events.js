@@ -14,7 +14,7 @@ window.PORTFOLIO.events = [
   {
     slug: "pr-brand-presentation",
     title: "PR Event",
-    kicker: "Brand presentation",
+    kicker: "Le Sweet Line presentation",
     brand: "Le Mini Macaron",
     place: null,
     date: null,
