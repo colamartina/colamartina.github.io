@@ -27,6 +27,8 @@
               the card alone holds, kept off the project page
      place    where it took place (an event: on its card, beside the name)
      by       the brand under the name on an event card, when brand is too long for it
+     role     what she did on it, a few short lines: the Role row of the page's info, one line each
+              (replaces the role in data/*.js; without: that one, if any)
      results  big numbers under the text: { value, label }
      folders  the folders to put first, in this order: { id, label, note, pick, beside }.
               A project page shows every folder of the project that holds a file, as many
@@ -50,6 +52,14 @@ window.PORTFOLIO.selection = {
   projects: [
     {
       slug: "rebranding-2026",
+      // the packaging and the colours of the new identity were not hers: the shoot and the content of its launch were
+      role: [
+        "Art direction of the launch campaign shoot",
+        "Photography moodboard, model and team management",
+        "Paid ads content strategy",
+        "Social media content creation",
+        "UGC management"
+      ],
       folders: [
         { id: "paid-ads", label: "Paid media" },
         { id: "social", label: "Social media", pick: ["cherry-pop-on-the-go-train.mp4", "whats-inside-cherry-pop.webp", "cherry-pop-on-the-go-trend.mp4", "new-rechargeable-lamp.webp", "post-15.webp", "post-16.webp", "post-17.webp"] },
@@ -60,6 +70,11 @@ window.PORTFOLIO.selection = {
     },
     {
       slug: "summer-2026",
+      role: [
+        "Campaign creative direction",
+        "Photoshoot production",
+        "Social media and paid ads content management"
+      ],
       folders: [
         { id: "paid-ads", label: "Paid media" },
         { id: "social", label: "Social media", beside: true },
@@ -70,6 +85,11 @@ window.PORTFOLIO.selection = {
       slug: "ooh-italy",
       title: "OOH",
       kicker: "Italy, Spain & the US",
+      role: [
+        "End-to-end project management",
+        "Communication strategy",
+        "Creative direction"
+      ],
       // the six videos open the project, in one row on a wide screen; the photos follow the text, Italy, Spain and the US mixed
       vibe: [
         "milan-duomo-metro-3.mp4", "bologna-2.mp4", "milan-duomo-metro-2.mp4",
@@ -90,30 +110,55 @@ window.PORTFOLIO.selection = {
       // her card a little closer, on the face and the two bottles
       slug: "fazit-2025",
       focus: "50% 42%",
-      zoom: 1.15
+      zoom: 1.15,
+      role: [
+        "Support on campaign execution and photoshoot",
+        "Influencer and social media strategy"
+      ]
     },
     {
-      slug: "daise-2025"
+      slug: "daise-2025",
+      role: [
+        "Support on campaign execution",
+        "Project management",
+        "Influencer and social media strategy"
+      ]
     },
     {
-      slug: "fall-2026"
+      slug: "fall-2026",
+      role: [
+        "Campaign creative direction",
+        "Photoshoot production",
+        "Content management and editing for social media and paid ads"
+      ]
     },
     // behind "See more", in the order of work/
     {
       // her folders as they are: the shoot (photos and two videos) for the vibe, then the teaser, the influencer
       // seeding, the website and the behind the scenes (the stickers lie around the page)
       slug: "cat-eye-2025",
+      role: [
+        "Support on art direction",
+        "Social media strategy",
+        "Supervision of influencer strategy and PR"
+      ],
       vibe: [
         "01-cat-eye-carousel.webp", "03-mini-kit-shades-product-shot.webp", "three-hands.webp",
         "05-cosmopolitan-lavender-haze-drink.webp", "hands-flash.webp", "bottles-drip.mp4", "02-moodboard-all-shades.mp4"
       ]
     },
     {
-      slug: "spring-2026"
+      slug: "spring-2026",
+      role: [
+        "Campaign creative direction",
+        "Photoshoot production",
+        "Social media and paid ads content management"
+      ]
     },
     {
       // the posters for the vibe; the two videos from the street (up on the walls, taken home) follow the text
       slug: "black-friday-2025",
+      role: ["Art direction", "Content creation"],
       vibe: ["flash-sales.webp", "poster-45-off-sitewide.webp", "posters-30-off-sitewide.webp"]
     }
   ],
@@ -129,6 +174,7 @@ window.PORTFOLIO.selection = {
       place: "Milan",
       brand: "Le Mini Macaron × Collanine Colorate",
       by: "Le Mini Macaron",
+      role: ["End-to-end event management"],
       card: { src: "content/events/retail-milan/bead-table-photo-bright", widths: [640, 1159], ratio: 0.75 }
     },
     {
@@ -136,6 +182,7 @@ window.PORTFOLIO.selection = {
       slug: "fuorisalone-hotpoint",
       kicker: "Milan Design Week",
       place: "Milan",
+      role: ["Support on event management"],
       card: { src: "content/events/fuorisalone-hotpoint/card-pizza-workshop", widths: [640, 1280, 1920], ratio: 0.8 }
     },
     {
@@ -144,6 +191,7 @@ window.PORTFOLIO.selection = {
       // the newsletter in data/collabs.js is a working note
       slug: "goodnews-2023",
       place: "Barcelona",
+      role: ["Project management", "Event management", "Support on art direction"],
       show: ["good-coffee-good-nails.webp"],
       folders: [
         { id: "popup" },
@@ -153,8 +201,10 @@ window.PORTFOLIO.selection = {
     },
     // behind "See more"
     {
-      // named "PR Event — Spring Collection" in a brief: the files only hold this one, the summer collection
+      // the launch of the spring collection (she set it right on 2026-11-07: it had been called the summer one); the
+      // slug and the folder keep the old name
       slug: "pr-summer-collection",
+      role: ["End-to-end event management"],
       card: { src: "content/events/pr-summer-collection/video-poster-bright", widths: [720], ratio: 0.5625 }
     },
     {

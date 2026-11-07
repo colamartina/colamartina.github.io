@@ -90,6 +90,8 @@
 .is-stage .info { border-top-color: var(--cream); }
 .is-stage .info > div { border-bottom-color: var(--line-light); }
 .is-stage .info dt { color: var(--cream-65); }
+.info__line { display: block; }
+.info__line + .info__line { margin-top: 0.3em; }
 /* the project's accent, as on its case page: yellow as a highlighter, orange as ink */
 .study[data-accent="yellow"] .study__kicker {
   padding: 0 0.12em;

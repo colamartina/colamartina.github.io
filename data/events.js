@@ -32,7 +32,7 @@ window.PORTFOLIO.events = [
   {
     slug: "pr-summer-collection",
     title: "PR Event",
-    kicker: "Summer collection",
+    kicker: "Spring collection launch",
     brand: "Le Mini Macaron",
     place: null,
     date: null,

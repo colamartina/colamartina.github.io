@@ -219,8 +219,8 @@
     },
     {
       slug: "pr-summer-collection",
-      title: "Le Mini Macaron | Summer PR event",
-      text: "The summer collection, presented at a picnic in an orchard: gingham tables, hay bales, string lights and pink Le Mini Macaron gift bags for the guests.",
+      title: "Le Mini Macaron | Spring collection launch",
+      text: "The spring collection, launched at a picnic in an orchard: gingham tables, hay bales, string lights and pink Le Mini Macaron gift bags for the guests.",
       cover: "pr-summer-collection.mp4",
       videos: ["pr-summer-collection.mp4"]
     },

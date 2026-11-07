@@ -539,9 +539,13 @@
   }
 
   /* ---------- a project page: the project ---------- */
+  // a row with a list (her role) shows one line each
   function info(list) {
-    return el("dl.info", {}, list.filter(function (r) { return r[1]; }).map(function (r) {
-      return el("div", {}, [el("dt", { text: r[0] }), el("dd", { text: r[1] })]);
+    return el("dl.info", {}, list.filter(function (r) { return Array.isArray(r[1]) ? r[1].length : r[1]; }).map(function (r) {
+      var dd = Array.isArray(r[1])
+        ? el("dd", {}, r[1].map(function (t) { return el("span.info__line", { text: t }); }))
+        : el("dd", { text: r[1] });
+      return el("div", {}, [el("dt", { text: r[0] }), dd]);
     }));
   }
 
