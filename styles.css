@@ -1718,7 +1718,7 @@ a, button { -webkit-tap-highlight-color: transparent; }   /* the site draws its 
 /* the CV's type is set in em, so the sheet's font size scales all of it (a desktop
    screen sets it a little larger, below) */
 .cv-sheet {
-  --photo-w: clamp(6.4rem, 23cqw, 10.5rem);   /* cqw: a share of the sheet's own width */
+  --photo-w: clamp(7.2rem, 26cqw, 12rem);   /* cqw: a share of the sheet's own width */
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9 0.4' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.3 0 0 0 0 0.2 0 0 0 0.1 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23p)'/%3E%3C/svg%3E");
   position: relative;
   container-type: inline-size;
@@ -1908,13 +1908,14 @@ a, button { -webkit-tap-highlight-color: transparent; }   /* the site draws its 
   color: var(--ink-2);
 }
 
-/* the portrait: a small print tucked under the clip by the sheet's top edge, lying flat
+/* the portrait: a print tucked under the clip by the sheet's top edge, lying flat
    on the paper a little crooked (a thin shadow along its bottom and right edges);
-   it swings a little on hover */
+   it swings a little on hover. It hangs a little lower than the clip's jaws reach, so
+   they bite only the white border and the wall above her head, never the head */
 .cv-photo {
   position: absolute;
   z-index: 2;
-  top: 0.3rem;
+  top: calc(0.3rem + var(--photo-w) * 0.045);
   right: clamp(1rem, 6cqw, 2.8rem);
   width: var(--photo-w);
   rotate: 1.5deg;
@@ -1940,8 +1941,8 @@ a, button { -webkit-tap-highlight-color: transparent; }   /* the site draws its 
   z-index: 1;
   top: 0;
   left: 58%;
-  width: 56%;
-  translate: -50% -60%;
+  width: 48%;                     /* the same clip as before the print grew */
+  translate: -50% calc(-60% - var(--photo-w) * 0.13);   /* back up to the sheet's edge, above the lowered print */
   rotate: -3deg;
   filter: drop-shadow(1px 2px 1.5px rgba(35, 20, 10, 0.4)) drop-shadow(3px 6px 5px rgba(10, 28, 96, 0.26));
   pointer-events: none;
@@ -1977,12 +1978,12 @@ a, button { -webkit-tap-highlight-color: transparent; }   /* the site draws its 
 @media (min-width: 901px) {
   .sec--cv { padding-top: calc(var(--nav-h, 4.7rem) - 0.25rem); }
   .sec--cv .sec__body { margin-top: clamp(2rem, 4.2vh, 3rem); }   /* the clip rises beside the note */
-  .cv-sheet { --photo-w: 7.5rem; width: min(100%, 58em); font-size: 1.06rem; }   /* wider with its type: the lines break as before */
+  .cv-sheet { --photo-w: 10.5rem; width: min(100%, 58em); font-size: 1.06rem; }   /* wider with its type: the lines break as before */
   .cv-sheet__paper { aspect-ratio: auto; padding-top: 1rem; padding-bottom: 1.1rem; }
   /* the print comes in from the edge, nearer the name, and runs a little past the header
      (the name's column stops short of it) */
   .cv-photo { right: 21%; }
-  .cv-sheet__id { min-height: calc(var(--photo-w) * 0.92); padding-right: calc(21% + var(--photo-w)); }
+  .cv-sheet__id { min-height: 6.9rem; padding-right: calc(21% + var(--photo-w)); }   /* the bigger print runs past the header instead of pushing the sheet taller */
   .cv-sheet__paper > .cv-sheet__sec,
   .cv-sheet__cols { padding-top: 0.85rem; }
   .cv-sheet__name { font-size: 1.85em; }

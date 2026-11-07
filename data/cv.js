@@ -12,7 +12,7 @@ window.PORTFOLIO.cv = {
   role: "Global Brand & Creative Marketing Manager",
   pdf: "assets/Martina-Cola-CV.pdf",
 
-  /* on the sheet: the portrait (content/cv/portrait-<width>.webp, from IMG_8414, 4:5 crop)
+  /* on the sheet: the portrait (content/cv/portrait-<width>.webp, from "foto curriculum.png", 4:5)
      held by Martina's binder clip (redpin.jpg, cut out of its background and relit in acid yellow) */
   photo: { src: "content/cv/portrait", widths: [480, 960], ratio: 4 / 5 },
   clip: { src: "assets/binder-clip.webp", width: 320, height: 411 },

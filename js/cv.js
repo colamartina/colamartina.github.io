@@ -34,7 +34,7 @@
         el("img", { src: cv.clip.src, width: String(cv.clip.width), height: String(cv.clip.height), alt: "", decoding: "async" })
       ]) : null,
       el("figure.cv-photo__print", {}, [
-        M.img(Object.assign({ type: "image" }, cv.photo), "(max-width: 640px) 104px, (min-width: 901px) 120px, 168px", { alt: cv.name })
+        M.img(Object.assign({ type: "image" }, cv.photo), "(max-width: 640px) 104px, (min-width: 901px) 152px, 175px", { alt: cv.name })
       ])
     ]);
   }
