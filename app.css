@@ -1,0 +1,173 @@
+/* =========================================================
+   APP — the phone version: a screen per tab and a floating tab bar at the bottom
+   (Home, Works, CV, Contact), like a native app. Everything here waits for
+   html.is-app, which the gate in <head> sets before the first paint on phones:
+   at most 768px wide, or a touch screen at most 500px tall (a phone on its side).
+   Without that class nothing below applies, so the desktop and the tablets stay
+   exactly as they are. The tabs themselves: js/app.js. The hero's photos on a
+   touch screen: js/touch-hero.js.
+   ========================================================= */
+
+/* the app's own pieces, hidden everywhere else */
+.tabbar, .works, .contact__copy, .cv-open, .app-back { display: none; }
+
+html.is-app {
+  --app-top: env(safe-area-inset-top, 0px);
+  --bar-h: 64px;
+  --bar-gap: 10px;
+  --app-bar: calc(var(--bar-h) + var(--bar-gap) + env(safe-area-inset-bottom, 0px));   /* what the bar covers */
+  --app-room: calc(var(--app-bar) + 1.75rem);                                          /* kept free at the end of every screen */
+  /* the side margin also clears the notch of a phone on its side */
+  --pad: max(1.25rem, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+  scroll-snap-type: none;     /* the snap points belong to the desktop's event slides */
+  scroll-behavior: auto;      /* js/app.js scrolls on its own terms */
+}
+
+/* the top bar, its menu, the reading line and the links the tab bar now stands for */
+html.is-app .nav,
+html.is-app .menu,
+html.is-app .progress,
+html.is-app .hero__foot,
+html.is-app .hero__hint,
+html.is-app #work,
+html.is-app .contact__link[href$="#cv"],
+html.is-app .foot__top,
+html.is-app .crumbs { display: none; }
+
+/* ---------- screens: one at a time ---------- */
+html.is-app[data-tab="home"] [data-screen]:not([data-screen="home"]),
+html.is-app[data-tab="works"] [data-screen]:not([data-screen="works"]),
+html.is-app[data-tab="cv"] [data-screen]:not([data-screen="cv"]),
+html.is-app[data-tab="contact"] [data-screen]:not([data-screen="contact"]) { display: none; }
+
+/* changing tab: the new screen comes in, quick and quiet */
+html.is-app main.is-entering { animation: appIn 0.26s var(--ease) both; }
+@keyframes appIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* =========================================================
+   THE TAB BAR — a pill floating over the page, frosted; the tab you are on has a
+   pale yellow pill behind it that slides from tab to tab
+   ========================================================= */
+html.is-app .tabbar {
+  --at: 0;
+  position: fixed;
+  z-index: 400;
+  left: max(12px, env(safe-area-inset-left, 0px));
+  right: max(12px, env(safe-area-inset-right, 0px));
+  bottom: calc(var(--bar-gap) + env(safe-area-inset-bottom, 0px));
+  max-width: 440px;
+  height: var(--bar-h);
+  margin-inline: auto;
+  padding: 5px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--print) 74%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  backdrop-filter: blur(18px) saturate(1.5);
+  border: 1px solid color-mix(in srgb, var(--burgundy) 10%, transparent);
+  box-shadow: 0 14px 30px -12px rgba(35, 10, 13, 0.5), 0 2px 6px rgba(35, 10, 13, 0.12);
+  view-transition-name: tabbar;      /* it stays put while a project page comes in */
+}
+html.is-app[data-tab="works"] .tabbar { --at: 1; }
+html.is-app[data-tab="cv"] .tabbar { --at: 2; }
+html.is-app[data-tab="contact"] .tabbar { --at: 3; }
+
+.tabbar__pill {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 5px;
+  width: calc((100% - 10px) / 4);
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--acid) 52%, var(--print));
+  transform: translateX(calc(var(--at) * 100%));
+  transition: transform 0.45s cubic-bezier(0.3, 1.25, 0.4, 1);   /* a hint of overshoot as it arrives */
+}
+.tabbar__tab {
+  position: relative;
+  z-index: 1;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  border-radius: var(--r-pill);
+  color: color-mix(in srgb, var(--burgundy) 58%, transparent);
+  font-size: 0.69rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
+  transition: transform 0.18s ease, color 0.3s;
+}
+.tabbar__tab:active { transform: scale(0.9); }
+.tabbar__tab[aria-current="page"] { color: var(--burgundy); }
+.tabbar__tab:focus-visible { outline: 2px solid var(--electric-ink); outline-offset: -3px; border-radius: var(--r-pill); }
+/* line icons, one weight for all four: the one you are on in the flowers' blue */
+.tabbar__ic {
+  width: 25px;
+  height: 25px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.3s;
+}
+.tabbar__tab[aria-current="page"] .tabbar__ic { stroke: var(--electric); }
+
+/* =========================================================
+   HOME — the hero fills the screen, the greeting in the middle of what the bar
+   leaves; About follows
+   ========================================================= */
+html.is-app .hero {
+  min-height: 100svh;
+  padding: calc(var(--app-top) + 1.25rem) var(--pad) var(--app-room);
+}
+/* a phone on its side: the name is sized by the height too */
+html.is-app .hero__name { font-size: min(16.5vw, 22svh); }
+
+/* the greeting comes in after the first photos (js/touch-hero.js adds .has-table; without
+   it, a moment after the page): "hi, it's", the name letter by letter, the stickers, the welcome */
+html.is-app .hero { --t0: 0.3s; }
+html.is-app.has-table .hero { --t0: 0.95s; }
+html.is-app .hero__hello { animation-delay: var(--t0); }
+html.is-app .hero__name { animation-delay: calc(var(--t0) + 0.9s); }   /* only if its letters were never split (js/app.js) */
+html.is-app .hero__name.is-split { animation: none; }
+html.is-app .hero__ch {
+  display: inline-block;
+  animation: appLetter 0.8s var(--ease) calc(var(--t0) + 0.1s + var(--i) * 34ms) both;
+}
+html.is-app .hero__sticker { animation-delay: calc(var(--t0) + 0.7s + var(--i) * 0.12s), calc(var(--i) * -0.7s); }
+html.is-app .hero__welcome { animation-delay: calc(var(--t0) + 0.95s); }
+@keyframes appLetter {
+  from { opacity: 0; transform: translateY(0.45em); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* About: the words still hold while the photo passes under them, without the long
+   empty screen after it */
+html.is-app .about__stage { padding-block: calc(var(--app-top) + 1.75rem) calc(var(--app-bar) + 1rem); }   /* the words end above the bar */
+html.is-app .about__rail { padding-bottom: calc(var(--app-room) + 6svh); }
+
+/* =========================================================
+   A PHONE ON ITS SIDE — four cards in one row, a lower title
+   ========================================================= */
+@media (orientation: landscape) {
+  html.is-app .hero__hello { font-size: min(2.1rem, 9svh); }
+  html.is-app .hero__welcome { font-size: min(1.35rem, 6svh); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.is-app main.is-entering { animation: none; }
+  html.is-app .hero__ch { animation: none; }
+  .tabbar__pill { transition: none; }
+}

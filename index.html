@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-cursor="flower">
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#451d20" />
 <title>Martina Cola · Brand & Creative Marketing</title>
 <meta name="description" content="Martina Cola, Global Brand & Creative Marketing Manager. Multimarket EU & US experience, paid media and content strategy. Beauty & FMCG, Barcelona." />
@@ -18,14 +18,29 @@
 <link rel="stylesheet" href="fonts.css" />
 <link rel="stylesheet" href="styles.css" />
 <link rel="stylesheet" href="projects.css" />
+<link rel="stylesheet" href="app.css" />
 
 <script src="data/hero.js"></script>
+<script>
+  /* Phone gate — runs before the first paint. On a phone (at most 768px wide, or a touch
+     screen at most 500px tall: a phone on its side) the site becomes its app version: a
+     screen per tab and a bar at the bottom (app.css, js/app.js), opening on the tab the
+     address names (#home, #works, #cv, #contact; the old anchors lead to theirs) */
+  (function () {
+    var root = document.documentElement;
+    if (!window.matchMedia || !window.matchMedia("(max-width: 768px), (hover: none) and (pointer: coarse) and (max-height: 500px)").matches) return;
+    var tabs = { works: "works", work: "works", projects: "works", events: "works", cv: "cv", contact: "contact" };
+    root.classList.add("is-app");
+    root.setAttribute("data-tab", tabs[location.hash.slice(1)] || "home");
+  })();
+</script>
 <script>
   /* Intro gate — runs before the first paint. The intro plays once per session
      and never with reduced motion; if its script cannot run, the page is released
      after 4s so nothing stays covered. */
   (function () {
     var root = document.documentElement;
+    if (root.classList.contains("is-app")) return;   // on a phone the photos and the name are the opening (js/touch-hero.js)
     try {
       if (sessionStorage.getItem("mc-intro-seen") ||
           window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -82,7 +97,7 @@
 
 <main id="main">
   <!-- ============================ HERO ============================ -->
-  <section class="hero" id="hero" data-navtheme="light">
+  <section class="hero" id="hero" data-navtheme="light" data-screen="home">
     <div class="trail" aria-hidden="true"></div>
     <p class="hero__hint" aria-hidden="true">Move your mouse <span>&#10033;</span></p>
 
@@ -115,7 +130,7 @@
   <!-- the statement is the design: it holds still while the photo scrolls up under it,
        seen through the sheet the words are printed on (styles.css, no script).
        Martina's two drawn flowers, in the electric blue, sit at the end of the last line -->
-  <section class="about" id="about" data-navtheme="dark">
+  <section class="about" id="about" data-navtheme="dark" data-screen="home">
     <div class="about__stage">
       <div class="about__canvas">
         <div class="section-head">
@@ -156,7 +171,7 @@
   </div>
 
   <!-- ============================ CV ============================ -->
-  <section class="sec sec--stage sec--cv" id="cv" aria-labelledby="cv-title" data-navtheme="blue">
+  <section class="sec sec--stage sec--cv" id="cv" aria-labelledby="cv-title" data-navtheme="blue" data-screen="cv">
     <h2 class="cv-hello" id="cv-title" data-reveal>here’s my cv!</h2>
     <div class="sec__body"><!-- rendered from data/cv.js by js/cv.js --></div>
   </section>
@@ -180,7 +195,7 @@
   -->
 
   <!-- ============================ CONTACT ============================ -->
-  <section class="contact" id="contact" data-navtheme="light">
+  <section class="contact" id="contact" data-navtheme="light" data-screen="contact">
     <div class="contact__inner">
       <span class="eyebrow" data-reveal>( Contact )</span>
       <h2 class="contact__title" data-reveal>let’s get in touch&nbsp;:)</h2>
@@ -196,6 +211,15 @@
   </section>
 </main>
 
+<!-- ============================ TAB BAR (phones only: app.css, js/app.js) ============================ -->
+<nav class="tabbar" aria-label="Main">
+  <span class="tabbar__pill" aria-hidden="true"></span>
+  <a class="tabbar__tab" href="#home" data-tab="home"><svg class="tabbar__ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 11C16.7 11.3 18.9 11.1 19.6 11.4C20.3 11.7 20.4 12.2 20.6 12.7C20.9 13.2 21 13.7 21 14.2C21 14.7 20.9 15.2 20.7 15.6C20.5 16.1 20.2 16.5 19.9 16.8C19.6 17.2 19.1 17.5 18.6 17.7C18.1 17.8 17.7 18.1 17 17.8C16.3 17.5 14.7 15.7 14.3 15.8C14 16 14.9 18 14.8 18.7C14.7 19.4 14.3 19.6 14 20C13.6 20.3 13.2 20.6 12.8 20.7C12.3 20.9 11.8 20.9 11.4 20.9C10.9 20.9 10.5 20.8 10.1 20.5C9.6 20.3 9.2 20 9 19.6C8.7 19.3 8.3 18.9 8.3 18.2C8.3 17.6 9.3 16 8.9 15.8C8.5 15.6 6.8 17.1 6.1 17.2C5.3 17.4 4.9 17.1 4.4 16.8C4 16.6 3.6 16.2 3.3 15.8C3 15.4 2.7 14.9 2.6 14.4C2.5 14 2.5 13.4 2.5 12.9C2.6 12.4 2.8 11.9 3.1 11.5C3.4 11 3.6 10.5 4.4 10.3C5.1 10.2 7.6 10.7 7.8 10.4C8 10.1 6.1 8.9 5.7 8.3C5.4 7.7 5.6 7.2 5.6 6.8C5.7 6.3 5.9 5.8 6.2 5.4C6.5 5 6.8 4.7 7.2 4.4C7.6 4.2 8.1 4 8.5 4C9 3.9 9.5 3.9 10 4C10.5 4.2 11 4.3 11.4 4.8C11.8 5.4 11.9 7.5 12.3 7.5C12.7 7.4 13.2 5.3 13.7 4.8C14.2 4.2 14.7 4.2 15.2 4.2C15.7 4.1 16.2 4.1 16.7 4.3C17.2 4.4 17.6 4.7 18 5C18.3 5.3 18.7 5.7 18.9 6.1C19.1 6.5 19.3 7.1 19.3 7.6C19.3 8.1 19.4 8.6 18.9 9.2C18.5 9.7 16.5 10.6 16.6 11Z"/><path d="M13.1 11.6c-.7-.6-1.9-.3-2 .6-.1.9.8 1.5 1.7 1.2"/></svg><span>Home</span></a>
+  <a class="tabbar__tab" href="#works" data-tab="works"><svg class="tabbar__ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.2 4.6c1.9-.3 3.8-.2 5.6 0 .2 1.8.3 3.7 0 5.5-1.9.2-3.7.2-5.6 0-.2-1.8-.2-3.7 0-5.5z"/><path d="M14.1 4.3c1.9-.1 3.8 0 5.6.2.2 1.8.2 3.7-.1 5.6-1.8.2-3.7.2-5.5 0-.2-1.9-.2-3.8 0-5.8z"/><path d="M4.4 14.2c1.8-.2 3.7-.2 5.6 0 .2 1.9.2 3.8 0 5.6-1.9.2-3.8.2-5.7 0-.1-1.9-.1-3.8.1-5.6z"/><path d="M14.2 14.1c1.9-.2 3.8-.1 5.6.1.1 1.9.1 3.7-.1 5.6-1.8.2-3.7.2-5.6 0-.1-1.9-.1-3.8.1-5.7z"/></svg><span>Works</span></a>
+  <a class="tabbar__tab" href="#cv" data-tab="cv"><svg class="tabbar__ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.3 3.6c3-.2 6.1-.2 8.6.1l3.5 3.6c.2 4.2.2 8.6-.1 12.9-4 .3-8 .3-12 0-.3-5.5-.3-11.1 0-16.6z"/><path d="M14.8 3.8c-.1 1.3-.1 2.6.1 3.8 1.2.1 2.4.1 3.5-.1"/><path d="M8.8 11.8c2.1-.1 4.3-.1 6.4.1M8.8 15.4c1.6-.1 3.2-.1 4.8 0"/></svg><span>CV</span></a>
+  <a class="tabbar__tab" href="#contact" data-tab="contact"><svg class="tabbar__ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.4 6.4c5.7-.4 11.4-.4 17.2 0 .3 3.8.3 7.5 0 11.3-5.7.4-11.5.4-17.2 0-.3-3.8-.3-7.6 0-11.3z"/><path d="M3.8 7c2.6 2.1 5.3 4 8.2 5.7 2.9-1.6 5.6-3.5 8.1-5.6"/></svg><span>Contact</span></a>
+</nav>
+
 <script src="data/campaigns.js"></script>
 <script src="data/events.js"></script>
 <script src="data/collabs.js"></script>
@@ -208,4 +232,5 @@
 <!-- <script src="js/work.js"></script> -->
 <script src="js/cv.js"></script>
 <script src="js/intro.js"></script>
+<script src="js/app.js"></script>
 <script src="script.js"></script>
