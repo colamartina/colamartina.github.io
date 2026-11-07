@@ -31,7 +31,9 @@
     photo = el("div.cv-photo", {}, [
       // --clip: the clip's own shape, which masks its highlight (styles.css)
       cv.clip ? el("span.cv-clip", { style: "--clip: url(" + cv.clip.src + ")" }, [
-        el("img", { src: cv.clip.src, width: String(cv.clip.width), height: String(cv.clip.height), alt: "", decoding: "async" })
+        // lazy on a phone, where the CV is a tab of its own: Home does not wait for it
+        el("img", { src: cv.clip.src, width: String(cv.clip.width), height: String(cv.clip.height), alt: "", decoding: "async",
+                    loading: document.documentElement.classList.contains("is-app") && "lazy" })
       ]) : null,
       el("figure.cv-photo__print", {}, [
         M.img(Object.assign({ type: "image" }, cv.photo), "(max-width: 640px) 104px, (min-width: 901px) 152px, 175px", { alt: cv.name })

@@ -16,10 +16,12 @@
   if (!hero || !layer || !root.classList.contains("is-app") ||
       !window.matchMedia("(hover: none) and (pointer: coarse)").matches) return;
 
+  // the files the phone gate picked in index.html: the 400px ones whenever they are sharp enough
   var hi = (window.devicePixelRatio || 1) > 1.5;
-  var pool = ((window.PORTFOLIO && window.PORTFOLIO.hero) || []).map(function (p) {
-    return typeof p === "string" ? p : (hi && p.srcHi) || p.src;
-  });
+  var pool = (window.PORTFOLIO && window.PORTFOLIO.table) ||
+    ((window.PORTFOLIO && window.PORTFOLIO.hero) || []).map(function (p) {
+      return typeof p === "string" ? p : (hi && p.srcHi) || p.src;
+    });
   if (!pool.length) return;
 
   root.classList.add("has-table");        // script.js leaves out its photo stack
@@ -33,14 +35,15 @@
   var MAX = 7, EVERY = 2600;
   var n = 0, alive = [], loop = 0, visible = true, tapped = false;
 
-  // the first photos load at once, the others when the phone is idle
+  // the first photos load when the table starts, the others once the page has loaded and the phone is idle
   var cache = [];
   function load(k) {
     if (!cache[k]) { cache[k] = new Image(); cache[k].decoding = "async"; cache[k].src = pool[k]; }
     return cache[k];
   }
-  for (var k = 0; k < Math.min(SLOTS.length, pool.length); k++) load(k);
-  (window.requestIdleCallback || function (f) { setTimeout(f, 1500); })(function () { pool.forEach(function (_, i) { load(i); }); });
+  function loadRest() {
+    (window.requestIdleCallback || function (f) { setTimeout(f, 1500); })(function () { pool.forEach(function (_, i) { load(i); }); });
+  }
 
   function W() { return hero.clientWidth; }
   function H() { return hero.clientHeight; }
@@ -118,12 +121,25 @@
   var hint = hero.querySelector(".hero__hint");
   if (hint && hint.firstChild && hint.firstChild.nodeType === 3) hint.firstChild.nodeValue = "Tap ";
 
-  SLOTS.forEach(function (s, k) {
-    if (reduce) drop(s[0] * W(), s[1] * H(), "drop");
-    else setTimeout(function () { drop(s[0] * W(), s[1] * H(), "drop"); }, 150 + k * 190);
-  });
-  if (!reduce) {
-    setTimeout(function () { if (!tapped) hero.classList.add("hint-on"); }, 2600);
-    loop = setTimeout(more, 4300);
-  } else hero.classList.add("hint-on");
+  // the table starts when Home is on screen: a page opened on Works, CV or Contact loads no hero photo
+  var started = false;
+  function start() {
+    if (started) return;
+    started = true;
+    for (var k = 0; k < Math.min(SLOTS.length, pool.length); k++) load(k);
+    if (document.readyState === "complete") loadRest();
+    else window.addEventListener("load", loadRest, { once: true });
+    SLOTS.forEach(function (s, k) {
+      if (reduce) drop(s[0] * W(), s[1] * H(), "drop");
+      else setTimeout(function () { drop(s[0] * W(), s[1] * H(), "drop"); }, 150 + k * 190);
+    });
+    if (!reduce) {
+      setTimeout(function () { if (!tapped) hero.classList.add("hint-on"); }, 2600);
+      loop = setTimeout(more, 4300);
+    } else hero.classList.add("hint-on");
+  }
+  if (root.getAttribute("data-tab") === "home") start();
+  else new MutationObserver(function (_, watch) {
+    if (root.getAttribute("data-tab") === "home") { watch.disconnect(); start(); }
+  }).observe(root, { attributes: true, attributeFilter: ["data-tab"] });
 })();

@@ -32,6 +32,24 @@
     var tabs = { works: "works", work: "works", projects: "works", events: "works", cv: "cv", contact: "contact" };
     root.classList.add("is-app");
     root.setAttribute("data-tab", tabs[location.hash.slice(1)] || "home");
+
+    /* the hero's photos on a touch phone (js/touch-hero.js): the 400px files whenever they
+       are sharp enough — the biggest photo is min(26vw, 21svh) × 1.25 wide (app.css) — and,
+       when it opens on Home, the first ones are asked for now, ahead of the scripts */
+    var P = window.PORTFOLIO || {};
+    var dpr = window.devicePixelRatio || 1;
+    var need = Math.min(0.26 * innerWidth, 0.21 * innerHeight) * 1.25 * dpr;
+    P.table = (P.hero || []).map(function (p) {
+      return typeof p === "string" ? p : (need > 440 && p.srcHi) || p.src;
+    });
+    if (root.getAttribute("data-tab") !== "home" ||
+        !window.matchMedia("(hover: none) and (pointer: coarse)").matches) return;
+    P.table.slice(0, 4).forEach(function (src) {
+      var link = document.createElement("link");
+      link.rel = "preload"; link.as = "image"; link.href = src;
+      link.setAttribute("fetchpriority", "high");
+      document.head.appendChild(link);
+    });
   })();
 </script>
 <script>
