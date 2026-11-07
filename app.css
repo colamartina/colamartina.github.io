@@ -443,5 +443,7 @@ html:active-view-transition-type(back)::view-transition-new(root) { animation-na
   html.is-app .hero__ch { animation: none; }
   .tabbar__pill { transition: none; }
   .table__img.is-drop, .table__img.is-tap { animation: none; }
+  /* the photos on the phone's table hold still, so they stay: styles.css hides the desktop's moving trail */
+  html.is-app .hero.is-table .trail { display: block; }
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }
