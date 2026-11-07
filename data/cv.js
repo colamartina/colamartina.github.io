@@ -25,7 +25,7 @@ window.PORTFOLIO.cv = {
       company: "Le Mini Macaron",
       note: "Global nail beauty brand at ULTA, Sephora & Douglas",
       points: [
-        "Lead global social media, influencer marketing and creative campaigns across Europe and the US, managing a team of 3.",
+        "Lead global social media, influencer marketing and creative campaigns across Europe and the US, managing a team of 4.",
         "Manage paid and organic media across Europe (IT, FR & ES) and the US, achieving **+50% ROAS** and improving conversion.",
         "Lead the creative production of photoshoots, from concept and briefing to styling direction and assets for social, e‑commerce and retail.",
         "Lead brand activations and events, generating strong media coverage and **+200% retailer orders** post‑event.",
