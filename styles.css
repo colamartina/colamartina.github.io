@@ -864,7 +864,7 @@ a, button { -webkit-tap-highlight-color: transparent; }   /* the site draws its 
   background: var(--cream);
   opacity: 0.58;
 }
-/* Martina's two drawn flowers (the cursor's pair, in the ink) in the room the last
+/* Martina's two drawn flowers (the cursor's pair, in the electric blue) in the room the last
    line leaves, under "marketing,": right edge on the text's, top at the last line's
    cap height, sized with the type. Out of the flow, so the breaks don't move */
 .about__flowers {
